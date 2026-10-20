@@ -28,6 +28,16 @@ footer{text-align:center;padding:25px;color:light-dark(#74758a,#b6b6ca);font-siz
 @media(max-width:760px){.hero{grid-template-columns:1fr}.hero-art{min-height:140px}.hero-art .emoji{font-size:4rem}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.nav{gap:12px}.progress{align-items:flex-start;flex-wrap:wrap}.points{width:100%}}
 @media(max-width:480px){.nav a:nth-child(2){display:none}.cards{grid-template-columns:1fr}.game-card{min-height:210px}header{padding:18px 20px}main{padding:25px 16px 40px}.section-head{align-items:flex-start;flex-direction:column}.memory-tile{min-height:58px}}
 @media(prefers-color-scheme:dark){.hero-art{background:#24463f;color:#e3fff5}.bubble{background:#357c69}.bubble.two{background:#98762c}}
+/* ── Memoria Conceptual ── */
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:14px}
+.concept-tile{min-height:80px;border:2px solid light-dark(#e6e4f2,#44445d);border-radius:13px;background:light-dark(#f4f2ff,#2b2b42);color:inherit;cursor:pointer;font:inherit;font-size:.82rem;font-weight:700;line-height:1.35;padding:10px;display:flex;align-items:center;justify-content:center;text-align:center;transition:border-color .15s,background .15s;word-break:break-word}
+.concept-tile:hover:not(:disabled){border-color:#7567e8;background:light-dark(#eceaff,#34345a)}
+.concept-tile.face-down{background:light-dark(#5B4BDB,#4438c2);color:#fff;border-color:transparent;font-size:1.4rem}
+.concept-tile.selected{border-color:#5B4BDB;background:light-dark(#e9e5ff,#3c3775)}
+.concept-tile.matched{border-color:#2baf7b;background:light-dark(#dcf8ec,#1a4535);cursor:default;opacity:.85}
+.concept-tile.wrong-flash{border-color:#df6879;background:light-dark(#ffebef,#4a1e26)}
+.concept-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.concept-meta .small{margin:0}
 </style>
 </head>
 <body><div id="app">
@@ -38,7 +48,7 @@ footer{text-align:center;padding:25px;color:light-dark(#74758a,#b6b6ca);font-siz
 <div class="cards">
 <article class="game-card" data-game-id="math"><div class="game-icon purple">➗</div><h3>Reto matemático</h3><p>Resuelve operaciones y pon a prueba tu rapidez mental.</p><button class="btn" onclick="startMath()">Jugar ahora</button></article>
 <article class="game-card" data-game-id="word"><div class="game-icon yellow">🔤</div><h3>Palabra misteriosa</h3><p>Descubre la palabra usando una pista. ¡Cada letra cuenta!</p><button class="btn" onclick="startWord()">Jugar ahora</button></article>
-<article class="game-card" data-game-id="memory"><div class="game-icon green">🧠</div><h3>Memoria visual</h3><p>Encuentra las parejas de emojis y entrena tu memoria.</p><button class="btn" onclick="startMemory()">Jugar ahora</button></article>
+<article class="game-card" data-game-id="memory"><div class="game-icon green">🧠</div><h3>Memoria Conceptual</h3><p>Asocia cada concepto con su respuesta y entrena tu memoria.</p><button class="btn" onclick="startMemory()">Jugar ahora</button></article>
 <article class="game-card" data-game-id="trivia"><div class="game-icon blue">🌎</div><h3>Curiosidades</h3><p>Responde preguntas sobre ciencia, naturaleza y el mundo.</p><button class="btn" onclick="startTrivia()">Jugar ahora</button></article>
 <article class="game-card" data-game-id="synonym"><div class="game-icon pink">📖</div><h3>Sinónimos exprés</h3><p>Amplía tu vocabulario eligiendo palabras con significado parecido.</p><button class="btn" onclick="startSynonym()">Jugar ahora</button></article>
 <article class="game-card" data-game-id="surprise"><div class="game-icon purple">🎯</div><h3>Desafío sorpresa</h3><p>Una pregunta al azar para comprobar lo que sabes.</p><button class="btn" onclick="startSurprise()">¡Sorpréndeme!</button></article>
@@ -71,12 +81,181 @@ function startSynonym(){current='syn';questionIndex=0;correctCount=0;synonyms.so
 function nextSynonym(){let q=synonyms[questionIndex%5];show('Sinónimos exprés',`<div class="small">Pregunta ${questionIndex+1} de 5</div><div class="question">¿Qué palabra significa algo parecido a «${q.w.toLowerCase()}»?</div><div class="answers">${q.a.map((v,i)=>`<button class="answer" onclick="synAnswer(this,${i},${q.c})">${v}</button>`).join('')}</div><div class="feedback" id="feedback"></div><div class="quiz-footer"><span class="small">+10 puntos por acierto</span><button class="btn" id="next" style="display:none" onclick="advanceSyn()">${questionIndex===4?'Terminar':'Siguiente →'}</button></div>`)}
 function synAnswer(el,v,c){if($('next').style.display!=='none')return;document.querySelectorAll('.answer').forEach(x=>x.disabled=true);if(v===c){el.classList.add('correct');$('feedback').textContent='¡Exacto! +10 puntos';addPoints(10);correctCount++}else{el.classList.add('wrong');document.querySelectorAll('.answer')[c].classList.add('correct');$('feedback').textContent='¡Buen intento!'}$('next').style.display='inline-block'}
 function advanceSyn(){questionIndex++;if(questionIndex>=5)show('¡Buen trabajo!',`<div class="question">Acertaste ${correctCount} de 5 palabras. 📖</div><button class="btn" onclick="startSynonym()">Practicar de nuevo</button>`);else nextSynonym()}
-const icons=['🝸','🚀','🝉','🦊','🌈','🝼','⚽','🌻'];let memory=[],flipped=[],matched=0,lock=false,moves=0;
-function startMemory(){current='memory';memory=[...icons,...icons].sort(()=>Math.random()-.5);flipped=[];matched=0;moves=0;lock=false;renderMemory()}
-function renderMemory(){show('Memoria visual',`<div class="quiz-footer"><span class="small">Encuentra las 8 parejas</span><span class="small">Movimientos: <b id="moves">${moves}</b></span></div><div class="memory-grid">${memory.map((v,i)=>`<button class="memory-tile ${matchedIndices.has(i)?'matched':''}" id="tile${i}" onclick="flipTile(${i})">${matchedIndices.has(i)||flipped.includes(i)?v:'❔'}</button>`).join('')}</div><div class="feedback" id="memoryFeedback">¡Busca las parejas iguales!</div><button class="btn secondary" onclick="startMemory()">Reiniciar partida</button>`);}
-let matchedIndices=new Set();
-function startMemory(){current='memory';memory=[...icons,...icons].sort(()=>Math.random()-.5);flipped=[];matchedIndices=new Set();matched=0;moves=0;lock=false;renderMemory()}
-function flipTile(i){if(lock||flipped.includes(i)||matchedIndices.has(i))return;flipped.push(i);$('tile'+i).textContent=memory[i];if(flipped.length===2){moves++;$('moves').textContent=moves;let [a,b]=flipped;if(memory[a]===memory[b]){matchedIndices.add(a);matchedIndices.add(b);$('tile'+a).classList.add('matched');$('tile'+b).classList.add('matched');flipped=[];addPoints(5);if(matchedIndices.size===16){$('memoryFeedback').textContent='¡Completaste todas las parejas! +40 puntos extra';addPoints(40)}}else{lock=true;setTimeout(()=>{if(!$('tile'+a)||!$('tile'+b))return;$('tile'+a).textContent='❔';$('tile'+b).textContent='❔';flipped=[];lock=false},700)}}}
+// ── Memoria Conceptual ────────────────────────────────────────────
+// Estado del juego
+let mc = {
+  pairs: [],          // [{concepto, respuesta, id}] cargadas desde JSON
+  tiles: [],          // orden barajado de todas las fichas en pantalla
+  flipped: [],        // índices de fichas volteadas (máx. 2)
+  matched: new Set(), // ids de pares ya resueltos
+  lock: false,        // bloqueo mientras se anima el volteo fallido
+  moves: 0,
+  pointsAwarded: new Set() // ids de pares ya premiados (evita doble puntuación)
+};
+
+function startMemory() {
+  current = 'memory';
+  // Seleccionar hasta 6 pares aleatorios del JSON para no saturar la pantalla
+  const MAX_PAIRS = 6;
+  if (!mc.pairs || mc.pairs.length === 0) {
+    // Primera vez: cargar JSON
+    loadConceptos().then(() => initMemoryRound(MAX_PAIRS));
+  } else {
+    initMemoryRound(MAX_PAIRS);
+  }
+}
+
+async function loadConceptos() {
+  try {
+    const res = await fetch('conceptos.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) throw new Error('Datos vacíos o formato incorrecto.');
+    // Validar cada elemento
+    const valid = data.filter(d => d && typeof d.concepto === 'string' && d.concepto.trim() &&
+                                       typeof d.respuesta === 'string' && d.respuesta.trim());
+    if (valid.length === 0) throw new Error('Ninguna entrada válida en conceptos.json.');
+    mc.pairs = valid.map((d, i) => ({ concepto: d.concepto.trim(), respuesta: d.respuesta.trim(), id: i }));
+  } catch (err) {
+    show('Memoria Conceptual', `<div class="feedback" style="color:#df6879">⚠️ No se pudo cargar conceptos.json: ${err.message}</div>
+      <p class="small">Asegúrate de ejecutar la página desde un servidor web (no directamente con file://).</p>
+      <button class="btn secondary" onclick="startMemory()">Reintentar</button>`);
+    mc.pairs = [];
+  }
+}
+
+function initMemoryRound(maxPairs) {
+  if (!mc.pairs || mc.pairs.length === 0) return;
+
+  // Barajar y tomar los primeros maxPairs pares
+  const shuffledPairs = [...mc.pairs].sort(() => Math.random() - .5).slice(0, maxPairs);
+
+  // Crear dos fichas por par: una con el concepto, otra con la respuesta
+  const tiles = [];
+  shuffledPairs.forEach(p => {
+    tiles.push({ text: p.concepto,  pairId: p.id, role: 'concepto'  });
+    tiles.push({ text: p.respuesta, pairId: p.id, role: 'respuesta' });
+  });
+
+  // Barajar las fichas
+  tiles.sort(() => Math.random() - .5);
+
+  mc.tiles          = tiles;
+  mc.flipped        = [];
+  mc.matched        = new Set();
+  mc.lock           = false;
+  mc.moves          = 0;
+  mc.pointsAwarded  = new Set();
+
+  renderMemory();
+}
+
+function renderMemory() {
+  const total  = mc.tiles.length / 2;         // total de pares
+  const found  = mc.matched.size;             // pares encontrados
+  const remain = total - found;
+
+  show('Memoria Conceptual', `
+    <div class="concept-meta">
+      <span class="small">Parejas encontradas: <b>${found}/${total}</b> · Pendientes: <b>${remain}</b></span>
+      <span class="small">Movimientos: <b id="mc-moves">${mc.moves}</b></span>
+    </div>
+    <div class="concept-grid" id="mc-grid">
+      ${mc.tiles.map((t, i) => {
+        const isMatched  = mc.matched.has(t.pairId);
+        const isFlipped  = mc.flipped.includes(i);
+        const faceDown   = !isMatched && !isFlipped;
+        let cls = 'concept-tile';
+        if (isMatched)       cls += ' matched';
+        else if (isFlipped)  cls += ' selected';
+        else                 cls += ' face-down';
+        return `<button class="${cls}" id="mct-${i}" onclick="flipConceptTile(${i})" ${isMatched ? 'disabled' : ''}>${faceDown ? '?' : escHtml(t.text)}</button>`;
+      }).join('')}
+    </div>
+    <div class="feedback" id="mc-feedback" style="margin-top:12px"></div>
+    <div style="margin-top:14px">
+      <button class="btn secondary" onclick="initMemoryRound(6)">Nueva partida</button>
+    </div>`);
+}
+
+function flipConceptTile(i) {
+  if (mc.lock) return;
+  if (mc.flipped.includes(i)) return;         // misma ficha dos veces
+  if (mc.matched.has(mc.tiles[i].pairId)) return; // ya resuelta
+
+  mc.flipped.push(i);
+  const btn = $('mct-' + i);
+  btn.classList.remove('face-down');
+  btn.classList.add('selected');
+  btn.textContent = mc.tiles[i].text;
+
+  if (mc.flipped.length < 2) return;          // esperar segunda ficha
+
+  // Dos fichas volteadas: evaluar
+  mc.moves++;
+  const movEl = $('mc-moves');
+  if (movEl) movEl.textContent = mc.moves;
+
+  const [a, b]  = mc.flipped;
+  const tileA   = mc.tiles[a];
+  const tileB   = mc.tiles[b];
+  const isMatch = tileA.pairId === tileB.pairId && tileA.role !== tileB.role;
+
+  if (isMatch) {
+    mc.matched.add(tileA.pairId);
+    [$('mct-' + a), $('mct-' + b)].forEach(el => {
+      if (!el) return;
+      el.classList.remove('selected');
+      el.classList.add('matched');
+      el.disabled = true;
+    });
+    mc.flipped = [];
+
+    // Puntuar solo una vez por par
+    if (!mc.pointsAwarded.has(tileA.pairId)) {
+      mc.pointsAwarded.add(tileA.pairId);
+      addPoints(10);
+    }
+
+    const fb = $('mc-feedback');
+    if (fb) fb.textContent = '✅ ¡Pareja correcta! +10 puntos';
+
+    // Actualizar contador en la meta
+    const metaEl = document.querySelector('#mc-grid')?.previousElementSibling?.querySelector('b');
+
+    // Verificar si terminó la ronda
+    if (mc.matched.size === mc.tiles.length / 2) {
+      const bonus = mc.moves <= mc.tiles.length ? 20 : 0;
+      if (bonus > 0) addPoints(bonus);
+      show('¡Memoria Conceptual!', `
+        <div class="question">🎉 ¡Completaste todas las parejas!</div>
+        <p>Movimientos: <b>${mc.moves}</b> · Parejas: <b>${mc.matched.size}</b></p>
+        ${bonus > 0 ? `<p>🌟 ¡Bono de eficiencia! +${bonus} puntos extra</p>` : ''}
+        <p>Total ganado esta partida: <b>${mc.matched.size * 10 + bonus} puntos</b></p>
+        <button class="btn" onclick="initMemoryRound(6)">Jugar de nuevo</button>`);
+    }
+  } else {
+    // No coinciden: mostrar brevemente y voltear de vuelta
+    mc.lock = true;
+    const fb = $('mc-feedback');
+    if (fb) fb.textContent = '❌ No coinciden, sigue intentando.';
+    [$('mct-' + a), $('mct-' + b)].forEach(el => {
+      if (el) el.classList.add('wrong-flash');
+    });
+    setTimeout(() => {
+      const elA = $('mct-' + a), elB = $('mct-' + b);
+      if (elA) { elA.textContent = '?'; elA.className = 'concept-tile face-down'; }
+      if (elB) { elB.textContent = '?'; elB.className = 'concept-tile face-down'; }
+      mc.flipped = [];
+      mc.lock    = false;
+    }, 900);
+  }
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+// ── Fin Memoria Conceptual ────────────────────────────────────────
 function startSurprise(){let n=rand(0,2);if(n===0)startMath();else if(n===1)startTrivia();else startSynonym()}
 // --- Visibilidad de juegos según configuración del administrador ---
 (function applyGameVisibility() {

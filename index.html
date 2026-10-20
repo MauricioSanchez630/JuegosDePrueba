@@ -31,17 +31,17 @@ footer{text-align:center;padding:25px;color:light-dark(#74758a,#b6b6ca);font-siz
 </style>
 </head>
 <body><div id="app">
-<header><div class="logo">✦ Aprende<span>jugando</span></div><nav class="nav"><a href="#juegos">Juegos</a><a href="#progreso">Mi progreso</a><a href="#acerca">Acerca de</a></nav></header>
+<header><div class="logo">✦ Aprende<span>jugando</span></div><nav class="nav"><a href="admin.html">Administrar</a><a href="#juegos">Juegos</a><a href="#progreso">Mi progreso</a><a href="#acerca">Acerca de</a></nav></header>
 <main>
 <section class="hero"><div><div class="eyebrow">Aprender puede ser una aventura</div><h1>¡Tu próxima misión<br>empieza aquí!</h1><p>Practica, descubre y diviértete. Elige un juego, suma puntos y aprende algo nuevo en cada partida.</p><a href="#juegos"><button class="btn">Explorar juegos&nbsp; ↓</button></a></div><div class="hero-art" aria-label="Ilustración de una estrella y un libro"><div class="bubble"></div><div class="bubble two"></div><div class="emoji">📚 ⭝</div></div></section>
 <section id="juegos"><div class="section-head"><div><h2>Elige tu juego</h2><p>Pequeños retos para grandes ideas.</p></div></div>
 <div class="cards">
-<article class="game-card"><div class="game-icon purple">➗</div><h3>Reto matemático</h3><p>Resuelve operaciones y pon a prueba tu rapidez mental.</p><button class="btn" onclick="startMath()">Jugar ahora</button></article>
-<article class="game-card"><div class="game-icon yellow">🔤</div><h3>Palabra misteriosa</h3><p>Descubre la palabra usando una pista. ¡Cada letra cuenta!</p><button class="btn" onclick="startWord()">Jugar ahora</button></article>
-<article class="game-card"><div class="game-icon green">🧠</div><h3>Memoria visual</h3><p>Encuentra las parejas de emojis y entrena tu memoria.</p><button class="btn" onclick="startMemory()">Jugar ahora</button></article>
-<article class="game-card"><div class="game-icon blue">🌎</div><h3>Curiosidades</h3><p>Responde preguntas sobre ciencia, naturaleza y el mundo.</p><button class="btn" onclick="startTrivia()">Jugar ahora</button></article>
-<article class="game-card"><div class="game-icon pink">📖</div><h3>Sinónimos exprés</h3><p>Amplía tu vocabulario eligiendo palabras con significado parecido.</p><button class="btn" onclick="startSynonym()">Jugar ahora</button></article>
-<article class="game-card"><div class="game-icon purple">🎯</div><h3>Desafío sorpresa</h3><p>Una pregunta al azar para comprobar lo que sabes.</p><button class="btn" onclick="startSurprise()">¡Sorpréndeme!</button></article>
+<article class="game-card" data-game-id="math"><div class="game-icon purple">➗</div><h3>Reto matemático</h3><p>Resuelve operaciones y pon a prueba tu rapidez mental.</p><button class="btn" onclick="startMath()">Jugar ahora</button></article>
+<article class="game-card" data-game-id="word"><div class="game-icon yellow">🔤</div><h3>Palabra misteriosa</h3><p>Descubre la palabra usando una pista. ¡Cada letra cuenta!</p><button class="btn" onclick="startWord()">Jugar ahora</button></article>
+<article class="game-card" data-game-id="memory"><div class="game-icon green">🧠</div><h3>Memoria visual</h3><p>Encuentra las parejas de emojis y entrena tu memoria.</p><button class="btn" onclick="startMemory()">Jugar ahora</button></article>
+<article class="game-card" data-game-id="trivia"><div class="game-icon blue">🌎</div><h3>Curiosidades</h3><p>Responde preguntas sobre ciencia, naturaleza y el mundo.</p><button class="btn" onclick="startTrivia()">Jugar ahora</button></article>
+<article class="game-card" data-game-id="synonym"><div class="game-icon pink">📖</div><h3>Sinónimos exprés</h3><p>Amplía tu vocabulario eligiendo palabras con significado parecido.</p><button class="btn" onclick="startSynonym()">Jugar ahora</button></article>
+<article class="game-card" data-game-id="surprise"><div class="game-icon purple">🎯</div><h3>Desafío sorpresa</h3><p>Una pregunta al azar para comprobar lo que sabes.</p><button class="btn" onclick="startSurprise()">¡Sorpréndeme!</button></article>
 </div></section>
 <section class="progress" id="progreso"><div class="progress-icon">🝆</div><div class="progress-copy"><h3>Tu aventura de aprendizaje</h3><p>Juega para ganar puntos. ¡Cada respuesta correcta te acerca a tu próxima meta!</p></div><div class="points"><span id="score">0</span> puntos</div></section>
 </main><footer id="acerca">Hecho para aprender jugando · Kary Play ✦</footer></div>
@@ -78,5 +78,14 @@ let matchedIndices=new Set();
 function startMemory(){current='memory';memory=[...icons,...icons].sort(()=>Math.random()-.5);flipped=[];matchedIndices=new Set();matched=0;moves=0;lock=false;renderMemory()}
 function flipTile(i){if(lock||flipped.includes(i)||matchedIndices.has(i))return;flipped.push(i);$('tile'+i).textContent=memory[i];if(flipped.length===2){moves++;$('moves').textContent=moves;let [a,b]=flipped;if(memory[a]===memory[b]){matchedIndices.add(a);matchedIndices.add(b);$('tile'+a).classList.add('matched');$('tile'+b).classList.add('matched');flipped=[];addPoints(5);if(matchedIndices.size===16){$('memoryFeedback').textContent='¡Completaste todas las parejas! +40 puntos extra';addPoints(40)}}else{lock=true;setTimeout(()=>{if(!$('tile'+a)||!$('tile'+b))return;$('tile'+a).textContent='❔';$('tile'+b).textContent='❔';flipped=[];lock=false},700)}}}
 function startSurprise(){let n=rand(0,2);if(n===0)startMath();else if(n===1)startTrivia();else startSynonym()}
-function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min}
+// --- Visibilidad de juegos según configuración del administrador ---
+(function applyGameVisibility() {
+  const STORAGE_KEY = 'karyplay_games';
+  let settings = {};
+  try { settings = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch {}
+  document.querySelectorAll('.game-card[data-game-id]').forEach(card => {
+    const id = card.getAttribute('data-game-id');
+    if (settings[id] === false) card.style.display = 'none';
+  });
+})();
 </script></body></html>

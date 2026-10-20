@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Administrar juegos · Kary Play</title>
+<style>
+:root {
+  --site-primary:#5B4BDB; --site-on-primary:#FFFFFF;
+  --site-secondary:#DFF7EF; --site-on-secondary:#163C35;
+  --site-background:#F6F5FF; --site-on-background:#20213A;
+  --site-font-body:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color-scheme:light dark;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--site-font-body);background:var(--site-background);color:var(--site-on-background)}
+#app{background-color:var(--site-background);color:var(--site-on-background);min-height:100vh}
+header{background:var(--site-primary);color:var(--site-on-primary);padding:22px max(22px,calc((100vw - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{font-weight:900;font-size:1.3rem;letter-spacing:-.04em}.logo span{color:#BDF5E3}
+.nav{display:flex;gap:20px;font-size:.93rem}.nav a{color:inherit;text-decoration:none;opacity:.9}.nav a:hover{text-decoration:underline}
+main{max-width:800px;margin:auto;padding:40px 22px 60px}
+.page-title{font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.045em;margin:0 0 6px}
+.page-sub{color:light-dark(#686980,#c6c6d9);margin:0 0 36px;font-size:.97rem}
+.games-list{display:flex;flex-direction:column;gap:14px}
+.game-row{background:light-dark(#FFFFFF,#24243A);border:1px solid light-dark(#E7E5F3,#3b3b53);border-radius:16px;padding:18px 22px;display:flex;align-items:center;gap:18px;box-shadow:0 4px 14px #3028790a;transition:opacity .2s}
+.game-row.disabled-row{opacity:.55}
+.game-icon{height:52px;width:52px;border-radius:14px;display:grid;place-items:center;font-size:1.7rem;flex-shrink:0}
+.purple{background:#E9E5FF}.yellow{background:#FFF0C8}.green{background:#D9F7E9}.blue{background:#DCEEFF}.pink{background:#FFE1EC}
+.game-info{flex:1}
+.game-info h3{margin:0 0 3px;font-size:1.05rem}
+.game-info p{margin:0;font-size:.88rem;color:light-dark(#686980,#c6c6d9)}
+/* Toggle switch */
+.toggle-wrap{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0}
+.toggle-label{font-size:.75rem;font-weight:700;color:light-dark(#686980,#c6c6d9);text-transform:uppercase;letter-spacing:.06em}
+.toggle{position:relative;display:inline-block;width:50px;height:28px}
+.toggle input{opacity:0;width:0;height:0}
+.slider{position:absolute;inset:0;background:light-dark(#D5D3EC,#44445d);border-radius:28px;cursor:pointer;transition:background .2s}
+.slider:before{content:'';position:absolute;height:20px;width:20px;left:4px;top:4px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 4px #0002}
+input:checked + .slider{background:#5B4BDB}
+input:checked + .slider:before{transform:translateX(22px)}
+.badge{display:inline-block;font-size:.72rem;font-weight:800;padding:3px 9px;border-radius:20px;margin-left:8px;vertical-align:middle}
+.badge.on{background:#D9F7E9;color:#1a7a4a}
+.badge.off{background:#FFE1EC;color:#a5334d}
+.save-bar{position:sticky;bottom:0;background:light-dark(#F6F5FF,#1a1a2e);border-top:1px solid light-dark(#E7E5F3,#3b3b53);padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 -22px -60px}
+.save-bar p{margin:0;font-size:.9rem;color:light-dark(#686980,#c6c6d9)}
+.btn{border:0;border-radius:12px;padding:12px 22px;background:var(--site-primary);color:white;font-weight:800;font-size:.92rem;cursor:pointer;font-family:inherit}
+.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn.secondary{background:light-dark(#EFEDFF,#39364f);color:light-dark(#5142c8,#ddd8ff)}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#20213A;color:#fff;padding:12px 24px;border-radius:12px;font-size:.9rem;font-weight:700;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:99}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+footer{text-align:center;padding:25px;color:light-dark(#74758a,#b6b6ca);font-size:.85rem}
+@media(max-width:600px){.game-row{flex-wrap:wrap}.toggle-wrap{flex-direction:row;gap:10px}.save-bar{flex-direction:column;align-items:stretch;text-align:center}}
+@media(prefers-color-scheme:dark){body{background:#16162a}}
+</style>
+</head>
+<body><div id="app">
+<header>
+  <div class="logo">✦ Kary<span>Play</span></div>
+  <nav class="nav">
+    <a href="admin.html">Administrar</a>
+    <a href="index.html#juegos">Juegos</a>
+    <a href="index.html#progreso">Mi progreso</a>
+    <a href="index.html#acerca">Acerca de</a>
+  </nav>
+</header>
+<main>
+  <h1 class="page-title">⚙️ Administrar juegos</h1>
+  <p class="page-sub">Activa o desactiva los juegos que aparecen en la página principal. Los cambios se aplican al guardar.</p>
+
+  <div class="games-list" id="gamesList"></div>
+
+  <div class="save-bar">
+    <p id="statusMsg">Sin cambios pendientes.</p>
+    <div style="display:flex;gap:10px">
+      <button class="btn secondary" onclick="resetAll()">Activar todos</button>
+      <button class="btn" onclick="saveSettings()">Guardar cambios</button>
+    </div>
+  </div>
+</main>
+<footer>Kary Play ✦ · Panel de administración</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const GAMES = [
+  { id:'math',     icon:'➗', color:'purple', name:'Reto matemático',    desc:'Resuelve operaciones y pon a prueba tu rapidez mental.' },
+  { id:'word',     icon:'🔤', color:'yellow', name:'Palabra misteriosa',  desc:'Descubre la palabra usando una pista. ¡Cada letra cuenta!' },
+  { id:'memory',   icon:'🧠', color:'green',  name:'Memoria visual',      desc:'Encuentra las parejas de emojis y entrena tu memoria.' },
+  { id:'trivia',   icon:'🌎', color:'blue',   name:'Curiosidades',        desc:'Responde preguntas sobre ciencia, naturaleza y el mundo.' },
+  { id:'synonym',  icon:'📖', color:'pink',   name:'Sinónimos exprés',    desc:'Amplía tu vocabulario eligiendo palabras con significado parecido.' },
+  { id:'surprise', icon:'🎯', color:'purple', name:'Desafío sorpresa',    desc:'Una pregunta al azar para comprobar lo que sabes.' }
+];
+
+const STORAGE_KEY = 'karyplay_games';
+
+function loadSettings() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : {};
+  } catch { return {}; }
+}
+
+function isEnabled(id, settings) {
+  return settings[id] !== false; // default: enabled
+}
+
+let current = loadSettings();
+let saved   = loadSettings();
+let dirty   = false;
+
+function render() {
+  const list = document.getElementById('gamesList');
+  list.innerHTML = '';
+  GAMES.forEach(g => {
+    const on = isEnabled(g.id, current);
+    const row = document.createElement('div');
+    row.className = 'game-row' + (on ? '' : ' disabled-row');
+    row.id = 'row-' + g.id;
+    row.innerHTML = `
+      <div class="game-icon ${g.color}">${g.icon}</div>
+      <div class="game-info">
+        <h3>${g.name} <span class="badge ${on ? 'on' : 'off'}" id="badge-${g.id}">${on ? 'Activo' : 'Inactivo'}</span></h3>
+        <p>${g.desc}</p>
+      </div>
+      <div class="toggle-wrap">
+        <span class="toggle-label">${on ? 'ON' : 'OFF'}</span>
+        <label class="toggle" aria-label="Activar ${g.name}">
+          <input type="checkbox" id="toggle-${g.id}" ${on ? 'checked' : ''} onchange="toggle('${g.id}')">
+          <span class="slider"></span>
+        </label>
+      </div>`;
+    list.appendChild(row);
+  });
+  updateStatus();
+}
+
+function toggle(id) {
+  const checked = document.getElementById('toggle-' + id).checked;
+  current[id] = checked;
+  const row   = document.getElementById('row-' + id);
+  const badge = document.getElementById('badge-' + id);
+  const label = row.querySelector('.toggle-label');
+  row.className = 'game-row' + (checked ? '' : ' disabled-row');
+  badge.className = 'badge ' + (checked ? 'on' : 'off');
+  badge.textContent = checked ? 'Activo' : 'Inactivo';
+  label.textContent = checked ? 'ON' : 'OFF';
+  dirty = true;
+  updateStatus();
+}
+
+function updateStatus() {
+  const pending = GAMES.filter(g => current[g.id] !== saved[g.id]).length;
+  document.getElementById('statusMsg').textContent =
+    pending > 0
+      ? `${pending} cambio${pending > 1 ? 's' : ''} sin guardar.`
+      : 'Sin cambios pendientes.';
+}
+
+function saveSettings() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
+    saved  = { ...current };
+    dirty  = false;
+    showToast('✅ Cambios guardados correctamente.');
+    updateStatus();
+  } catch {
+    showToast('❌ Error al guardar. Verifica que las cookies estén habilitadas.');
+  }
+}
+
+function resetAll() {
+  GAMES.forEach(g => { current[g.id] = true; });
+  render();
+  dirty = true;
+  updateStatus();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// Warn before leaving with unsaved changes
+window.addEventListener('beforeunload', e => {
+  if (dirty) { e.preventDefault(); e.returnValue = ''; }
+});
+
+render();
+</script>
+</body></html>

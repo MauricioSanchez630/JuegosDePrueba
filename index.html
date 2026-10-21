@@ -690,8 +690,99 @@ footer strong {
 @media(max-width:480px){.match-layout{grid-template-columns:1fr}.match-img-btn img,.match-img-error{height:90px}}
 
 /* ═══════════════════════════════════════════════════════════════
-   VERDADERO O FALSO (sin cambios funcionales)
+   SELECTOR DE CURSO + VISIBILIDAD DE JUEGOS
 ═══════════════════════════════════════════════════════════════ */
+
+/* El área de juegos empieza oculta */
+#games-area {
+  display:none;
+}
+#games-area.visible {
+  display:grid;
+  animation:fadeUp .35s ease both;
+}
+
+/* Bloque del selector de curso */
+.course-selector-wrap {
+  background:light-dark(#fff, #1e1e34);
+  border:1.5px solid light-dark(#ede9ff, #2e2e4a);
+  border-radius:20px;
+  padding:28px 30px;
+  margin-bottom:28px;
+  box-shadow:var(--shadow-card);
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.course-selector-label {
+  font-size:1.25rem;
+  font-weight:900;
+  letter-spacing:-.03em;
+  color:var(--site-on-background);
+  margin:0;
+}
+.course-selector-label span {
+  display:inline-block;
+  background:linear-gradient(90deg, #5B4BDB, #9c8fff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.course-selector-hint {
+  font-size:.9rem;
+  color:light-dark(#686980, #c6c6d9);
+  margin:0;
+}
+
+/* El combobox */
+.course-select {
+  appearance:none;
+  -webkit-appearance:none;
+  width:100%;
+  max-width:380px;
+  padding:13px 44px 13px 18px;
+  font:inherit;
+  font-size:.98rem;
+  font-weight:700;
+  color:var(--site-on-background);
+  background:light-dark(#f4f2ff, #2b2b42)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%235B4BDB' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")
+    no-repeat right 14px center;
+  border:2px solid light-dark(#c8bfff, #44445d);
+  border-radius:14px;
+  cursor:pointer;
+  transition:border-color .15s, box-shadow .15s;
+  outline:none;
+}
+.course-select:hover {
+  border-color:#7c6ff0;
+}
+.course-select:focus {
+  border-color:#5B4BDB;
+  box-shadow:0 0 0 3px rgba(91,75,219,.18);
+}
+
+/* Placeholder "sin curso" */
+#games-placeholder {
+  text-align:center;
+  padding:32px 20px;
+  color:light-dark(#888, #888);
+  font-size:.95rem;
+  border:2px dashed light-dark(#d8d4f0, #3a3a5a);
+  border-radius:18px;
+  background:light-dark(#faf9ff, #1a1a2e);
+}
+#games-placeholder .ph-icon {
+  font-size:2.8rem;
+  display:block;
+  margin-bottom:10px;
+  opacity:.5;
+}
+
+@media(max-width:540px) {
+  .course-selector-wrap { padding:20px 18px; }
+  .course-select { max-width:100%; font-size:.93rem; }
+}
 .vf-course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:14px}
 .vf-course-btn{border:2px solid light-dark(#e6e4f2,#44445d);border-radius:13px;background:light-dark(#faf9ff,#2b2b42);color:inherit;cursor:pointer;padding:14px 10px;font:inherit;font-size:.88rem;font-weight:700;text-align:center;transition:border-color .15s,background .15s}
 .vf-course-btn:hover{border-color:#7567e8;background:light-dark(#eceaff,#34345a)}
@@ -741,13 +832,41 @@ footer strong {
   </div>
 </section>
 <section id="juegos">
-  <div class="section-head">
+  <!-- ── Selector de curso ── -->
+  <div class="course-selector-wrap">
+    <p class="course-selector-label">📚 <span>Elige tu curso</span></p>
+    <p class="course-selector-hint">Selecciona tu curso para descubrir los juegos disponibles.</p>
+    <select class="course-select" id="courseSelect"
+            aria-label="Selecciona tu curso"
+            onchange="selectCourse(this.value, this.options[this.selectedIndex].text)">
+      <option value="">Selecciona un curso…</option>
+      <option value="1">1.º básico</option>
+      <option value="2">2.º básico</option>
+      <option value="3">3.º básico</option>
+      <option value="4">4.º básico</option>
+      <option value="5">5.º básico</option>
+      <option value="6">6.º básico</option>
+      <option value="7">7.º básico</option>
+      <option value="8">8.º básico</option>
+    </select>
+  </div>
+
+  <!-- ── Cabecera dinámica (oculta hasta seleccionar) ── -->
+  <div class="section-head" id="games-section-head" style="display:none">
     <div>
-      <h2>🎮 Elige tu juego</h2>
-      <p>Pequeños retos para grandes ideas.</p>
+      <h2 id="games-title">🎮 Elige tu juego</h2>
+      <p id="games-subtitle">Pequeños retos para grandes ideas.</p>
     </div>
   </div>
-  <div class="cards">
+
+  <!-- ── Placeholder visible antes de seleccionar ── -->
+  <div id="games-placeholder" aria-live="polite">
+    <span class="ph-icon">🎮</span>
+    Los juegos aparecerán aquí después de seleccionar tu curso.
+  </div>
+
+  <!-- ── Grid de juegos (oculto hasta seleccionar) ── -->
+  <div class="cards" id="games-area">
 <article class="game-card" data-game-id="math"><div class="game-icon purple">➗</div><h3>Reto matemático</h3><p>Resuelve operaciones y pon a prueba tu rapidez mental.</p><button class="btn" onclick="startMath()">Jugar ahora</button></article>
 <article class="game-card" data-game-id="word"><div class="game-icon yellow">🔤</div><h3>Palabra misteriosa</h3><p>Descubre la palabra usando una pista. ¡Cada letra cuenta!</p><button class="btn" onclick="startWord()">Jugar ahora</button></article>
 <article class="game-card" data-game-id="memory"><div class="game-icon green">🧠</div><h3>Memoria Conceptual</h3><p>Asocia cada concepto con su respuesta y entrena tu memoria.</p><button class="btn" onclick="startMemory()">Jugar ahora</button></article>
@@ -1596,4 +1715,29 @@ function startSurprise(){let n=rand(0,2);if(n===0)startMath();else if(n===1)star
     if (settings[id] === false) card.style.display = 'none';
   });
 })();
+
+// ── Selector de curso: mostrar / ocultar juegos ──────────────────
+// Solo controla visibilidad y textos. No toca ninguna lógica de juego.
+function selectCourse(value, label) {
+  const area        = document.getElementById('games-area');
+  const placeholder = document.getElementById('games-placeholder');
+  const secHead     = document.getElementById('games-section-head');
+  const title       = document.getElementById('games-title');
+  const subtitle    = document.getElementById('games-subtitle');
+
+  if (!value) {
+    // Sin selección: ocultar juegos, mostrar placeholder
+    area.classList.remove('visible');
+    placeholder.style.display = 'block';
+    secHead.style.display      = 'none';
+    return;
+  }
+
+  // Curso seleccionado: mostrar juegos y actualizar cabecera
+  placeholder.style.display = 'none';
+  secHead.style.display      = 'flex';
+  area.classList.add('visible');
+  title.textContent    = '🎮 Juegos para ' + label;
+  subtitle.textContent = 'Practica y aprende con los juegos de ' + label + '.';
+}
 </script></body></html>

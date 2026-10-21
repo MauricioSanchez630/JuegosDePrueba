@@ -38,6 +38,25 @@ footer{text-align:center;padding:25px;color:light-dark(#74758a,#b6b6ca);font-siz
 .concept-tile.wrong-flash{border-color:#df6879;background:light-dark(#ffebef,#4a1e26)}
 .concept-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
 .concept-meta .small{margin:0}
+/* ── Match: Imagen y concepto ── */
+.match-layout{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+.match-col-title{font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;font-weight:800;color:#6758d9;margin:0 0 8px}
+.match-col{display:flex;flex-direction:column;gap:10px}
+.match-img-btn{border:2px solid light-dark(#e6e4f2,#44445d);border-radius:13px;background:light-dark(#faf9ff,#2b2b42);cursor:pointer;padding:6px;overflow:hidden;transition:border-color .15s,box-shadow .15s;position:relative}
+.match-img-btn img{width:100%;height:110px;object-fit:cover;border-radius:8px;display:block}
+.match-img-btn:hover:not(:disabled){border-color:#7567e8;box-shadow:0 0 0 3px #7567e822}
+.match-img-btn.mi-selected{border-color:#5B4BDB;box-shadow:0 0 0 3px #5B4BDB33;background:light-dark(#ebe8ff,#2e2a50)}
+.match-img-btn.mi-matched{border-color:#2baf7b;background:light-dark(#dcf8ec,#1a4535);cursor:default}
+.match-img-btn.mi-wrong{border-color:#df6879;background:light-dark(#ffebef,#4a1e26)}
+.match-img-btn .match-img-label{font-size:.72rem;font-weight:700;text-align:center;padding:4px 2px 2px;color:light-dark(#5142c8,#ddd8ff);display:none}
+.match-img-btn.mi-matched .match-img-label{display:block;color:#1a7a4a}
+.match-concept-btn{border:2px solid light-dark(#e6e4f2,#44445d);border-radius:13px;background:light-dark(#faf9ff,#2b2b42);color:inherit;cursor:pointer;padding:12px 14px;font:inherit;font-size:.88rem;font-weight:700;line-height:1.4;text-align:left;word-break:break-word;transition:border-color .15s,box-shadow .15s;min-height:54px}
+.match-concept-btn:hover:not(:disabled){border-color:#7567e8;box-shadow:0 0 0 3px #7567e822}
+.match-concept-btn.mc-selected{border-color:#5B4BDB;box-shadow:0 0 0 3px #5B4BDB33;background:light-dark(#ebe8ff,#2e2a50)}
+.match-concept-btn.mc-matched{border-color:#2baf7b;background:light-dark(#dcf8ec,#1a4535);cursor:default;color:light-dark(#1a7a4a,#6effc8)}
+.match-concept-btn.mc-wrong{border-color:#df6879;background:light-dark(#ffebef,#4a1e26)}
+.match-img-error{width:100%;height:110px;border-radius:8px;background:light-dark(#f0eff8,#38384e);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:light-dark(#77788e,#c6c6d9);text-align:center;padding:8px}
+@media(max-width:480px){.match-layout{grid-template-columns:1fr}.match-img-btn img,.match-img-error{height:90px}}
 </style>
 </head>
 <body><div id="app">
@@ -52,6 +71,7 @@ footer{text-align:center;padding:25px;color:light-dark(#74758a,#b6b6ca);font-siz
 <article class="game-card" data-game-id="trivia"><div class="game-icon blue">🌎</div><h3>Alternativas</h3><p>Elige la respuesta correcta entre cuatro opciones. ¡Pon a prueba tu conocimiento!</p><button class="btn" onclick="startTrivia()">Jugar ahora</button></article>
 <article class="game-card" data-game-id="synonym"><div class="game-icon pink">📖</div><h3>Sinónimos exprés</h3><p>Amplía tu vocabulario eligiendo palabras con significado parecido.</p><button class="btn" onclick="startSynonym()">Jugar ahora</button></article>
 <article class="game-card" data-game-id="surprise"><div class="game-icon purple">🎯</div><h3>Desafío sorpresa</h3><p>Una pregunta al azar para comprobar lo que sabes.</p><button class="btn" onclick="startSurprise()">¡Sorpréndeme!</button></article>
+<article class="game-card" data-game-id="match"><div class="game-icon blue">🖼️</div><h3>Match: Imagen y concepto</h3><p>Relaciona cada imagen con su concepto. ¡Pon a prueba tu memoria visual!</p><button class="btn" onclick="startMatch()">Jugar ahora</button></article>
 </div></section>
 <section class="progress" id="progreso"><div class="progress-icon">🝆</div><div class="progress-copy"><h3>Tu aventura de aprendizaje</h3><p>Juega para ganar puntos. ¡Cada respuesta correcta te acerca a tu próxima meta!</p></div><div class="points"><span id="score">0</span> puntos</div></section>
 </main><footer id="acerca">Hecho para aprender jugando · Kary Play ✦</footer></div>
@@ -410,6 +430,245 @@ function escHtml(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 // ── Fin Memoria Conceptual ────────────────────────────────────────
+// ── Match: Imagen y concepto ─────────────────────────────────────
+let mim = {
+  pairs:         [],       // [{imagen, concepto, id}] validados del JSON
+  imgOrder:      [],       // índices de pares en orden barajado para la columna de imágenes
+  conOrder:      [],       // índices de pares en orden barajado para la columna de conceptos
+  matched:       new Set(),// ids de pares ya resueltos
+  selImg:        null,     // índice de pairId seleccionado en columna imágenes (null = ninguno)
+  selCon:        null,     // índice de pairId seleccionado en columna conceptos
+  attempts:      0,
+  pointsAwarded: new Set() // evita doble puntuación por reinicio
+};
+const MIM_IMG_DIR = 'imagenes/';
+const MIM_PTS_MATCH  = 5;
+const MIM_PTS_BONUS  = 10;
+
+function startMatch() {
+  current = 'match';
+  if (mim.pairs.length === 0) {
+    loadMatchData().then(() => initMatchRound());
+  } else {
+    initMatchRound();
+  }
+}
+
+async function loadMatchData() {
+  try {
+    const res = await fetch('conceptos-imagenes.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0)
+      throw new Error('El archivo está vacío o su formato es incorrecto.');
+
+    const valid = data.filter((d, i) => {
+      if (!d || typeof d.imagen !== 'string' || !d.imagen.trim()) return false;
+      if (typeof d.concepto !== 'string' || !d.concepto.trim()) return false;
+      return true;
+    });
+
+    if (valid.length === 0)
+      throw new Error('No hay parejas válidas en conceptos-imagenes.json.');
+
+    mim.pairs = valid.map((d, i) => ({
+      id:      i,
+      imagen:  d.imagen.trim(),
+      concepto: d.concepto.trim()
+    }));
+  } catch (err) {
+    show('Match: Imagen y concepto', `
+      <div class="feedback" style="color:#df6879;margin-bottom:10px">
+        ⚠️ No se pudo cargar conceptos-imagenes.json: ${escHtml(err.message)}
+      </div>
+      <p class="small">Asegúrate de ejecutar la página desde un servidor web (no con file://).</p>
+      <button class="btn secondary" onclick="startMatch()">Reintentar</button>`);
+    mim.pairs = [];
+  }
+}
+
+function initMatchRound() {
+  if (mim.pairs.length === 0) return;
+
+  // Barajar índices de forma independiente para cada columna
+  const ids = mim.pairs.map(p => p.id);
+  mim.imgOrder = [...ids].sort(() => Math.random() - .5);
+  mim.conOrder = [...ids].sort(() => Math.random() - .5);
+  mim.matched       = new Set();
+  mim.selImg        = null;
+  mim.selCon        = null;
+  mim.attempts      = 0;
+  mim.pointsAwarded = new Set();
+
+  renderMatch();
+}
+
+function renderMatch() {
+  const total  = mim.pairs.length;
+  const found  = mim.matched.size;
+
+  // Construir columna de imágenes
+  const imgCol = mim.imgOrder.map(pairId => {
+    const pair      = mim.pairs[pairId];
+    const isMatched = mim.matched.has(pairId);
+    const isSelImg  = mim.selImg === pairId;
+    let cls = 'match-img-btn';
+    if (isMatched)      cls += ' mi-matched';
+    else if (isSelImg)  cls += ' mi-selected';
+    const disabled = isMatched ? 'disabled' : '';
+    const imgSrc   = MIM_IMG_DIR + pair.imagen;
+    return `<button class="${cls}" id="mib-${pairId}" ${disabled} onclick="matchSelectImg(${pairId})" aria-label="${escHtml(pair.concepto)}">
+      <img src="${escHtml(imgSrc)}" alt="${escHtml(pair.concepto)}" loading="lazy"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="match-img-error" style="display:none">⚠️ Imagen no encontrada:<br><b>${escHtml(pair.imagen)}</b></div>
+      <div class="match-img-label">${isMatched ? '✅ ' + escHtml(pair.concepto) : ''}</div>
+    </button>`;
+  }).join('');
+
+  // Construir columna de conceptos
+  const conCol = mim.conOrder.map(pairId => {
+    const pair      = mim.pairs[pairId];
+    const isMatched = mim.matched.has(pairId);
+    const isSelCon  = mim.selCon === pairId;
+    let cls = 'match-concept-btn';
+    if (isMatched)      cls += ' mc-matched';
+    else if (isSelCon)  cls += ' mc-selected';
+    const disabled = isMatched ? 'disabled' : '';
+    return `<button class="${cls}" id="mcb-${pairId}" ${disabled} onclick="matchSelectCon(${pairId})">
+      ${escHtml(pair.concepto)}
+    </button>`;
+  }).join('');
+
+  show('Match: Imagen y concepto', `
+    <p class="small" style="margin:0 0 10px">Selecciona una imagen y luego su concepto para hacer la pareja.</p>
+    <div class="concept-meta">
+      <span class="small">Parejas: <b>${found}/${total}</b></span>
+      <span class="small">Intentos: <b id="mim-attempts">${mim.attempts}</b></span>
+    </div>
+    <div class="match-layout">
+      <div>
+        <p class="match-col-title">Imágenes</p>
+        <div class="match-col" id="mim-img-col">${imgCol}</div>
+      </div>
+      <div>
+        <p class="match-col-title">Conceptos</p>
+        <div class="match-col" id="mim-con-col">${conCol}</div>
+      </div>
+    </div>
+    <div class="feedback" id="mim-feedback" style="margin-top:12px;min-height:24px"></div>
+    <div style="margin-top:14px">
+      <button class="btn secondary" onclick="initMatchRound()">Nueva partida</button>
+    </div>`);
+}
+
+function matchSelectImg(pairId) {
+  // Si ya está seleccionada la misma, deseleccionar
+  if (mim.selImg === pairId) {
+    mim.selImg = null;
+    clearMatchHighlight('img', pairId);
+    return;
+  }
+  // Quitar selección anterior de imágenes
+  if (mim.selImg !== null) clearMatchHighlight('img', mim.selImg);
+  mim.selImg = pairId;
+  const btn = $('mib-' + pairId);
+  if (btn) { btn.classList.remove('mi-wrong'); btn.classList.add('mi-selected'); }
+
+  if (mim.selCon !== null) evaluateMatch();
+}
+
+function matchSelectCon(pairId) {
+  if (mim.selCon === pairId) {
+    mim.selCon = null;
+    clearMatchHighlight('con', pairId);
+    return;
+  }
+  if (mim.selCon !== null) clearMatchHighlight('con', mim.selCon);
+  mim.selCon = pairId;
+  const btn = $('mcb-' + pairId);
+  if (btn) { btn.classList.remove('mc-wrong'); btn.classList.add('mc-selected'); }
+
+  if (mim.selImg !== null) evaluateMatch();
+}
+
+function clearMatchHighlight(type, pairId) {
+  if (type === 'img') {
+    const b = $('mib-' + pairId);
+    if (b) { b.classList.remove('mi-selected', 'mi-wrong'); }
+  } else {
+    const b = $('mcb-' + pairId);
+    if (b) { b.classList.remove('mc-selected', 'mc-wrong'); }
+  }
+}
+
+function evaluateMatch() {
+  const imgId = mim.selImg;
+  const conId = mim.selCon;
+  mim.attempts++;
+  const attEl = $('mim-attempts');
+  if (attEl) attEl.textContent = mim.attempts;
+
+  const fb = $('mim-feedback');
+
+  if (imgId === conId) {
+    // ✅ Pareja correcta
+    mim.matched.add(imgId);
+
+    const imgBtn = $('mib-' + imgId);
+    const conBtn = $('mcb-' + conId);
+    if (imgBtn) {
+      imgBtn.classList.remove('mi-selected');
+      imgBtn.classList.add('mi-matched');
+      imgBtn.disabled = true;
+      // Mostrar etiqueta de concepto bajo la imagen
+      const lbl = imgBtn.querySelector('.match-img-label');
+      if (lbl) { lbl.style.display = 'block'; lbl.textContent = '✅ ' + mim.pairs[imgId].concepto; }
+    }
+    if (conBtn) {
+      conBtn.classList.remove('mc-selected');
+      conBtn.classList.add('mc-matched');
+      conBtn.disabled = true;
+    }
+
+    mim.selImg = null;
+    mim.selCon = null;
+
+    // Puntuar una sola vez por pareja por sesión
+    if (!mim.pointsAwarded.has(imgId)) {
+      mim.pointsAwarded.add(imgId);
+      addPoints(MIM_PTS_MATCH);
+    }
+    if (fb) fb.textContent = `✅ ¡Correcto! +${MIM_PTS_MATCH} puntos`;
+
+    // ¿Terminó la partida?
+    if (mim.matched.size === mim.pairs.length) {
+      const bonus = MIM_PTS_BONUS;
+      addPoints(bonus);
+      show('¡Match completado!', `
+        <div class="question">🎉 ¡Excelente! Encontraste todas las parejas.</div>
+        <p>Intentos realizados: <b>${mim.attempts}</b></p>
+        <p>Puntos ganados: <b>${mim.pairs.length * MIM_PTS_MATCH + bonus}</b>
+           (${mim.pairs.length} × ${MIM_PTS_MATCH} + ${bonus} de bonificación)</p>
+        <button class="btn" onclick="initMatchRound()">Jugar de nuevo</button>`);
+    }
+  } else {
+    // ❌ Par incorrecto
+    const imgBtn = $('mib-' + imgId);
+    const conBtn = $('mcb-' + conId);
+    if (imgBtn) { imgBtn.classList.remove('mi-selected'); imgBtn.classList.add('mi-wrong'); }
+    if (conBtn) { conBtn.classList.remove('mc-selected'); conBtn.classList.add('mc-wrong'); }
+    if (fb) fb.textContent = '❌ No coinciden. Intenta otra combinación.';
+
+    // Quitar efecto de error tras 800 ms y restablecer selección
+    setTimeout(() => {
+      if ($('mib-' + imgId)) { $('mib-' + imgId).classList.remove('mi-wrong'); }
+      if ($('mcb-' + conId)) { $('mcb-' + conId).classList.remove('mc-wrong'); }
+      mim.selImg = null;
+      mim.selCon = null;
+    }, 800);
+  }
+}
+// ── Fin Match: Imagen y concepto ─────────────────────────────────
 function startSurprise(){let n=rand(0,2);if(n===0)startMath();else if(n===1)startTrivia();else startSynonym()}
 // --- Visibilidad de juegos según configuración del administrador ---
 (function applyGameVisibility() {

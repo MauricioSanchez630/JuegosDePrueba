@@ -1,4 +1,4 @@
-============================================================
+﻿============================================================
   KARY PLAY - Documentación del proyecto
 ============================================================
 
@@ -66,6 +66,45 @@ JuegosDePrueba/
 6. Desafío sorpresa
    - Lanza aleatoriamente uno de los juegos: Reto matemático,
      Alternativas o Sinónimos exprés.
+
+7. Match: Imagen y concepto
+   - Relaciona cada imagen de la columna izquierda con su concepto
+     en la columna derecha.
+   - Las imagenes y los conceptos se barajan de forma independiente
+     en cada partida, para que su posicion no revele la respuesta.
+   - +5 puntos por cada pareja correcta.
+   - +10 puntos de bonificacion al completar todas las parejas.
+   - Los datos se cargan desde: conceptos-imagenes.json
+   - Las imagenes se sirven desde: imagenes/
+
+
+------------------------------------------------------------
+  COMO AGREGAR IMAGENES Y CONCEPTOS (Match: Imagen y concepto)
+------------------------------------------------------------
+
+1. Copia el archivo de imagen (jpg, jpeg, png, webp o svg) dentro
+   de la carpeta imagenes/.
+
+2. Abre conceptos-imagenes.json y agrega una entrada:
+
+     {
+       "imagen": "nombre-exacto.jpg",
+       "concepto": "Nombre del concepto"
+     }
+
+   El nombre debe coincidir exactamente con el archivo, incluyendo
+   mayusculas, minusculas y extension.
+
+3. Guarda el JSON. No es necesario modificar index.html ni admin.html.
+
+Ejemplo de conceptos-imagenes.json con una entrada nueva:
+
+[
+  { "imagen": "fotosintesis.svg",  "concepto": "Fotosintesis"  },
+  { "imagen": "sistema-solar.svg", "concepto": "Sistema solar" },
+  { "imagen": "mi-nueva.jpg",      "concepto": "Mi nuevo tema" }
+]
+
 
 
 ------------------------------------------------------------

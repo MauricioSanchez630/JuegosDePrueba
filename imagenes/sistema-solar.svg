@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+  <rect width="300" height="200" fill="#1a1a3e" rx="16"/>
+  <circle cx="150" cy="100" r="30" fill="#f9cb6b"/>
+  <circle cx="208" cy="80" r="8" fill="#a0c4ff"/>
+  <circle cx="230" cy="110" r="11" fill="#e07b39"/>
+  <circle cx="195" cy="135" r="6" fill="#88ccff"/>
+  <circle cx="80" cy="90" r="7" fill="#ffaaaa"/>
+  <circle cx="60" cy="120" r="5" fill="#ccddff"/>
+  <ellipse cx="230" cy="110" rx="20" ry="5" fill="none" stroke="#c8a04a" stroke-width="2" opacity=".7"/>
+  <circle cx="25" cy="40" r="2" fill="white" opacity=".8"/>
+  <circle cx="270" cy="30" r="1.5" fill="white" opacity=".6"/>
+  <circle cx="50" cy="170" r="1.5" fill="white" opacity=".7"/>
+  <circle cx="250" cy="160" r="2" fill="white" opacity=".5"/>
+  <text x="150" y="188" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#a0c4ff" font-weight="bold">Sistema solar</text>
+</svg>

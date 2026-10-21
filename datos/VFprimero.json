@@ -1,0 +1,30 @@
+{
+  "curso": "Primero básico",
+  "titulo": "Verdadero o falso",
+  "descripcion": "Pon a prueba lo que sabes sobre números, animales y tu entorno.",
+  "instrucciones": "Lee cada afirmación y decide si es verdadera o falsa.",
+  "preguntas": [
+    { "id": 1,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "El número 5 es mayor que el número 3.",                              "respuesta": true,  "explicacion": "5 viene después de 3 al contar, por eso es mayor." },
+    { "id": 2,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "El número 10 es menor que el número 7.",                             "respuesta": false, "explicacion": "10 es mayor que 7. Al contar, llegamos al 7 antes que al 10." },
+    { "id": 3,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "2 + 3 = 5.",                                                         "respuesta": true,  "explicacion": "Si tienes 2 manzanas y agregas 3 más, tienes 5 manzanas." },
+    { "id": 4,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "Un triángulo tiene cuatro lados.",                                   "respuesta": false, "explicacion": "Un triángulo tiene tres lados. La figura con cuatro lados es el cuadrado o el rectángulo." },
+    { "id": 5,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "El número 0 es el número más pequeño que conocemos en primero básico.", "respuesta": true,  "explicacion": "En primero básico trabajamos con números desde el 0 en adelante." },
+    { "id": 6,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "Un cuadrado tiene cuatro lados iguales.",                            "respuesta": true,  "explicacion": "El cuadrado es una figura con cuatro lados que miden igual." },
+    { "id": 7,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "4 - 2 = 3.",                                                         "respuesta": false, "explicacion": "4 menos 2 es igual a 2, no a 3." },
+    { "id": 8,  "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Los peces viven naturalmente fuera del agua.",                       "respuesta": false, "explicacion": "Los peces viven en el agua. Necesitan estar en ríos, mares o lagos para sobrevivir." },
+    { "id": 9,  "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Los perros son animales.",                                            "respuesta": true,  "explicacion": "Los perros son animales domésticos que viven cerca de las personas." },
+    { "id": 10, "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Las plantas necesitan agua para vivir.",                              "respuesta": true,  "explicacion": "Las plantas necesitan agua, luz solar y tierra para crecer." },
+    { "id": 11, "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Los pájaros tienen cuatro patas.",                                   "respuesta": false, "explicacion": "Los pájaros tienen dos patas y dos alas." },
+    { "id": 12, "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "El sol es una estrella.",                                            "respuesta": true,  "explicacion": "El sol es la estrella más cercana a la Tierra y nos da luz y calor." },
+    { "id": 13, "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Los gatos son animales que vuelan.",                                 "respuesta": false, "explicacion": "Los gatos son mamíferos que caminan y no pueden volar." },
+    { "id": 14, "tema": "Lenguaje",          "dificultad": "facil",  "afirmacion": "La letra 'a' es una vocal.",                                         "respuesta": true,  "explicacion": "Las vocales son: a, e, i, o, u." },
+    { "id": 15, "tema": "Lenguaje",          "dificultad": "facil",  "afirmacion": "La letra 'm' es una vocal.",                                         "respuesta": false, "explicacion": "La letra 'm' es una consonante, no una vocal." },
+    { "id": 16, "tema": "Entorno",           "dificultad": "facil",  "afirmacion": "El semáforo rojo indica que debemos detenernos.",                    "respuesta": true,  "explicacion": "El color rojo del semáforo indica peligro y que debemos parar." },
+    { "id": 17, "tema": "Entorno",           "dificultad": "facil",  "afirmacion": "La luna brilla con luz propia.",                                     "respuesta": false, "explicacion": "La luna refleja la luz del sol. No produce luz propia." },
+    { "id": 18, "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "Un círculo no tiene esquinas.",                                      "respuesta": true,  "explicacion": "El círculo es una figura redonda sin lados ni esquinas." },
+    { "id": 19, "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "El agua que tomamos viene de la lluvia y los ríos.",                  "respuesta": true,  "explicacion": "El agua potable proviene de fuentes naturales como ríos y lluvia, que luego se purifica." },
+    { "id": 20, "tema": "Entorno",           "dificultad": "facil",  "afirmacion": "Lavarse las manos ayuda a evitar enfermedades.",                     "respuesta": true,  "explicacion": "Lavarse las manos con jabón elimina gérmenes y previene enfermedades." },
+    { "id": 21, "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "El número que viene después del 9 es el 11.",                        "respuesta": false, "explicacion": "Después del 9 viene el 10, no el 11." },
+    { "id": 22, "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Las gallinas ponen huevos.",                                         "respuesta": true,  "explicacion": "Las gallinas son aves que ponen huevos, de los cuales nacen los pollitos." }
+  ]
+}

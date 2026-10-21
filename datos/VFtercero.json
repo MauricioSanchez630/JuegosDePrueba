@@ -1,0 +1,30 @@
+{
+  "curso": "Tercero básico",
+  "titulo": "Verdadero o falso",
+  "descripcion": "Pon a prueba lo que sabes sobre multiplicación, el cuerpo humano y geografía.",
+  "instrucciones": "Lee cada afirmación y decide si es verdadera o falsa.",
+  "preguntas": [
+    { "id": 1,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "3 × 4 = 12.",                                                        "respuesta": true,  "explicacion": "La tabla del 3: 3×4 = 12." },
+    { "id": 2,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "5 × 6 = 25.",                                                        "respuesta": false, "explicacion": "5 × 6 = 30, no 25." },
+    { "id": 3,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "20 ÷ 4 = 5.",                                                        "respuesta": true,  "explicacion": "20 dividido en grupos de 4 da 5 grupos." },
+    { "id": 4,  "tema": "Matemáticas",       "dificultad": "normal", "afirmacion": "El triple de 7 es 21.",                                              "respuesta": true,  "explicacion": "Triplicar es multiplicar por 3: 7 × 3 = 21." },
+    { "id": 5,  "tema": "Matemáticas",       "dificultad": "normal", "afirmacion": "La mitad de 18 es 8.",                                               "respuesta": false, "explicacion": "La mitad de 18 es 9, porque 9 × 2 = 18." },
+    { "id": 6,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "Un kilómetro es igual a 1.000 metros.",                              "respuesta": true,  "explicacion": "El prefijo kilo significa mil. 1 km = 1.000 m." },
+    { "id": 7,  "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "El esqueleto del ser humano protege los órganos internos.",          "respuesta": true,  "explicacion": "Los huesos forman una estructura que protege órganos como el corazón y el cerebro." },
+    { "id": 8,  "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "El cerebro está ubicado en el pecho.",                              "respuesta": false, "explicacion": "El cerebro está en la cabeza, dentro del cráneo." },
+    { "id": 9,  "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Los músculos permiten el movimiento del cuerpo.",                   "respuesta": true,  "explicacion": "Los músculos se contraen y se estiran para producir movimiento." },
+    { "id": 10, "tema": "Ciencias naturales","dificultad": "normal", "afirmacion": "La fotosíntesis ocurre solo de noche.",                             "respuesta": false, "explicacion": "La fotosíntesis ocurre durante el día, cuando hay luz solar disponible." },
+    { "id": 11, "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "El agua hierve a 100 °C a nivel del mar.",                          "respuesta": true,  "explicacion": "A presión atmosférica normal (nivel del mar), el agua hierve a 100 °C." },
+    { "id": 12, "tema": "Historia",          "dificultad": "facil",  "afirmacion": "Los mapuches son un pueblo originario de Chile.",                   "respuesta": true,  "explicacion": "Los mapuches habitaron y habitan el centro-sur de Chile desde tiempos precolombinos." },
+    { "id": 13, "tema": "Historia",          "dificultad": "normal", "afirmacion": "Los incas construyeron su civilización principalmente en Europa.",   "respuesta": false, "explicacion": "El Imperio Inca se desarrolló en América del Sur, en la región andina." },
+    { "id": 14, "tema": "Geografía",         "dificultad": "facil",  "afirmacion": "Chile tiene salida al océano Pacífico.",                            "respuesta": true,  "explicacion": "Chile tiene una extensa costa sobre el océano Pacífico." },
+    { "id": 15, "tema": "Geografía",         "dificultad": "facil",  "afirmacion": "La cordillera de los Andes está ubicada al oeste de Chile.",        "respuesta": false, "explicacion": "La cordillera de los Andes está al este de Chile, en la frontera con Argentina." },
+    { "id": 16, "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "9 × 9 = 81.",                                                        "respuesta": true,  "explicacion": "La tabla del 9: 9 × 9 = 81." },
+    { "id": 17, "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Los insectos tienen seis patas.",                                   "respuesta": true,  "explicacion": "Todos los insectos tienen tres pares de patas (6 en total)." },
+    { "id": 18, "tema": "Ciencias naturales","dificultad": "normal", "afirmacion": "Las arañas son insectos.",                                          "respuesta": false, "explicacion": "Las arañas son arácnidos. Tienen ocho patas, no seis como los insectos." },
+    { "id": 19, "tema": "Lenguaje",          "dificultad": "facil",  "afirmacion": "Un texto narrativo cuenta una historia o un relato.",               "respuesta": true,  "explicacion": "Los textos narrativos relatan hechos reales o ficticios." },
+    { "id": 20, "tema": "Matemáticas",       "dificultad": "normal", "afirmacion": "El doble de 15 es 25.",                                             "respuesta": false, "explicacion": "El doble de 15 es 30, porque 15 × 2 = 30." },
+    { "id": 21, "tema": "Geografía",         "dificultad": "facil",  "afirmacion": "Chile limita al norte con Perú.",                                   "respuesta": true,  "explicacion": "Al norte, Chile comparte frontera con Perú." },
+    { "id": 22, "tema": "Ciencias naturales","dificultad": "normal", "afirmacion": "El Sol es el astro más cercano a la Tierra.",                       "respuesta": true,  "explicacion": "El Sol está a unos 150 millones de km de la Tierra, mucho más cerca que cualquier otra estrella." }
+  ]
+}

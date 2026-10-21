@@ -57,6 +57,26 @@ footer{text-align:center;padding:25px;color:light-dark(#74758a,#b6b6ca);font-siz
 .match-concept-btn.mc-wrong{border-color:#df6879;background:light-dark(#ffebef,#4a1e26)}
 .match-img-error{width:100%;height:110px;border-radius:8px;background:light-dark(#f0eff8,#38384e);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:light-dark(#77788e,#c6c6d9);text-align:center;padding:8px}
 @media(max-width:480px){.match-layout{grid-template-columns:1fr}.match-img-btn img,.match-img-error{height:90px}}
+/* ── Verdadero o Falso ── */
+.vf-course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:14px}
+.vf-course-btn{border:2px solid light-dark(#e6e4f2,#44445d);border-radius:13px;background:light-dark(#faf9ff,#2b2b42);color:inherit;cursor:pointer;padding:14px 10px;font:inherit;font-size:.88rem;font-weight:700;text-align:center;transition:border-color .15s,background .15s}
+.vf-course-btn:hover{border-color:#7567e8;background:light-dark(#eceaff,#34345a)}
+.vf-course-num{font-size:1.5rem;display:block;margin-bottom:4px}
+.vf-afirmacion{font-size:1.1rem;font-weight:800;margin:18px 0 20px;line-height:1.45;padding:16px;background:light-dark(#f4f2ff,#2b2b42);border-radius:13px;border-left:4px solid #5B4BDB}
+.vf-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px}
+.vf-btn{padding:16px;border:2px solid transparent;border-radius:13px;cursor:pointer;font:inherit;font-size:1rem;font-weight:800;transition:all .15s}
+.vf-btn-v{background:light-dark(#d9f7e9,#1a4535);color:light-dark(#1a7a4a,#6effc8);border-color:light-dark(#9be5c8,#2baf7b)}
+.vf-btn-v:hover:not(:disabled){background:#2baf7b;color:#fff;border-color:#2baf7b}
+.vf-btn-f{background:light-dark(#ffebef,#4a1e26);color:light-dark(#a5334d,#ff8fa3);border-color:light-dark(#f5c2cc,#df6879)}
+.vf-btn-f:hover:not(:disabled){background:#df6879;color:#fff;border-color:#df6879}
+.vf-btn.vf-chosen-correct{background:#2baf7b;color:#fff;border-color:#2baf7b}
+.vf-btn.vf-chosen-wrong{background:#df6879;color:#fff;border-color:#df6879}
+.vf-btn.vf-show-correct{background:#2baf7b;color:#fff;border-color:#2baf7b;opacity:.7}
+.vf-explain{margin-top:10px;padding:12px 14px;background:light-dark(#f4f2ff,#2b2b42);border-radius:11px;font-size:.88rem;line-height:1.5;display:none}
+.vf-meta{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.vf-result-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid light-dark(#e6e4f2,#44445d);font-size:.93rem}
+.vf-result-row:last-child{border-bottom:none;font-weight:800}
+@media(max-width:400px){.vf-course-grid{grid-template-columns:1fr 1fr}.vf-btns{grid-template-columns:1fr}}
 </style>
 </head>
 <body><div id="app">
@@ -72,6 +92,7 @@ footer{text-align:center;padding:25px;color:light-dark(#74758a,#b6b6ca);font-siz
 <article class="game-card" data-game-id="synonym"><div class="game-icon pink">📖</div><h3>Sinónimos exprés</h3><p>Amplía tu vocabulario eligiendo palabras con significado parecido.</p><button class="btn" onclick="startSynonym()">Jugar ahora</button></article>
 <article class="game-card" data-game-id="surprise"><div class="game-icon purple">🎯</div><h3>Desafío sorpresa</h3><p>Una pregunta al azar para comprobar lo que sabes.</p><button class="btn" onclick="startSurprise()">¡Sorpréndeme!</button></article>
 <article class="game-card" data-game-id="match"><div class="game-icon blue">🖼️</div><h3>Match: Imagen y concepto</h3><p>Relaciona cada imagen con su concepto. ¡Pon a prueba tu memoria visual!</p><button class="btn" onclick="startMatch()">Jugar ahora</button></article>
+<article class="game-card" data-game-id="vf"><div class="game-icon yellow">✅</div><h3>Verdadero o falso</h3><p>Lee una afirmación y decide si es verdadera o falsa. ¡Elige tu curso!</p><button class="btn" onclick="startVF()">Jugar ahora</button></article>
 </div></section>
 <section class="progress" id="progreso"><div class="progress-icon">🝆</div><div class="progress-copy"><h3>Tu aventura de aprendizaje</h3><p>Juega para ganar puntos. ¡Cada respuesta correcta te acerca a tu próxima meta!</p></div><div class="points"><span id="score">0</span> puntos</div></section>
 </main><footer id="acerca">Hecho para aprender jugando · Kary Play ✦</footer></div>
@@ -669,6 +690,227 @@ function evaluateMatch() {
   }
 }
 // ── Fin Match: Imagen y concepto ─────────────────────────────────
+// ── Verdadero o Falso ────────────────────────────────────────────
+const VF_COURSES = [
+  { id: 'primero',  label: 'Primero básico',  num: '1°', file: 'datos/VFprimero.json'  },
+  { id: 'segundo',  label: 'Segundo básico',  num: '2°', file: 'datos/VFsegundo.json'  },
+  { id: 'tercero',  label: 'Tercero básico',  num: '3°', file: 'datos/VFtercero.json'  },
+  { id: 'cuarto',   label: 'Cuarto básico',   num: '4°', file: 'datos/VFcuarto.json'   },
+  { id: 'quinto',   label: 'Quinto básico',   num: '5°', file: 'datos/VFquinto.json'   },
+  { id: 'sexto',    label: 'Sexto básico',    num: '6°', file: 'datos/VFsexto.json'    },
+  { id: 'septimo',  label: 'Séptimo básico',  num: '7°', file: 'datos/VFseptimo.json'  },
+  { id: 'octavo',   label: 'Octavo básico',   num: '8°', file: 'datos/VFoctavo.json'   }
+];
+const VF_PER_ROUND  = 5;
+const VF_PTS_CORRECT = 10;
+
+// Estado de la partida activa
+let vf = {
+  course:       null,   // objeto de VF_COURSES seleccionado
+  questions:    [],     // preguntas de esta partida (máx. VF_PER_ROUND)
+  index:        0,      // pregunta actual
+  correct:      0,      // aciertos
+  answered:     false,  // bloqueo tras responder
+  pointsGiven:  new Set() // ids premiados (evita duplicar al reiniciar rápido)
+};
+
+// ── Entrada al juego: pantalla de selección de curso ─────────────
+function startVF() {
+  current = 'vf';
+  const courseButtons = VF_COURSES.map(c =>
+    `<button class="vf-course-btn" onclick="vfSelectCourse('${c.id}')">
+       <span class="vf-course-num">${c.num}</span>${escHtml(c.label)}
+     </button>`
+  ).join('');
+
+  show('Verdadero o falso', `
+    <p class="small" style="margin:0 0 10px">Selecciona tu curso para comenzar:</p>
+    <div class="vf-course-grid">${courseButtons}</div>`);
+}
+
+// ── Seleccionar curso y cargar JSON ──────────────────────────────
+function vfSelectCourse(courseId) {
+  const course = VF_COURSES.find(c => c.id === courseId);
+  if (!course) return;
+  vf.course = course;
+
+  show('Verdadero o falso', `<div class="small" style="text-align:center;padding:20px">
+    Cargando preguntas de <b>${escHtml(course.label)}</b>…</div>`);
+
+  fetch(course.file, { cache: 'no-store' })
+    .then(res => {
+      if (!res.ok) throw new Error(`No se pudo cargar el archivo (HTTP ${res.status}). Verifica que el servidor esté activo.`);
+      return res.json();
+    })
+    .then(data => vfValidateAndStart(data))
+    .catch(err  => vfShowError(err.message));
+}
+
+// ── Validar JSON y arrancar partida ──────────────────────────────
+function vfValidateAndStart(data) {
+  // Validar estructura del archivo
+  if (!data || !Array.isArray(data.preguntas)) {
+    return vfShowError('El archivo no tiene el campo "preguntas" o su formato es incorrecto.');
+  }
+  if (data.preguntas.length === 0) {
+    return vfShowError(`El archivo de ${escHtml(vf.course.label)} no contiene preguntas.`);
+  }
+
+  // Validar y filtrar preguntas individuales
+  const seenIds = new Set();
+  const valid   = data.preguntas.filter((q, idx) => {
+    if (!q || typeof q.afirmacion !== 'string' || !q.afirmacion.trim()) return false;
+    if (typeof q.respuesta !== 'boolean') return false;
+    if (typeof q.explicacion !== 'string' || !q.explicacion.trim()) return false;
+    if (q.id !== undefined) {
+      if (seenIds.has(q.id)) return false; // id duplicado
+      seenIds.add(q.id);
+    }
+    return true;
+  });
+
+  if (valid.length === 0) {
+    return vfShowError(`No hay preguntas válidas en el archivo de ${escHtml(vf.course.label)}. Verifica que cada pregunta tenga afirmación, respuesta booleana y explicación.`);
+  }
+
+  // Barajar y tomar VF_PER_ROUND preguntas
+  const shuffled = [...valid].sort(() => Math.random() - .5);
+  vf.questions   = shuffled.slice(0, Math.min(VF_PER_ROUND, shuffled.length));
+  vf.index       = 0;
+  vf.correct     = 0;
+  vf.answered    = false;
+  vf.pointsGiven = new Set();
+
+  vfShowQuestion();
+}
+
+// ── Mostrar error con opciones de recuperación ───────────────────
+function vfShowError(msg) {
+  show('Verdadero o falso', `
+    <div class="feedback" style="color:#df6879;margin-bottom:12px">
+      ⚠️ ${escHtml(msg)}
+    </div>
+    <p class="small">No se cargaron preguntas de otro curso como sustitución.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+      <button class="btn secondary" onclick="vfSelectCourse('${vf.course ? vf.course.id : ''}')">Reintentar</button>
+      <button class="btn secondary" onclick="startVF()">Volver a cursos</button>
+    </div>`);
+}
+
+// ── Mostrar la pregunta actual ────────────────────────────────────
+function vfShowQuestion() {
+  vf.answered    = false;
+  const q        = vf.questions[vf.index];
+  const total    = vf.questions.length;
+  const isLast   = vf.index === total - 1;
+  const cursoPrefijo = vf.course ? escHtml(vf.course.label) : '';
+  const tema     = q.tema ? `<span class="small" style="margin:0">📚 ${escHtml(q.tema)}</span>` : '';
+
+  show('Verdadero o falso', `
+    <div class="vf-meta">
+      <span class="small" style="margin:0">Pregunta <b>${vf.index + 1}</b> de <b>${total}</b> · ✅ <b>${vf.correct}</b> correctas</span>
+      ${tema}
+    </div>
+    <div class="small" style="margin:0 0 6px;color:light-dark(#5142c8,#c4bcff)">📖 ${cursoPrefijo}</div>
+    <div class="vf-afirmacion" id="vf-afirmacion">${escHtml(q.afirmacion)}</div>
+    <div class="vf-btns">
+      <button class="vf-btn vf-btn-v" id="vf-btn-v" onclick="vfAnswer(true)">✅ VERDADERO</button>
+      <button class="vf-btn vf-btn-f" id="vf-btn-f" onclick="vfAnswer(false)">❌ FALSO</button>
+    </div>
+    <div class="feedback" id="vf-feedback" style="min-height:22px"></div>
+    <div class="vf-explain" id="vf-explain"></div>
+    <div class="quiz-footer" style="margin-top:14px">
+      <span class="small">+${VF_PTS_CORRECT} pts por acierto</span>
+      <button class="btn" id="vf-next" style="display:none" onclick="vfAdvance()">
+        ${isLast ? 'Ver resultado' : 'Siguiente →'}
+      </button>
+    </div>`);
+}
+
+// ── Evaluar respuesta ─────────────────────────────────────────────
+function vfAnswer(chosen) {
+  if (vf.answered) return;
+  vf.answered    = true;
+  const q        = vf.questions[vf.index];
+  const correct  = q.respuesta;
+  const btnV     = $('vf-btn-v');
+  const btnF     = $('vf-btn-f');
+  const fb       = $('vf-feedback');
+  const explain  = $('vf-explain');
+
+  // Deshabilitar ambos botones
+  if (btnV) btnV.disabled = true;
+  if (btnF) btnF.disabled = true;
+
+  const chosenBtn  = chosen ? btnV  : btnF;
+  const correctBtn = correct ? btnV : btnF;
+
+  if (chosen === correct) {
+    // Respuesta correcta
+    if (chosenBtn) chosenBtn.classList.add('vf-chosen-correct');
+    if (fb) fb.textContent = '✅ ¡Correcto! Muy bien.';
+    // Sumar puntos solo una vez por pregunta
+    const qKey = q.id ?? q.afirmacion;
+    if (!vf.pointsGiven.has(qKey)) {
+      vf.pointsGiven.add(qKey);
+      addPoints(VF_PTS_CORRECT);
+      vf.correct++;
+    }
+  } else {
+    // Respuesta incorrecta
+    if (chosenBtn)  chosenBtn.classList.add('vf-chosen-wrong');
+    if (correctBtn) correctBtn.classList.add('vf-show-correct');
+    const correctLabel = correct ? 'VERDADERO' : 'FALSO';
+    if (fb) fb.textContent = `❌ ¡Buen intento! La respuesta correcta es: ${correctLabel}.`;
+  }
+
+  // Mostrar explicación
+  if (q.explicacion && explain) {
+    explain.textContent = '💡 ' + q.explicacion;
+    explain.style.display = 'block';
+  }
+
+  const nextBtn = $('vf-next');
+  if (nextBtn) nextBtn.style.display = 'inline-block';
+}
+
+// ── Avanzar o mostrar resultado final ────────────────────────────
+function vfAdvance() {
+  vf.index++;
+  if (vf.index >= vf.questions.length) {
+    vfShowResult();
+  } else {
+    vfShowQuestion();
+  }
+}
+
+// ── Pantalla de resultado final ───────────────────────────────────
+function vfShowResult() {
+  const total   = vf.questions.length;
+  const correct = vf.correct;
+  const wrong   = total - correct;
+  const pct     = Math.round((correct / total) * 100);
+  const pts     = correct * VF_PTS_CORRECT;
+  const emoji   = pct >= 80 ? '🌟' : pct >= 50 ? '👍' : '💪';
+  const mensaje = pct >= 80 ? '¡Excelente trabajo!' : pct >= 50 ? '¡Buen intento, sigue practicando!' : '¡Sigue aprendiendo, puedes mejorar!';
+  const curso   = vf.course ? escHtml(vf.course.label) : '';
+
+  show('¡Verdadero o falso!', `
+    <div class="question" style="margin-bottom:18px">${emoji} ${mensaje}</div>
+    <div style="background:light-dark(#f4f2ff,#2b2b42);border-radius:13px;padding:16px;margin-bottom:18px">
+      <div class="vf-result-row"><span>📖 Curso</span><b>${curso}</b></div>
+      <div class="vf-result-row"><span>📝 Preguntas respondidas</span><b>${total}</b></div>
+      <div class="vf-result-row"><span>✅ Respuestas correctas</span><b>${correct}</b></div>
+      <div class="vf-result-row"><span>❌ Respuestas incorrectas</span><b>${wrong}</b></div>
+      <div class="vf-result-row"><span>📊 Porcentaje de aciertos</span><b>${pct}%</b></div>
+      <div class="vf-result-row"><span>⭐ Puntos obtenidos</span><b>${pts}</b></div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn" onclick="vfSelectCourse('${vf.course ? vf.course.id : ''}')">Jugar de nuevo (${curso})</button>
+      <button class="btn secondary" onclick="startVF()">Cambiar curso</button>
+    </div>`);
+}
+// ── Fin Verdadero o Falso ─────────────────────────────────────────
 function startSurprise(){let n=rand(0,2);if(n===0)startMath();else if(n===1)startTrivia();else startSynonym()}
 // --- Visibilidad de juegos según configuración del administrador ---
 (function applyGameVisibility() {

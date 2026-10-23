@@ -1,10 +1,10 @@
 ﻿============================================================
-  KARY PLAY - Documentación del proyecto
+  Aula Play - Documentación del proyecto
 ============================================================
 
 Descripción general
 --------------------
-Kary Play es una plataforma educativa interactiva que permite
+Aula Play es una plataforma educativa interactiva que permite
 aprender jugando mediante seis juegos diferentes. Está construida
 con HTML, CSS y JavaScript puro, sin dependencias externas.
 Funciona en GitHub Pages y cualquier servidor web estático.
@@ -210,7 +210,7 @@ Repositorio: https://github.com/MauricioSanchez630/JuegosDePrueba
   HISTORIAL DE CAMBIOS PRINCIPALES
 ------------------------------------------------------------
 
-- Nombre del proyecto cambiado de "Aula Play" a "Kary Play".
+- El proyecto usa el nombre "Aula Play".
 - Juego "Memoria visual" reemplazado por "Memoria Conceptual"
   con datos externos en conceptos.json.
 - Juego "Curiosidades" reemplazado por "Alternativas"

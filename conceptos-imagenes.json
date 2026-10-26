@@ -1,0 +1,26 @@
+[
+  {
+    "imagen": "fotosintesis.svg",
+    "concepto": "Fotosíntesis"
+  },
+  {
+    "imagen": "sistema-solar.svg",
+    "concepto": "Sistema solar"
+  },
+  {
+    "imagen": "ciclo-del-agua.svg",
+    "concepto": "Ciclo del agua"
+  },
+  {
+    "imagen": "energia-eolica.svg",
+    "concepto": "Energía eólica"
+  },
+  {
+    "imagen": "volcán.svg",
+    "concepto": "Volcán"
+  },
+  {
+    "imagen": "célula.svg",
+    "concepto": "Célula"
+  }
+]

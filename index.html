@@ -1,50 +1,895 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="es">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kary Play — aprende jugando</title>
+<title>Aula Play — aprende jugando</title>
 <style>
+/* ═══════════════════════════════════════════════════════════════
+   VARIABLES Y RESET
+═══════════════════════════════════════════════════════════════ */
 :root {
- --site-primary:#5B4BDB; --site-on-primary:#FFFFFF;
- --site-secondary:#DFF7EF; --site-on-secondary:#163C35;
- --site-background:#F6F5FF; --site-on-background:#20213A;
- --site-font-body:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
- --site-font-heading:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
- --site-heading-scale:1; --site-spacing-scale:1; --site-radius-scale:1; --site-decoration-opacity:1;
- color-scheme:light dark;
+  /* Paleta principal */
+  --site-primary:#5B4BDB;
+  --site-primary-dark:#4538b8;
+  --site-primary-light:#7c6ff0;
+  --site-on-primary:#FFFFFF;
+  --site-secondary:#DFF7EF;
+  --site-on-secondary:#163C35;
+  --site-background:#F3F1FF;
+  --site-on-background:#20213A;
+
+  /* Colores de acento por juego */
+  --c-math:#FF6B6B;   --c-math-bg:#FFF0F0;
+  --c-word:#FF9F43;   --c-word-bg:#FFF4E6;
+  --c-memory:#26de81; --c-memory-bg:#EAFFF4;
+  --c-trivia:#45AAF2; --c-trivia-bg:#EAF5FF;
+  --c-synonym:#FD79A8;--c-synonym-bg:#FFF0F6;
+  --c-surprise:#A29BFE;--c-surprise-bg:#F0EEFF;
+  --c-match:#0AB5D5;  --c-match-bg:#E6FAFF;
+  --c-vf:#FDCB6E;     --c-vf-bg:#FFFBEC;
+
+  /* Tipografías */
+  --site-font-body:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-font-heading:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Escalas (compatibilidad con código existente) */
+  --site-heading-scale:1;
+  --site-spacing-scale:1;
+  --site-radius-scale:1;
+  --site-decoration-opacity:1;
+
+  /* Tokens de diseño */
+  --radius-card:22px;
+  --radius-btn:14px;
+  --shadow-card:0 4px 20px rgba(91,75,219,.10), 0 1px 4px rgba(0,0,0,.06);
+  --shadow-card-hover:0 12px 36px rgba(91,75,219,.18), 0 2px 8px rgba(0,0,0,.08);
+  --transition-fast:.15s ease;
+  --transition-med:.25s ease;
+
+  color-scheme:light dark;
 }
-*{box-sizing:border-box} body{margin:0;font-family:var(--site-font-body);background:var(--site-background);color:var(--site-on-background)}
-#app{background-color:var(--site-background);color:var(--site-on-background);min-height:100vh;border-radius:0;overflow:hidden}
-header{background:var(--site-primary);color:var(--site-on-primary);padding:calc(22px * var(--site-spacing-scale)) max(22px,calc((100vw - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px}
-.logo{font-weight:900;font-size:calc(1.3rem * var(--site-heading-scale));letter-spacing:-.04em}.logo span{color:#BDF5E3}.nav{display:flex;gap:20px;font-size:.93rem}.nav a{color:inherit;text-decoration:none;opacity:.9}.nav a:hover{text-decoration:underline}
-main{max-width:1120px;margin:auto;padding:calc(34px * var(--site-spacing-scale)) 22px 60px}
-.hero{display:grid;grid-template-columns:1.4fr .8fr;gap:25px;align-items:center;margin-bottom:30px}.eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.14em;font-weight:800;color:#6758d9}.hero h1{font-family:var(--site-font-heading);font-size:clamp(2.2rem,5vw,3.7rem);line-height:1.02;letter-spacing:-.055em;margin:10px 0 15px}.hero p{font-size:1.08rem;line-height:1.65;max-width:590px;color:light-dark(#5c5d76,#c6c6d9)}
-.hero-art{background:var(--site-secondary);color:var(--site-on-secondary);border-radius:calc(28px * var(--site-radius-scale));padding:25px;min-height:210px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}.hero-art .emoji{font-size:5.5rem;z-index:1}.bubble{position:absolute;width:90px;height:90px;border-radius:50%;background:#9be5d0;opacity:var(--site-decoration-opacity);right:12%;top:4%}.bubble.two{width:55px;height:55px;left:10%;bottom:8%;background:#f9cb6b}
-.section-head{display:flex;align-items:end;justify-content:space-between;gap:15px;margin:34px 0 16px}.section-head h2{font-size:calc(1.55rem * var(--site-heading-scale));letter-spacing:-.04em;margin:0}.section-head p{margin:5px 0 0;color:light-dark(#686980,#c6c6d9)}
-.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.game-card{background:light-dark(#FFFFFF,#24243A);border:1px solid light-dark(#E7E5F3,#3b3b53);border-radius:calc(20px * var(--site-radius-scale));padding:20px;display:flex;flex-direction:column;min-height:245px;box-shadow:0 7px 24px #3028790c}.game-icon{height:62px;width:62px;border-radius:18px;display:grid;place-items:center;font-size:2rem;margin-bottom:15px}.purple{background:#E9E5FF}.yellow{background:#FFF0C8}.green{background:#D9F7E9}.blue{background:#DCEEFF}.pink{background:#FFE1EC}.game-card h3{margin:0 0 7px;font-size:1.14rem}.game-card p{margin:0 0 18px;color:light-dark(#686980,#c6c6d9);font-size:.92rem;line-height:1.5;flex:1}.btn{border:0;border-radius:12px;padding:12px 16px;background:var(--site-primary);color:white;font-weight:800;font-size:.92rem;cursor:pointer;font-family:inherit}.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}.btn.secondary{background:light-dark(#EFEDFF,#39364f);color:light-dark(#5142c8,#ddd8ff)}
-.progress{margin-top:32px;background:light-dark(#FFFFFF,#24243A);border:1px solid light-dark(#E7E5F3,#3b3b53);border-radius:20px;padding:22px;display:flex;align-items:center;gap:18px}.progress-icon{font-size:2rem}.progress-copy{flex:1}.progress h3{margin:0 0 5px}.progress p{margin:0;color:light-dark(#686980,#c6c6d9);font-size:.92rem}.points{font-weight:900;color:#6758d9;font-size:1.15rem;white-space:nowrap}
-footer{text-align:center;padding:25px;color:light-dark(#74758a,#b6b6ca);font-size:.85rem}
-.modal{position:fixed;inset:0;background:#17152caa;display:none;align-items:center;justify-content:center;padding:16px;z-index:10}.modal.open{display:flex}.dialog{background:light-dark(#fff,#24243a);color:var(--site-on-background);width:min(560px,100%);max-height:90vh;overflow:auto;border-radius:24px;padding:25px;box-shadow:0 20px 70px #0003}.dialog-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.dialog h2{margin:0;font-size:1.5rem}.close{border:0;background:light-dark(#f0eff8,#38384e);color:inherit;border-radius:50%;width:38px;height:38px;font-size:1.25rem;cursor:pointer}.question{font-size:1.2rem;font-weight:800;margin:24px 0 18px;line-height:1.45}.answers{display:grid;grid-template-columns:1fr 1fr;gap:10px}.answer{padding:14px;border:2px solid light-dark(#e6e4f2,#44445d);background:light-dark(#faf9ff,#2b2b42);color:inherit;border-radius:13px;cursor:pointer;font:inherit;font-weight:700}.answer:hover{border-color:#7567e8}.answer.correct{border-color:#2baf7b;background:#dcf8ec}.answer.wrong{border-color:#df6879;background:#ffebef}.feedback{min-height:28px;margin:15px 0;font-weight:800}.quiz-footer{display:flex;align-items:center;justify-content:space-between;gap:12px}.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:18px}.memory-tile{min-height:70px;border:0;border-radius:13px;background:#e9e5ff;font-size:1.8rem;cursor:pointer}.memory-tile.matched{background:#d9f7e9;cursor:default}.word-input{width:100%;padding:13px;border:2px solid light-dark(#e6e4f2,#44445d);border-radius:12px;font:inherit;background:light-dark(#fff,#303047);color:inherit;margin-bottom:12px}.small{font-size:.85rem;color:light-dark(#77788e,#c6c6d9)}
-@media(max-width:760px){.hero{grid-template-columns:1fr}.hero-art{min-height:140px}.hero-art .emoji{font-size:4rem}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.nav{gap:12px}.progress{align-items:flex-start;flex-wrap:wrap}.points{width:100%}}
-@media(max-width:480px){.nav a:nth-child(2){display:none}.cards{grid-template-columns:1fr}.game-card{min-height:210px}header{padding:18px 20px}main{padding:25px 16px 40px}.section-head{align-items:flex-start;flex-direction:column}.memory-tile{min-height:58px}}
-@media(prefers-color-scheme:dark){.hero-art{background:#24463f;color:#e3fff5}.bubble{background:#357c69}.bubble.two{background:#98762c}}
+
+/* ── Reset mínimo ── */
+*, *::before, *::after { box-sizing:border-box; }
+body {
+  margin:0;
+  font-family:var(--site-font-body);
+  background:var(--site-background);
+  color:var(--site-on-background);
+  -webkit-font-smoothing:antialiased;
+}
+#app {
+  background:var(--site-background);
+  color:var(--site-on-background);
+  min-height:100vh;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER & NAVEGACIÓN
+═══════════════════════════════════════════════════════════════ */
+header {
+  background: linear-gradient(135deg, #5B4BDB 0%, #7c6ff0 60%, #9c8fff 100%);
+  color:var(--site-on-primary);
+  padding:0 max(22px, calc((100vw - 1160px) / 2));
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  height:68px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:0 2px 16px rgba(91,75,219,.28);
+}
+
+.logo {
+  font-weight:900;
+  font-size:1.35rem;
+  letter-spacing:-.04em;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  text-decoration:none;
+  color:inherit;
+}
+.logo .logo-icon {
+  width:34px;
+  height:34px;
+  background:rgba(255,255,255,.18);
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  font-size:1.1rem;
+  flex-shrink:0;
+}
+.logo span { color:#BDF5E3; }
+
+.nav {
+  display:flex;
+  align-items:center;
+  gap:4px;
+  font-size:.9rem;
+}
+.nav a {
+  color:rgba(255,255,255,.85);
+  text-decoration:none;
+  padding:7px 14px;
+  border-radius:20px;
+  font-weight:600;
+  transition:background var(--transition-fast), color var(--transition-fast);
+  white-space:nowrap;
+}
+.nav a:hover {
+  background:rgba(255,255,255,.18);
+  color:#fff;
+  text-decoration:none;
+}
+.nav a:first-child {
+  background:rgba(255,255,255,.15);
+  color:#fff;
+  font-size:.82rem;
+  padding:6px 12px;
+  border:1px solid rgba(255,255,255,.25);
+}
+.nav a:first-child:hover { background:rgba(255,255,255,.28); }
+
+/* ═══════════════════════════════════════════════════════════════
+   MAIN LAYOUT
+═══════════════════════════════════════════════════════════════ */
+main {
+  max-width:1160px;
+  margin:0 auto;
+  padding:48px 22px 70px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════════════════ */
+.hero {
+  display:grid;
+  grid-template-columns:1.3fr 1fr;
+  gap:32px;
+  align-items:center;
+  margin-bottom:52px;
+  background: linear-gradient(135deg, #edeaff 0%, #f3f1ff 60%, #e8f9f1 100%);
+  border-radius:28px;
+  padding:44px 48px;
+  position:relative;
+  overflow:hidden;
+}
+/* Forma decorativa de fondo */
+.hero::before {
+  content:'';
+  position:absolute;
+  width:420px; height:420px;
+  background:radial-gradient(circle, rgba(91,75,219,.09) 0%, transparent 70%);
+  top:-80px; right:-60px;
+  border-radius:50%;
+  pointer-events:none;
+}
+.hero::after {
+  content:'';
+  position:absolute;
+  width:200px; height:200px;
+  background:radial-gradient(circle, rgba(38,222,129,.12) 0%, transparent 70%);
+  bottom:-40px; left:30%;
+  border-radius:50%;
+  pointer-events:none;
+}
+
+.eyebrow {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  font-weight:800;
+  color:var(--site-primary);
+  background:rgba(91,75,219,.1);
+  padding:5px 12px;
+  border-radius:20px;
+  margin-bottom:14px;
+}
+
+.hero h1 {
+  font-family:var(--site-font-heading);
+  font-size:clamp(2rem, 4.5vw, 3.4rem);
+  line-height:1.05;
+  letter-spacing:-.05em;
+  margin:0 0 16px;
+  color:var(--site-on-background);
+}
+.hero h1 em {
+  font-style:normal;
+  background:linear-gradient(90deg, #5B4BDB, #9c8fff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+.hero p {
+  font-size:1.05rem;
+  line-height:1.7;
+  max-width:520px;
+  color:light-dark(#4a4b68, #c6c6d9);
+  margin:0 0 28px;
+}
+
+/* Botón hero */
+.hero .btn {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:14px 28px;
+  font-size:1rem;
+  border-radius:var(--radius-btn);
+  background:linear-gradient(135deg, #5B4BDB, #7c6ff0);
+  box-shadow:0 4px 18px rgba(91,75,219,.4);
+  transition:transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.hero .btn:hover {
+  transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(91,75,219,.5);
+  filter:none;
+}
+
+/* Arte del hero */
+.hero-art {
+  background:linear-gradient(135deg, #DFF7EF 0%, #c8f5e5 100%);
+  color:var(--site-on-secondary);
+  border-radius:24px;
+  padding:32px;
+  min-height:220px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  box-shadow:inset 0 2px 8px rgba(0,0,0,.04);
+}
+.hero-art .emoji {
+  font-size:5rem;
+  z-index:1;
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,.12));
+  animation:float 4s ease-in-out infinite;
+}
+@keyframes float {
+  0%,100% { transform:translateY(0); }
+  50%      { transform:translateY(-10px); }
+}
+.bubble {
+  position:absolute;
+  width:100px; height:100px;
+  border-radius:50%;
+  background:#9be5d0;
+  opacity:.5;
+  right:8%; top:6%;
+  animation:pulse 6s ease-in-out infinite;
+}
+.bubble.two {
+  width:60px; height:60px;
+  left:8%; bottom:10%;
+  background:#f9cb6b;
+  animation-delay:2s;
+}
+@keyframes pulse {
+  0%,100% { transform:scale(1); }
+  50%      { transform:scale(1.12); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SECCIÓN DE JUEGOS — CABECERA
+═══════════════════════════════════════════════════════════════ */
+.section-head {
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:15px;
+  margin:0 0 24px;
+}
+.section-head h2 {
+  font-size:clamp(1.5rem, 3vw, 2rem);
+  letter-spacing:-.04em;
+  margin:0 0 4px;
+  font-weight:900;
+}
+.section-head p {
+  margin:0;
+  color:light-dark(#686980, #c6c6d9);
+  font-size:.95rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   GRID DE TARJETAS
+═══════════════════════════════════════════════════════════════ */
+.cards {
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0,1fr));
+  gap:18px;
+}
+
+/* ── Tarjeta base ── */
+.game-card {
+  background:light-dark(#FFFFFF, #1e1e34);
+  border:1.5px solid light-dark(#ede9ff, #2e2e4a);
+  border-radius:var(--radius-card);
+  padding:22px 20px 20px;
+  display:flex;
+  flex-direction:column;
+  min-height:220px;
+  box-shadow:var(--shadow-card);
+  transition:transform var(--transition-med), box-shadow var(--transition-med), border-color var(--transition-med);
+  position:relative;
+  overflow:hidden;
+  animation:fadeUp .4s ease both;
+}
+.game-card::before {
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height:4px;
+  border-radius:var(--radius-card) var(--radius-card) 0 0;
+  background:var(--card-accent, #5B4BDB);
+  opacity:.7;
+}
+.game-card:hover {
+  transform:translateY(-5px);
+  box-shadow:var(--shadow-card-hover);
+  border-color:light-dark(#c8bfff, #4a4070);
+}
+
+/* Colores de acento por juego */
+[data-game-id="math"]    { --card-accent:var(--c-math); }
+[data-game-id="word"]    { --card-accent:var(--c-word); }
+[data-game-id="memory"]  { --card-accent:var(--c-memory); }
+[data-game-id="trivia"]  { --card-accent:var(--c-trivia); }
+[data-game-id="synonym"] { --card-accent:var(--c-synonym); }
+[data-game-id="surprise"]{ --card-accent:var(--c-surprise); }
+[data-game-id="match"]   { --card-accent:var(--c-match); }
+[data-game-id="vf"]      { --card-accent:var(--c-vf); }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+/* Escalonar la entrada */
+.game-card:nth-child(1) { animation-delay:.05s; }
+.game-card:nth-child(2) { animation-delay:.10s; }
+.game-card:nth-child(3) { animation-delay:.15s; }
+.game-card:nth-child(4) { animation-delay:.20s; }
+.game-card:nth-child(5) { animation-delay:.25s; }
+.game-card:nth-child(6) { animation-delay:.30s; }
+.game-card:nth-child(7) { animation-delay:.35s; }
+.game-card:nth-child(8) { animation-delay:.40s; }
+
+/* ── Icono ── */
+.game-icon {
+  height:56px;
+  width:56px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  font-size:1.8rem;
+  margin-bottom:14px;
+  flex-shrink:0;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+/* Colores de fondo de iconos (compatibilidad) */
+.purple  { background:#E9E5FF; }
+.yellow  { background:#FFF0C8; }
+.green   { background:#D9F7E9; }
+.blue    { background:#DCEEFF; }
+.pink    { background:#FFE1EC; }
+
+/* ── Textos de tarjeta ── */
+.game-card h3 {
+  margin:0 0 8px;
+  font-size:1.05rem;
+  font-weight:800;
+  line-height:1.2;
+}
+.game-card p {
+  margin:0 0 18px;
+  color:light-dark(#686980, #c6c6d9);
+  font-size:.88rem;
+  line-height:1.55;
+  flex:1;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BOTONES
+═══════════════════════════════════════════════════════════════ */
+.btn {
+  border:0;
+  border-radius:var(--radius-btn);
+  padding:11px 18px;
+  background:var(--site-primary);
+  color:#fff;
+  font-weight:800;
+  font-size:.88rem;
+  cursor:pointer;
+  font-family:inherit;
+  transition:transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+.btn:hover {
+  filter:brightness(1.1);
+  transform:translateY(-1px);
+  box-shadow:0 4px 14px rgba(91,75,219,.35);
+}
+.btn:active {
+  transform:translateY(0);
+  box-shadow:none;
+}
+.btn.secondary {
+  background:light-dark(#EFEDFF, #39364f);
+  color:light-dark(#5142c8, #ddd8ff);
+  box-shadow:none;
+}
+.btn.secondary:hover {
+  background:light-dark(#e4e0ff, #44415e);
+  box-shadow:0 2px 8px rgba(91,75,219,.15);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SECCIÓN DE PROGRESO
+═══════════════════════════════════════════════════════════════ */
+.progress {
+  margin-top:36px;
+  background:linear-gradient(135deg, #5B4BDB 0%, #7c6ff0 100%);
+  border-radius:20px;
+  padding:26px 30px;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  box-shadow:0 6px 24px rgba(91,75,219,.28);
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+}
+.progress::after {
+  content:'⭐';
+  position:absolute;
+  right:24px;
+  font-size:5rem;
+  opacity:.12;
+  pointer-events:none;
+  top:50%;
+  transform:translateY(-50%);
+}
+.progress-icon {
+  font-size:2.4rem;
+  flex-shrink:0;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.15));
+}
+.progress-copy { flex:1; }
+.progress h3 {
+  margin:0 0 4px;
+  font-size:1.05rem;
+  font-weight:800;
+  color:#fff;
+}
+.progress p {
+  margin:0;
+  color:rgba(255,255,255,.82);
+  font-size:.9rem;
+  line-height:1.5;
+}
+.points {
+  font-weight:900;
+  color:#fff;
+  font-size:1.5rem;
+  white-space:nowrap;
+  background:rgba(255,255,255,.18);
+  padding:10px 20px;
+  border-radius:14px;
+  border:1.5px solid rgba(255,255,255,.25);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:2px;
+}
+.points::after {
+  content:'puntos';
+  font-size:.7rem;
+  font-weight:700;
+  opacity:.8;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════════════ */
+footer {
+  text-align:center;
+  padding:32px 22px;
+  color:light-dark(#888, #b6b6ca);
+  font-size:.83rem;
+  border-top:1px solid light-dark(#e8e5f5, #2a2a40);
+  margin-top:16px;
+}
+footer strong {
+  color:var(--site-primary);
+  font-weight:800;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MODAL (sin cambios funcionales — solo ajustes visuales)
+═══════════════════════════════════════════════════════════════ */
+.modal {
+  position:fixed;
+  inset:0;
+  background:rgba(23,21,44,.7);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  z-index:200;
+}
+.modal.open { display:flex; }
+
+.dialog {
+  background:light-dark(#fff, #1e1e34);
+  color:var(--site-on-background);
+  width:min(580px, 100%);
+  max-height:92vh;
+  overflow:auto;
+  border-radius:26px;
+  padding:28px;
+  box-shadow:0 24px 80px rgba(0,0,0,.22);
+  animation:modalIn .22s ease both;
+}
+@keyframes modalIn {
+  from { opacity:0; transform:scale(.96) translateY(12px); }
+  to   { opacity:1; transform:scale(1) translateY(0); }
+}
+.dialog-top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:4px;
+}
+.dialog h2 { margin:0; font-size:1.45rem; font-weight:900; }
+.close {
+  border:0;
+  background:light-dark(#f0eff8, #38384e);
+  color:inherit;
+  border-radius:50%;
+  width:38px; height:38px;
+  font-size:1.1rem;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+  transition:background var(--transition-fast);
+}
+.close:hover { background:light-dark(#e4e0ff, #4a4466); }
+
+/* ── Elementos de juego dentro del modal (sin cambios funcionales) ── */
+.question {
+  font-size:1.15rem;
+  font-weight:800;
+  margin:20px 0 16px;
+  line-height:1.45;
+}
+.answers {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.answer {
+  padding:14px;
+  border:2px solid light-dark(#e6e4f2, #44445d);
+  background:light-dark(#faf9ff, #2b2b42);
+  color:inherit;
+  border-radius:13px;
+  cursor:pointer;
+  font:inherit;
+  font-weight:700;
+  transition:border-color var(--transition-fast), background var(--transition-fast);
+}
+.answer:hover      { border-color:#7567e8; background:light-dark(#f0eeff, #323060); }
+.answer.correct    { border-color:#2baf7b; background:#dcf8ec; color:#1a5e3e; }
+.answer.wrong      { border-color:#df6879; background:#ffebef; color:#8b1a2a; }
+.feedback          { min-height:28px; margin:14px 0; font-weight:800; }
+.quiz-footer       { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.memory-grid       { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; margin-top:18px; }
+.memory-tile       { min-height:70px; border:0; border-radius:13px; background:#e9e5ff; font-size:1.8rem; cursor:pointer; transition:transform var(--transition-fast); }
+.memory-tile:hover { transform:scale(1.04); }
+.memory-tile.matched { background:#d9f7e9; cursor:default; }
+.word-input        { width:100%; padding:13px; border:2px solid light-dark(#e6e4f2, #44445d); border-radius:12px; font:inherit; background:light-dark(#fff, #303047); color:inherit; margin-bottom:12px; }
+.small             { font-size:.84rem; color:light-dark(#77788e, #c6c6d9); }
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════════ */
+@media(max-width:1024px) {
+  .cards { grid-template-columns:repeat(3, minmax(0,1fr)); }
+}
+@media(max-width:760px) {
+  .hero { grid-template-columns:1fr; padding:32px 28px; gap:24px; }
+  .hero::before, .hero::after { display:none; }
+  .hero-art { min-height:160px; }
+  .hero-art .emoji { font-size:3.8rem; }
+  .cards { grid-template-columns:repeat(2, minmax(0,1fr)); gap:14px; }
+  .nav { gap:2px; }
+  .progress { align-items:flex-start; flex-wrap:wrap; }
+  .points { width:100%; text-align:center; }
+}
+@media(max-width:540px) {
+  main { padding:28px 16px 50px; }
+  header { height:58px; }
+  .hero { padding:24px 20px; border-radius:20px; }
+  .hero h1 { font-size:1.7rem; }
+  .cards { grid-template-columns:1fr 1fr; gap:12px; }
+  .game-card { min-height:200px; padding:18px 16px 16px; }
+  .nav a:nth-child(2) { display:none; }
+  .progress { padding:20px; }
+}
+@media(max-width:360px) {
+  .cards { grid-template-columns:1fr; }
+  .memory-tile { min-height:58px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MODO OSCURO
+═══════════════════════════════════════════════════════════════ */
+@media(prefers-color-scheme:dark) {
+  :root { --site-background:#131325; --site-on-background:#e8e8f5; }
+  body  { background:#131325; }
+  .hero { background:linear-gradient(135deg, #1e1b3a 0%, #1a1a30 60%, #141f28 100%); }
+  .hero-art { background:linear-gradient(135deg, #1a3a2e 0%, #122a22 100%); color:#e3fff5; }
+  .bubble   { background:#357c69; }
+  .bubble.two { background:#98762c; }
+  .progress { background:linear-gradient(135deg, #4538b8 0%, #5B4BDB 100%); }
+  .game-card { background:#1e1e34; border-color:#2a2a44; }
+  .nav a:first-child { border-color:rgba(255,255,255,.2); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MEMORIA CONCEPTUAL (sin cambios funcionales)
+═══════════════════════════════════════════════════════════════ */
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:14px}
+.concept-tile{min-height:80px;border:2px solid light-dark(#e6e4f2,#44445d);border-radius:13px;background:light-dark(#f4f2ff,#2b2b42);color:inherit;cursor:pointer;font:inherit;font-size:.82rem;font-weight:700;line-height:1.35;padding:10px;display:flex;align-items:center;justify-content:center;text-align:center;transition:border-color .15s,background .15s;word-break:break-word}
+.concept-tile:hover:not(:disabled){border-color:#7567e8;background:light-dark(#eceaff,#34345a)}
+.concept-tile.face-down{background:light-dark(#5B4BDB,#4438c2);color:#fff;border-color:transparent;font-size:1.4rem}
+.concept-tile.selected{border-color:#5B4BDB;background:light-dark(#e9e5ff,#3c3775)}
+.concept-tile.matched{border-color:#2baf7b;background:light-dark(#dcf8ec,#1a4535);cursor:default;opacity:.85}
+.concept-tile.wrong-flash{border-color:#df6879;background:light-dark(#ffebef,#4a1e26)}
+.concept-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.concept-meta .small{margin:0}
+
+/* ═══════════════════════════════════════════════════════════════
+   MATCH: IMAGEN Y CONCEPTO (sin cambios funcionales)
+═══════════════════════════════════════════════════════════════ */
+.match-layout{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+.match-col-title{font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;font-weight:800;color:#6758d9;margin:0 0 8px}
+.match-col{display:flex;flex-direction:column;gap:10px}
+.match-img-btn{border:2px solid light-dark(#e6e4f2,#44445d);border-radius:13px;background:light-dark(#faf9ff,#2b2b42);cursor:pointer;padding:6px;overflow:hidden;transition:border-color .15s,box-shadow .15s;position:relative}
+.match-img-btn img{width:100%;height:110px;object-fit:cover;border-radius:8px;display:block}
+.match-img-btn:hover:not(:disabled){border-color:#7567e8;box-shadow:0 0 0 3px #7567e822}
+.match-img-btn.mi-selected{border-color:#5B4BDB;box-shadow:0 0 0 3px #5B4BDB33;background:light-dark(#ebe8ff,#2e2a50)}
+.match-img-btn.mi-matched{border-color:#2baf7b;background:light-dark(#dcf8ec,#1a4535);cursor:default}
+.match-img-btn.mi-wrong{border-color:#df6879;background:light-dark(#ffebef,#4a1e26)}
+.match-img-btn .match-img-label{font-size:.72rem;font-weight:700;text-align:center;padding:4px 2px 2px;color:light-dark(#5142c8,#ddd8ff);display:none}
+.match-img-btn.mi-matched .match-img-label{display:block;color:#1a7a4a}
+.match-concept-btn{border:2px solid light-dark(#e6e4f2,#44445d);border-radius:13px;background:light-dark(#faf9ff,#2b2b42);color:inherit;cursor:pointer;padding:12px 14px;font:inherit;font-size:.88rem;font-weight:700;line-height:1.4;text-align:left;word-break:break-word;transition:border-color .15s,box-shadow .15s;min-height:54px}
+.match-concept-btn:hover:not(:disabled){border-color:#7567e8;box-shadow:0 0 0 3px #7567e822}
+.match-concept-btn.mc-selected{border-color:#5B4BDB;box-shadow:0 0 0 3px #5B4BDB33;background:light-dark(#ebe8ff,#2e2a50)}
+.match-concept-btn.mc-matched{border-color:#2baf7b;background:light-dark(#dcf8ec,#1a4535);cursor:default;color:light-dark(#1a7a4a,#6effc8)}
+.match-concept-btn.mc-wrong{border-color:#df6879;background:light-dark(#ffebef,#4a1e26)}
+.match-img-error{width:100%;height:110px;border-radius:8px;background:light-dark(#f0eff8,#38384e);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:light-dark(#77788e,#c6c6d9);text-align:center;padding:8px}
+@media(max-width:480px){.match-layout{grid-template-columns:1fr}.match-img-btn img,.match-img-error{height:90px}}
+
+/* ═══════════════════════════════════════════════════════════════
+   SELECTOR DE CURSO + VISIBILIDAD DE JUEGOS
+═══════════════════════════════════════════════════════════════ */
+
+/* El área de juegos empieza oculta */
+#games-area {
+  display:none;
+}
+#games-area.visible {
+  display:grid;
+  animation:fadeUp .35s ease both;
+}
+
+/* Bloque del selector de curso */
+.course-selector-wrap {
+  background:light-dark(#fff, #1e1e34);
+  border:1.5px solid light-dark(#ede9ff, #2e2e4a);
+  border-radius:20px;
+  padding:28px 30px;
+  margin-bottom:28px;
+  box-shadow:var(--shadow-card);
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.course-selector-label {
+  font-size:1.25rem;
+  font-weight:900;
+  letter-spacing:-.03em;
+  color:var(--site-on-background);
+  margin:0;
+}
+.course-selector-label span {
+  display:inline-block;
+  background:linear-gradient(90deg, #5B4BDB, #9c8fff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.course-selector-hint {
+  font-size:.9rem;
+  color:light-dark(#686980, #c6c6d9);
+  margin:0;
+}
+
+/* El combobox */
+.course-select {
+  appearance:none;
+  -webkit-appearance:none;
+  width:100%;
+  max-width:380px;
+  padding:13px 44px 13px 18px;
+  font:inherit;
+  font-size:.98rem;
+  font-weight:700;
+  color:var(--site-on-background);
+  background:light-dark(#f4f2ff, #2b2b42)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%235B4BDB' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E")
+    no-repeat right 14px center;
+  border:2px solid light-dark(#c8bfff, #44445d);
+  border-radius:14px;
+  cursor:pointer;
+  transition:border-color .15s, box-shadow .15s;
+  outline:none;
+}
+.course-select:hover {
+  border-color:#7c6ff0;
+}
+.course-select:focus {
+  border-color:#5B4BDB;
+  box-shadow:0 0 0 3px rgba(91,75,219,.18);
+}
+
+/* Placeholder "sin curso" */
+#games-placeholder {
+  text-align:center;
+  padding:32px 20px;
+  color:light-dark(#888, #888);
+  font-size:.95rem;
+  border:2px dashed light-dark(#d8d4f0, #3a3a5a);
+  border-radius:18px;
+  background:light-dark(#faf9ff, #1a1a2e);
+}
+#games-placeholder .ph-icon {
+  font-size:2.8rem;
+  display:block;
+  margin-bottom:10px;
+  opacity:.5;
+}
+
+@media(max-width:540px) {
+  .course-selector-wrap { padding:20px 18px; }
+  .course-select { max-width:100%; font-size:.93rem; }
+}
+.vf-course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:14px}
+.vf-course-btn{border:2px solid light-dark(#e6e4f2,#44445d);border-radius:13px;background:light-dark(#faf9ff,#2b2b42);color:inherit;cursor:pointer;padding:14px 10px;font:inherit;font-size:.88rem;font-weight:700;text-align:center;transition:border-color .15s,background .15s}
+.vf-course-btn:hover{border-color:#7567e8;background:light-dark(#eceaff,#34345a)}
+.vf-course-num{font-size:1.5rem;display:block;margin-bottom:4px}
+.vf-afirmacion{font-size:1.1rem;font-weight:800;margin:18px 0 20px;line-height:1.45;padding:16px;background:light-dark(#f4f2ff,#2b2b42);border-radius:13px;border-left:4px solid #5B4BDB}
+.vf-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px}
+.vf-btn{padding:16px;border:2px solid transparent;border-radius:13px;cursor:pointer;font:inherit;font-size:1rem;font-weight:800;transition:all .15s}
+.vf-btn-v{background:light-dark(#d9f7e9,#1a4535);color:light-dark(#1a7a4a,#6effc8);border-color:light-dark(#9be5c8,#2baf7b)}
+.vf-btn-v:hover:not(:disabled){background:#2baf7b;color:#fff;border-color:#2baf7b}
+.vf-btn-f{background:light-dark(#ffebef,#4a1e26);color:light-dark(#a5334d,#ff8fa3);border-color:light-dark(#f5c2cc,#df6879)}
+.vf-btn-f:hover:not(:disabled){background:#df6879;color:#fff;border-color:#df6879}
+.vf-btn.vf-chosen-correct{background:#2baf7b;color:#fff;border-color:#2baf7b}
+.vf-btn.vf-chosen-wrong{background:#df6879;color:#fff;border-color:#df6879}
+.vf-btn.vf-show-correct{background:#2baf7b;color:#fff;border-color:#2baf7b;opacity:.7}
+.vf-explain{margin-top:10px;padding:12px 14px;background:light-dark(#f4f2ff,#2b2b42);border-radius:11px;font-size:.88rem;line-height:1.5;display:none}
+.vf-meta{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.vf-result-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid light-dark(#e6e4f2,#44445d);font-size:.93rem}
+.vf-result-row:last-child{border-bottom:none;font-weight:800}
+@media(max-width:400px){.vf-course-grid{grid-template-columns:1fr 1fr}.vf-btns{grid-template-columns:1fr}}
 </style>
 </head>
 <body><div id="app">
-<header><div class="logo">✦ Aprende<span>jugando</span></div><nav class="nav"><a href="admin.html">Administrar</a><a href="#juegos">Juegos</a><a href="#progreso">Mi progreso</a><a href="#acerca">Acerca de</a></nav></header>
+<header>
+  <a class="logo" href="#">
+    <span class="logo-icon">✦</span>
+    Aula<span>Play</span>
+  </a>
+  <nav class="nav">
+    <a href="admin.html">⚙️ Administrar</a>
+    <a href="Editor_json.html">📝 Editor</a>
+    <a href="#juegos">Juegos</a>
+    <a href="#progreso">Mi progreso</a>
+    <a href="#acerca">Acerca de</a>
+  </nav>
+</header>
 <main>
-<section class="hero"><div><div class="eyebrow">Aprender puede ser una aventura</div><h1>¡Tu próxima misión<br>empieza aquí!</h1><p>Practica, descubre y diviértete. Elige un juego, suma puntos y aprende algo nuevo en cada partida.</p><a href="#juegos"><button class="btn">Explorar juegos&nbsp; ↓</button></a></div><div class="hero-art" aria-label="Ilustración de una estrella y un libro"><div class="bubble"></div><div class="bubble two"></div><div class="emoji">📚 ⭝</div></div></section>
-<section id="juegos"><div class="section-head"><div><h2>Elige tu juego</h2><p>Pequeños retos para grandes ideas.</p></div></div>
-<div class="cards">
+<section class="hero">
+  <div>
+    <div class="eyebrow">✨ Aprender puede ser una aventura</div>
+    <h1>¡Tu próxima <em>misión</em><br>empieza aquí!</h1>
+    <p>Practica, descubre y diviértete. Elige un juego, suma puntos y aprende algo nuevo en cada partida.</p>
+    <a href="#juegos"><button class="btn">Explorar juegos &nbsp;↓</button></a>
+  </div>
+  <div class="hero-art" aria-label="Ilustración de una estrella y un libro">
+    <div class="bubble"></div>
+    <div class="bubble two"></div>
+    <div class="emoji">📚 ⭐</div>
+  </div>
+</section>
+<section id="juegos">
+  <!-- ── Selector de curso ── -->
+  <div class="course-selector-wrap">
+    <p class="course-selector-label">📚 <span>Elige tu curso</span></p>
+    <p class="course-selector-hint">Selecciona tu curso para descubrir los juegos disponibles.</p>
+    <select class="course-select" id="courseSelect"
+            aria-label="Selecciona tu curso"
+            onchange="selectCourse(this.value, this.options[this.selectedIndex].text)">
+      <option value="">Selecciona un curso…</option>
+      <option value="1">1.º básico</option>
+      <option value="2">2.º básico</option>
+      <option value="3">3.º básico</option>
+      <option value="4">4.º básico</option>
+      <option value="5">5.º básico</option>
+      <option value="6">6.º básico</option>
+      <option value="7">7.º básico</option>
+      <option value="8">8.º básico</option>
+    </select>
+  </div>
+
+  <!-- ── Cabecera dinámica (oculta hasta seleccionar) ── -->
+  <div class="section-head" id="games-section-head" style="display:none">
+    <div>
+      <h2 id="games-title">🎮 Elige tu juego</h2>
+      <p id="games-subtitle">Pequeños retos para grandes ideas.</p>
+    </div>
+  </div>
+
+  <!-- ── Placeholder visible antes de seleccionar ── -->
+  <div id="games-placeholder" aria-live="polite">
+    <span class="ph-icon">🎮</span>
+    Los juegos aparecerán aquí después de seleccionar tu curso.
+  </div>
+
+  <!-- ── Grid de juegos (oculto hasta seleccionar) ── -->
+  <div class="cards" id="games-area">
 <article class="game-card" data-game-id="math"><div class="game-icon purple">➗</div><h3>Reto matemático</h3><p>Resuelve operaciones y pon a prueba tu rapidez mental.</p><button class="btn" onclick="startMath()">Jugar ahora</button></article>
 <article class="game-card" data-game-id="word"><div class="game-icon yellow">🔤</div><h3>Palabra misteriosa</h3><p>Descubre la palabra usando una pista. ¡Cada letra cuenta!</p><button class="btn" onclick="startWord()">Jugar ahora</button></article>
-<article class="game-card" data-game-id="memory"><div class="game-icon green">🧠</div><h3>Memoria visual</h3><p>Encuentra las parejas de emojis y entrena tu memoria.</p><button class="btn" onclick="startMemory()">Jugar ahora</button></article>
-<article class="game-card" data-game-id="trivia"><div class="game-icon blue">🌎</div><h3>Curiosidades</h3><p>Responde preguntas sobre ciencia, naturaleza y el mundo.</p><button class="btn" onclick="startTrivia()">Jugar ahora</button></article>
+<article class="game-card" data-game-id="memory"><div class="game-icon green">🧠</div><h3>Memoria Conceptual</h3><p>Asocia cada concepto con su respuesta y entrena tu memoria.</p><button class="btn" onclick="startMemory()">Jugar ahora</button></article>
+<article class="game-card" data-game-id="trivia"><div class="game-icon blue">🌎</div><h3>Alternativas</h3><p>Elige la respuesta correcta entre cuatro opciones. ¡Pon a prueba tu conocimiento!</p><button class="btn" onclick="startTrivia()">Jugar ahora</button></article>
 <article class="game-card" data-game-id="synonym"><div class="game-icon pink">📖</div><h3>Sinónimos exprés</h3><p>Amplía tu vocabulario eligiendo palabras con significado parecido.</p><button class="btn" onclick="startSynonym()">Jugar ahora</button></article>
 <article class="game-card" data-game-id="surprise"><div class="game-icon purple">🎯</div><h3>Desafío sorpresa</h3><p>Una pregunta al azar para comprobar lo que sabes.</p><button class="btn" onclick="startSurprise()">¡Sorpréndeme!</button></article>
+<article class="game-card" data-game-id="match"><div class="game-icon blue">🖼️</div><h3>Match: Imagen y concepto</h3><p>Relaciona cada imagen con su concepto. ¡Pon a prueba tu memoria visual!</p><button class="btn" onclick="startMatch()">Jugar ahora</button></article>
+<article class="game-card" data-game-id="vf"><div class="game-icon yellow">✅</div><h3>Verdadero o falso</h3><p>Lee una afirmación y decide si es verdadera o falsa. ¡Elige tu curso!</p><button class="btn" onclick="startVF()">Jugar ahora</button></article>
 </div></section>
-<section class="progress" id="progreso"><div class="progress-icon">🝆</div><div class="progress-copy"><h3>Tu aventura de aprendizaje</h3><p>Juega para ganar puntos. ¡Cada respuesta correcta te acerca a tu próxima meta!</p></div><div class="points"><span id="score">0</span> puntos</div></section>
-</main><footer id="acerca">Hecho para aprender jugando · Kary Play ✦</footer></div>
+<section class="progress" id="progreso">
+  <div class="progress-icon">🏆</div>
+  <div class="progress-copy">
+    <h3>Tu aventura de aprendizaje</h3>
+    <p>Juega para ganar puntos. ¡Cada respuesta correcta te acerca a tu próxima meta!</p>
+  </div>
+  <div class="points"><span id="score">0</span></div>
+</section>
+</main>
+<footer id="acerca">
+  Hecho con ❤️ para aprender jugando · <strong>Aula Play</strong> ✦
+</footer>
+</div>
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="dialog"><div class="dialog-top"><h2 id="modalTitle">¡Vamos a jugar!</h2><button class="close" onclick="closeGame()" aria-label="Cerrar">×</button></div><div id="gameContent"></div></div></div>
 <script>
 let points=0, current=null, questionIndex=0, correctCount=0, wordSecret='', wordHint='';
@@ -61,22 +906,805 @@ const words=[{w:'PLANETA',h:'Cuerpo celeste que gira alrededor de una estrella.'
 function startWord(){current='word';let item=words[rand(0,words.length-1)];wordSecret=item.w;wordHint=item.h;let scrambled=wordSecret.split('').sort(()=>Math.random()-.5).join(' · ');show('Palabra misteriosa',`<div class="small">Ordena las letras en tu mente</div><div class="question" style="letter-spacing:.15em">${scrambled}</div><p><b>Pista:</b> ${wordHint}</p><input class="word-input" id="wordInput" placeholder="Escribe tu respuesta" autocomplete="off" maxlength="16"><div class="feedback" id="feedback"></div><button class="btn" onclick="checkWord()">Comprobar</button> <button class="btn secondary" onclick="showHint()">Ver una pista extra</button>`);$('wordInput').focus()}
 function showHint(){$('feedback').textContent='Empieza con «'+wordSecret[0]+'» y tiene '+wordSecret.length+' letras.'}
 function checkWord(){let v=$('wordInput').value.toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();if(v===wordSecret){$('feedback').textContent='¡Correcto! +15 puntos 🎉';addPoints(15)}else $('feedback').textContent='Todavía no. ¡Prueba otra vez!';}
-const trivia=[{q:'¿Qué planeta es conocido como el planeta rojo?',a:['Marte','Venus','Júpiter','Saturno'],c:0},{q:'¿Qué necesitan las plantas para hacer fotosíntesis?',a:['Luz solar','Arena solamente','Hielo','Viento fuerte'],c:0},{q:'¿Cuántos lados tiene un hexágono?',a:['5','6','7','8'],c:1},{q:'¿Cuál es el océano más grande?',a:['Atlántico','Ýndico','Pacífico','Ýrtico'],c:2},{q:'¿En qué estado está el agua cuando se convierte en hielo?',a:['Líquido','Gaseoso','Sólido','Vapor'],c:2},{q:'¿Qué órgano bombea la sangre?',a:['Pulmón','Corazón','Estómago','Cerebro'],c:1}];
-function startTrivia(){current='trivia';questionIndex=0;correctCount=0;trivia.sort(()=>Math.random()-.5);nextTrivia()}
-function nextTrivia(){let q=trivia[questionIndex%trivia.length];show('Curiosidades',`<div class="small">Pregunta ${questionIndex+1} de 5</div><div class="question">${q.q}</div><div class="answers">${q.a.map((v,i)=>`<button class="answer" onclick="triviaAnswer(this,${i},${q.c})">${v}</button>`).join('')}</div><div class="feedback" id="feedback"></div><div class="quiz-footer"><span class="small">+10 puntos por acierto</span><button class="btn" id="next" style="display:none" onclick="advanceTrivia()">${questionIndex===4?'Terminar':'Siguiente →'}</button></div>`)}
-function triviaAnswer(el,v,c){if($('next').style.display!=='none')return;document.querySelectorAll('.answer').forEach(x=>x.disabled=true);if(v===c){el.classList.add('correct');$('feedback').textContent='¡Respuesta correcta! +10';addPoints(10);correctCount++}else{el.classList.add('wrong');document.querySelectorAll('.answer')[c].classList.add('correct');$('feedback').textContent='¡A seguir aprendiendo!'}$('next').style.display='inline-block'}
-function advanceTrivia(){questionIndex++;if(questionIndex>=5)show('¡Misión completada!',`<div class="question">🎉 Lograste ${correctCount} de 5 respuestas correctas.</div><p>¡Sigue explorando y aprendiendo cosas nuevas!</p><button class="btn" onclick="startTrivia()">Volver a jugar</button>`);else nextTrivia()}
+// ── Alternativas (preguntas con opciones desde alternativas.json) ─
+let alt = {
+  bank:         [],       // todas las preguntas válidas cargadas del JSON
+  round:        [],       // preguntas de la partida actual (5 barajadas)
+  index:        0,        // pregunta activa
+  correctCount: 0,
+  answered:     false,    // bloqueo: ya respondió esta pregunta
+  pointsAwarded: new Set() // ids de preguntas ya premiadas
+};
+const ALT_PER_ROUND = 5;
+
+function startTrivia() {
+  current = 'trivia';
+  if (alt.bank.length === 0) {
+    loadAlternativas().then(() => initTriviaRound());
+  } else {
+    initTriviaRound();
+  }
+}
+
+async function loadAlternativas() {
+  try {
+    const res = await fetch('alternativas.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) throw new Error('El archivo está vacío o su formato es incorrecto.');
+
+    const valid = data.filter(q => {
+      if (!q || typeof q.pregunta !== 'string' || !q.pregunta.trim()) return false;
+      if (!Array.isArray(q.alternativas) || q.alternativas.length !== 4) return false;
+      if (q.alternativas.some(a => typeof a !== 'string' || !a.trim())) return false;
+      if (typeof q.respuestaCorrecta !== 'number') return false;
+      if (q.respuestaCorrecta < 0 || q.respuestaCorrecta > 3) return false;
+      return true;
+    });
+
+    if (valid.length === 0) throw new Error('No hay preguntas válidas en alternativas.json.');
+    alt.bank = valid;
+  } catch (err) {
+    show('Alternativas', `
+      <div class="feedback" style="color:#df6879;margin-bottom:10px">⚠️ No se pudo cargar alternativas.json: ${err.message}</div>
+      <p class="small">Asegúrate de ejecutar la página desde un servidor web (no con file://).</p>
+      <button class="btn secondary" onclick="startTrivia()">Reintentar</button>`);
+    alt.bank = [];
+  }
+}
+
+function initTriviaRound() {
+  if (alt.bank.length === 0) return;
+
+  // Barajar el banco y tomar los primeros ALT_PER_ROUND
+  const shuffled = [...alt.bank].sort(() => Math.random() - .5);
+  const selected = shuffled.slice(0, Math.min(ALT_PER_ROUND, shuffled.length));
+
+  // Para cada pregunta, barajar las alternativas manteniendo el índice correcto
+  alt.round = selected.map(q => {
+    const indexed = q.alternativas.map((text, i) => ({ text, isCorrect: i === q.respuestaCorrecta }));
+    indexed.sort(() => Math.random() - .5);
+    const newCorrect = indexed.findIndex(a => a.isCorrect);
+    return {
+      id:              q.id ?? q.pregunta, // usar id si existe, si no la pregunta como clave
+      pregunta:        q.pregunta.trim(),
+      alternativas:    indexed.map(a => a.text),
+      respuestaCorrecta: newCorrect,
+      explicacion:     typeof q.explicacion === 'string' ? q.explicacion.trim() : ''
+    };
+  });
+
+  alt.index        = 0;
+  alt.correctCount = 0;
+  alt.answered     = false;
+  alt.pointsAwarded = new Set();
+
+  nextTrivia();
+}
+
+function nextTrivia() {
+  alt.answered = false;
+  const q     = alt.round[alt.index];
+  const total = alt.round.length;
+  const isLast = alt.index === total - 1;
+
+  show('Alternativas', `
+    <div class="small" style="margin-bottom:4px">Pregunta ${alt.index + 1} de ${total} · ${alt.correctCount} correctas</div>
+    <div class="question">${escHtml(q.pregunta)}</div>
+    <div class="answers">
+      ${q.alternativas.map((opt, i) =>
+        `<button class="answer" id="alt-opt-${i}" onclick="triviaAnswer(this, ${i})">${escHtml(opt)}</button>`
+      ).join('')}
+    </div>
+    <div class="feedback" id="alt-feedback"></div>
+    <div id="alt-explain" class="small" style="margin-top:6px;display:none"></div>
+    <div class="quiz-footer" style="margin-top:14px">
+      <span class="small">+10 puntos por acierto</span>
+      <button class="btn" id="alt-next" style="display:none" onclick="advanceTrivia()">
+        ${isLast ? 'Ver resultado' : 'Siguiente →'}
+      </button>
+    </div>`);
+}
+
+function triviaAnswer(el, chosen) {
+  if (alt.answered) return;               // ya respondió esta pregunta
+  alt.answered = true;
+
+  const q       = alt.round[alt.index];
+  const correct = q.respuestaCorrecta;
+
+  // Deshabilitar todas las opciones
+  for (let i = 0; i < 4; i++) {
+    const btn = $(`alt-opt-${i}`);
+    if (btn) btn.disabled = true;
+  }
+
+  const fb      = $('alt-feedback');
+  const explain = $('alt-explain');
+
+  if (chosen === correct) {
+    el.classList.add('correct');
+    if (fb) fb.textContent = '✅ ¡Respuesta correcta! +10 puntos';
+    // Evitar doble puntuación si se reinicia mientras la modal sigue abierta
+    const qKey = q.id ?? q.pregunta;
+    if (!alt.pointsAwarded.has(qKey)) {
+      alt.pointsAwarded.add(qKey);
+      addPoints(10);
+      alt.correctCount++;
+    }
+  } else {
+    el.classList.add('wrong');
+    const correctBtn = $(`alt-opt-${correct}`);
+    if (correctBtn) correctBtn.classList.add('correct');
+    if (fb) fb.textContent = '❌ Incorrecto. La respuesta correcta está marcada en verde.';
+  }
+
+  // Mostrar explicación si existe
+  if (q.explicacion && explain) {
+    explain.textContent = '💡 ' + q.explicacion;
+    explain.style.display = 'block';
+  }
+
+  const nextBtn = $('alt-next');
+  if (nextBtn) nextBtn.style.display = 'inline-block';
+}
+
+function advanceTrivia() {
+  alt.index++;
+  if (alt.index >= alt.round.length) {
+    const total   = alt.round.length;
+    const correct = alt.correctCount;
+    const emoji   = correct >= total * .8 ? '🌟' : correct >= total * .5 ? '👍' : '💪';
+    show('¡Alternativas!', `
+      <div class="question">${emoji} ${correct >= total * .8 ? '¡Excelente trabajo!' : correct >= total * .5 ? '¡Buen intento!' : '¡Sigue practicando!'}</div>
+      <p>Respondiste <b>${correct} de ${total}</b> preguntas correctamente.</p>
+      <p>Puntos ganados esta partida: <b>${correct * 10}</b></p>
+      <button class="btn" onclick="initTriviaRound()">Jugar de nuevo</button>`);
+  } else {
+    nextTrivia();
+  }
+}
+// ── Fin Alternativas ──────────────────────────────────────────────
 const synonyms=[{w:'ALEGRE',a:['Contento','Enfadado','Cansado','Silencioso'],c:0},{w:'RÝPIDO',a:['Lento','Veloz','Pequeño','Suave'],c:1},{w:'ENORME',a:['Gigante','Delgado','Breve','Débil'],c:0},{w:'COMENZAR',a:['Terminar','Parar','Iniciar','Olvidar'],c:2},{w:'HERMOSO',a:['Bonito','Oscuro','Lejano','Difícil'],c:0}];
 function startSynonym(){current='syn';questionIndex=0;correctCount=0;synonyms.sort(()=>Math.random()-.5);nextSynonym()}
 function nextSynonym(){let q=synonyms[questionIndex%5];show('Sinónimos exprés',`<div class="small">Pregunta ${questionIndex+1} de 5</div><div class="question">¿Qué palabra significa algo parecido a «${q.w.toLowerCase()}»?</div><div class="answers">${q.a.map((v,i)=>`<button class="answer" onclick="synAnswer(this,${i},${q.c})">${v}</button>`).join('')}</div><div class="feedback" id="feedback"></div><div class="quiz-footer"><span class="small">+10 puntos por acierto</span><button class="btn" id="next" style="display:none" onclick="advanceSyn()">${questionIndex===4?'Terminar':'Siguiente →'}</button></div>`)}
 function synAnswer(el,v,c){if($('next').style.display!=='none')return;document.querySelectorAll('.answer').forEach(x=>x.disabled=true);if(v===c){el.classList.add('correct');$('feedback').textContent='¡Exacto! +10 puntos';addPoints(10);correctCount++}else{el.classList.add('wrong');document.querySelectorAll('.answer')[c].classList.add('correct');$('feedback').textContent='¡Buen intento!'}$('next').style.display='inline-block'}
 function advanceSyn(){questionIndex++;if(questionIndex>=5)show('¡Buen trabajo!',`<div class="question">Acertaste ${correctCount} de 5 palabras. 📖</div><button class="btn" onclick="startSynonym()">Practicar de nuevo</button>`);else nextSynonym()}
-const icons=['🝸','🚀','🝉','🦊','🌈','🝼','⚽','🌻'];let memory=[],flipped=[],matched=0,lock=false,moves=0;
-function startMemory(){current='memory';memory=[...icons,...icons].sort(()=>Math.random()-.5);flipped=[];matched=0;moves=0;lock=false;renderMemory()}
-function renderMemory(){show('Memoria visual',`<div class="quiz-footer"><span class="small">Encuentra las 8 parejas</span><span class="small">Movimientos: <b id="moves">${moves}</b></span></div><div class="memory-grid">${memory.map((v,i)=>`<button class="memory-tile ${matchedIndices.has(i)?'matched':''}" id="tile${i}" onclick="flipTile(${i})">${matchedIndices.has(i)||flipped.includes(i)?v:'❔'}</button>`).join('')}</div><div class="feedback" id="memoryFeedback">¡Busca las parejas iguales!</div><button class="btn secondary" onclick="startMemory()">Reiniciar partida</button>`);}
-let matchedIndices=new Set();
-function startMemory(){current='memory';memory=[...icons,...icons].sort(()=>Math.random()-.5);flipped=[];matchedIndices=new Set();matched=0;moves=0;lock=false;renderMemory()}
-function flipTile(i){if(lock||flipped.includes(i)||matchedIndices.has(i))return;flipped.push(i);$('tile'+i).textContent=memory[i];if(flipped.length===2){moves++;$('moves').textContent=moves;let [a,b]=flipped;if(memory[a]===memory[b]){matchedIndices.add(a);matchedIndices.add(b);$('tile'+a).classList.add('matched');$('tile'+b).classList.add('matched');flipped=[];addPoints(5);if(matchedIndices.size===16){$('memoryFeedback').textContent='¡Completaste todas las parejas! +40 puntos extra';addPoints(40)}}else{lock=true;setTimeout(()=>{if(!$('tile'+a)||!$('tile'+b))return;$('tile'+a).textContent='❔';$('tile'+b).textContent='❔';flipped=[];lock=false},700)}}}
+// ── Memoria Conceptual ────────────────────────────────────────────
+// Estado del juego
+let mc = {
+  pairs: [],          // [{concepto, respuesta, id}] cargadas desde JSON
+  tiles: [],          // orden barajado de todas las fichas en pantalla
+  flipped: [],        // índices de fichas volteadas (máx. 2)
+  matched: new Set(), // ids de pares ya resueltos
+  lock: false,        // bloqueo mientras se anima el volteo fallido
+  moves: 0,
+  pointsAwarded: new Set() // ids de pares ya premiados (evita doble puntuación)
+};
+
+function startMemory() {
+  current = 'memory';
+  // Seleccionar hasta 6 pares aleatorios del JSON para no saturar la pantalla
+  const MAX_PAIRS = 6;
+  if (!mc.pairs || mc.pairs.length === 0) {
+    // Primera vez: cargar JSON
+    loadConceptos().then(() => initMemoryRound(MAX_PAIRS));
+  } else {
+    initMemoryRound(MAX_PAIRS);
+  }
+}
+
+async function loadConceptos() {
+  try {
+    const res = await fetch('conceptos.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) throw new Error('Datos vacíos o formato incorrecto.');
+    // Validar cada elemento
+    const valid = data.filter(d => d && typeof d.concepto === 'string' && d.concepto.trim() &&
+                                       typeof d.respuesta === 'string' && d.respuesta.trim());
+    if (valid.length === 0) throw new Error('Ninguna entrada válida en conceptos.json.');
+    mc.pairs = valid.map((d, i) => ({ concepto: d.concepto.trim(), respuesta: d.respuesta.trim(), id: i }));
+  } catch (err) {
+    show('Memoria Conceptual', `<div class="feedback" style="color:#df6879">⚠️ No se pudo cargar conceptos.json: ${err.message}</div>
+      <p class="small">Asegúrate de ejecutar la página desde un servidor web (no directamente con file://).</p>
+      <button class="btn secondary" onclick="startMemory()">Reintentar</button>`);
+    mc.pairs = [];
+  }
+}
+
+function initMemoryRound(maxPairs) {
+  if (!mc.pairs || mc.pairs.length === 0) return;
+
+  // Barajar y tomar los primeros maxPairs pares
+  const shuffledPairs = [...mc.pairs].sort(() => Math.random() - .5).slice(0, maxPairs);
+
+  // Crear dos fichas por par: una con el concepto, otra con la respuesta
+  const tiles = [];
+  shuffledPairs.forEach(p => {
+    tiles.push({ text: p.concepto,  pairId: p.id, role: 'concepto'  });
+    tiles.push({ text: p.respuesta, pairId: p.id, role: 'respuesta' });
+  });
+
+  // Barajar las fichas
+  tiles.sort(() => Math.random() - .5);
+
+  mc.tiles          = tiles;
+  mc.flipped        = [];
+  mc.matched        = new Set();
+  mc.lock           = false;
+  mc.moves          = 0;
+  mc.pointsAwarded  = new Set();
+
+  renderMemory();
+}
+
+function renderMemory() {
+  const total  = mc.tiles.length / 2;         // total de pares
+  const found  = mc.matched.size;             // pares encontrados
+  const remain = total - found;
+
+  show('Memoria Conceptual', `
+    <div class="concept-meta">
+      <span class="small">Parejas encontradas: <b>${found}/${total}</b> · Pendientes: <b>${remain}</b></span>
+      <span class="small">Movimientos: <b id="mc-moves">${mc.moves}</b></span>
+    </div>
+    <div class="concept-grid" id="mc-grid">
+      ${mc.tiles.map((t, i) => {
+        const isMatched  = mc.matched.has(t.pairId);
+        const isFlipped  = mc.flipped.includes(i);
+        const faceDown   = !isMatched && !isFlipped;
+        let cls = 'concept-tile';
+        if (isMatched)       cls += ' matched';
+        else if (isFlipped)  cls += ' selected';
+        else                 cls += ' face-down';
+        return `<button class="${cls}" id="mct-${i}" onclick="flipConceptTile(${i})" ${isMatched ? 'disabled' : ''}>${faceDown ? '?' : escHtml(t.text)}</button>`;
+      }).join('')}
+    </div>
+    <div class="feedback" id="mc-feedback" style="margin-top:12px"></div>
+    <div style="margin-top:14px">
+      <button class="btn secondary" onclick="initMemoryRound(6)">Nueva partida</button>
+    </div>`);
+}
+
+function flipConceptTile(i) {
+  if (mc.lock) return;
+  if (mc.flipped.includes(i)) return;         // misma ficha dos veces
+  if (mc.matched.has(mc.tiles[i].pairId)) return; // ya resuelta
+
+  mc.flipped.push(i);
+  const btn = $('mct-' + i);
+  btn.classList.remove('face-down');
+  btn.classList.add('selected');
+  btn.textContent = mc.tiles[i].text;
+
+  if (mc.flipped.length < 2) return;          // esperar segunda ficha
+
+  // Dos fichas volteadas: evaluar
+  mc.moves++;
+  const movEl = $('mc-moves');
+  if (movEl) movEl.textContent = mc.moves;
+
+  const [a, b]  = mc.flipped;
+  const tileA   = mc.tiles[a];
+  const tileB   = mc.tiles[b];
+  const isMatch = tileA.pairId === tileB.pairId && tileA.role !== tileB.role;
+
+  if (isMatch) {
+    mc.matched.add(tileA.pairId);
+    [$('mct-' + a), $('mct-' + b)].forEach(el => {
+      if (!el) return;
+      el.classList.remove('selected');
+      el.classList.add('matched');
+      el.disabled = true;
+    });
+    mc.flipped = [];
+
+    // Puntuar solo una vez por par
+    if (!mc.pointsAwarded.has(tileA.pairId)) {
+      mc.pointsAwarded.add(tileA.pairId);
+      addPoints(10);
+    }
+
+    const fb = $('mc-feedback');
+    if (fb) fb.textContent = '✅ ¡Pareja correcta! +10 puntos';
+
+    // Actualizar contador en la meta
+    const metaEl = document.querySelector('#mc-grid')?.previousElementSibling?.querySelector('b');
+
+    // Verificar si terminó la ronda
+    if (mc.matched.size === mc.tiles.length / 2) {
+      const bonus = mc.moves <= mc.tiles.length ? 20 : 0;
+      if (bonus > 0) addPoints(bonus);
+      show('¡Memoria Conceptual!', `
+        <div class="question">🎉 ¡Completaste todas las parejas!</div>
+        <p>Movimientos: <b>${mc.moves}</b> · Parejas: <b>${mc.matched.size}</b></p>
+        ${bonus > 0 ? `<p>🌟 ¡Bono de eficiencia! +${bonus} puntos extra</p>` : ''}
+        <p>Total ganado esta partida: <b>${mc.matched.size * 10 + bonus} puntos</b></p>
+        <button class="btn" onclick="initMemoryRound(6)">Jugar de nuevo</button>`);
+    }
+  } else {
+    // No coinciden: mostrar brevemente y voltear de vuelta
+    mc.lock = true;
+    const fb = $('mc-feedback');
+    if (fb) fb.textContent = '❌ No coinciden, sigue intentando.';
+    [$('mct-' + a), $('mct-' + b)].forEach(el => {
+      if (el) el.classList.add('wrong-flash');
+    });
+    setTimeout(() => {
+      const elA = $('mct-' + a), elB = $('mct-' + b);
+      if (elA) { elA.textContent = '?'; elA.className = 'concept-tile face-down'; }
+      if (elB) { elB.textContent = '?'; elB.className = 'concept-tile face-down'; }
+      mc.flipped = [];
+      mc.lock    = false;
+    }, 900);
+  }
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+// ── Fin Memoria Conceptual ────────────────────────────────────────
+// ── Match: Imagen y concepto ─────────────────────────────────────
+let mim = {
+  pairs:         [],       // [{imagen, concepto, id}] validados del JSON
+  imgOrder:      [],       // índices de pares en orden barajado para la columna de imágenes
+  conOrder:      [],       // índices de pares en orden barajado para la columna de conceptos
+  matched:       new Set(),// ids de pares ya resueltos
+  selImg:        null,     // índice de pairId seleccionado en columna imágenes (null = ninguno)
+  selCon:        null,     // índice de pairId seleccionado en columna conceptos
+  attempts:      0,
+  pointsAwarded: new Set() // evita doble puntuación por reinicio
+};
+const MIM_IMG_DIR = 'imagenes/';
+const MIM_PTS_MATCH  = 5;
+const MIM_PTS_BONUS  = 10;
+
+function startMatch() {
+  current = 'match';
+  if (mim.pairs.length === 0) {
+    loadMatchData().then(() => initMatchRound());
+  } else {
+    initMatchRound();
+  }
+}
+
+async function loadMatchData() {
+  try {
+    const res = await fetch('conceptos-imagenes.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0)
+      throw new Error('El archivo está vacío o su formato es incorrecto.');
+
+    const valid = data.filter((d, i) => {
+      if (!d || typeof d.imagen !== 'string' || !d.imagen.trim()) return false;
+      if (typeof d.concepto !== 'string' || !d.concepto.trim()) return false;
+      return true;
+    });
+
+    if (valid.length === 0)
+      throw new Error('No hay parejas válidas en conceptos-imagenes.json.');
+
+    mim.pairs = valid.map((d, i) => ({
+      id:      i,
+      imagen:  d.imagen.trim(),
+      concepto: d.concepto.trim()
+    }));
+  } catch (err) {
+    show('Match: Imagen y concepto', `
+      <div class="feedback" style="color:#df6879;margin-bottom:10px">
+        ⚠️ No se pudo cargar conceptos-imagenes.json: ${escHtml(err.message)}
+      </div>
+      <p class="small">Asegúrate de ejecutar la página desde un servidor web (no con file://).</p>
+      <button class="btn secondary" onclick="startMatch()">Reintentar</button>`);
+    mim.pairs = [];
+  }
+}
+
+function initMatchRound() {
+  if (mim.pairs.length === 0) return;
+
+  // Barajar índices de forma independiente para cada columna
+  const ids = mim.pairs.map(p => p.id);
+  mim.imgOrder = [...ids].sort(() => Math.random() - .5);
+  mim.conOrder = [...ids].sort(() => Math.random() - .5);
+  mim.matched       = new Set();
+  mim.selImg        = null;
+  mim.selCon        = null;
+  mim.attempts      = 0;
+  mim.pointsAwarded = new Set();
+
+  renderMatch();
+}
+
+function renderMatch() {
+  const total  = mim.pairs.length;
+  const found  = mim.matched.size;
+
+  // Construir columna de imágenes
+  const imgCol = mim.imgOrder.map(pairId => {
+    const pair      = mim.pairs[pairId];
+    const isMatched = mim.matched.has(pairId);
+    const isSelImg  = mim.selImg === pairId;
+    let cls = 'match-img-btn';
+    if (isMatched)      cls += ' mi-matched';
+    else if (isSelImg)  cls += ' mi-selected';
+    const disabled = isMatched ? 'disabled' : '';
+    const imgSrc   = MIM_IMG_DIR + pair.imagen;
+    return `<button class="${cls}" id="mib-${pairId}" ${disabled} onclick="matchSelectImg(${pairId})" aria-label="${escHtml(pair.concepto)}">
+      <img src="${escHtml(imgSrc)}" alt="${escHtml(pair.concepto)}" loading="lazy"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="match-img-error" style="display:none">⚠️ Imagen no encontrada:<br><b>${escHtml(pair.imagen)}</b></div>
+      <div class="match-img-label">${isMatched ? '✅ ' + escHtml(pair.concepto) : ''}</div>
+    </button>`;
+  }).join('');
+
+  // Construir columna de conceptos
+  const conCol = mim.conOrder.map(pairId => {
+    const pair      = mim.pairs[pairId];
+    const isMatched = mim.matched.has(pairId);
+    const isSelCon  = mim.selCon === pairId;
+    let cls = 'match-concept-btn';
+    if (isMatched)      cls += ' mc-matched';
+    else if (isSelCon)  cls += ' mc-selected';
+    const disabled = isMatched ? 'disabled' : '';
+    return `<button class="${cls}" id="mcb-${pairId}" ${disabled} onclick="matchSelectCon(${pairId})">
+      ${escHtml(pair.concepto)}
+    </button>`;
+  }).join('');
+
+  show('Match: Imagen y concepto', `
+    <p class="small" style="margin:0 0 10px">Selecciona una imagen y luego su concepto para hacer la pareja.</p>
+    <div class="concept-meta">
+      <span class="small">Parejas: <b>${found}/${total}</b></span>
+      <span class="small">Intentos: <b id="mim-attempts">${mim.attempts}</b></span>
+    </div>
+    <div class="match-layout">
+      <div>
+        <p class="match-col-title">Imágenes</p>
+        <div class="match-col" id="mim-img-col">${imgCol}</div>
+      </div>
+      <div>
+        <p class="match-col-title">Conceptos</p>
+        <div class="match-col" id="mim-con-col">${conCol}</div>
+      </div>
+    </div>
+    <div class="feedback" id="mim-feedback" style="margin-top:12px;min-height:24px"></div>
+    <div style="margin-top:14px">
+      <button class="btn secondary" onclick="initMatchRound()">Nueva partida</button>
+    </div>`);
+}
+
+function matchSelectImg(pairId) {
+  // Si ya está seleccionada la misma, deseleccionar
+  if (mim.selImg === pairId) {
+    mim.selImg = null;
+    clearMatchHighlight('img', pairId);
+    return;
+  }
+  // Quitar selección anterior de imágenes
+  if (mim.selImg !== null) clearMatchHighlight('img', mim.selImg);
+  mim.selImg = pairId;
+  const btn = $('mib-' + pairId);
+  if (btn) { btn.classList.remove('mi-wrong'); btn.classList.add('mi-selected'); }
+
+  if (mim.selCon !== null) evaluateMatch();
+}
+
+function matchSelectCon(pairId) {
+  if (mim.selCon === pairId) {
+    mim.selCon = null;
+    clearMatchHighlight('con', pairId);
+    return;
+  }
+  if (mim.selCon !== null) clearMatchHighlight('con', mim.selCon);
+  mim.selCon = pairId;
+  const btn = $('mcb-' + pairId);
+  if (btn) { btn.classList.remove('mc-wrong'); btn.classList.add('mc-selected'); }
+
+  if (mim.selImg !== null) evaluateMatch();
+}
+
+function clearMatchHighlight(type, pairId) {
+  if (type === 'img') {
+    const b = $('mib-' + pairId);
+    if (b) { b.classList.remove('mi-selected', 'mi-wrong'); }
+  } else {
+    const b = $('mcb-' + pairId);
+    if (b) { b.classList.remove('mc-selected', 'mc-wrong'); }
+  }
+}
+
+function evaluateMatch() {
+  const imgId = mim.selImg;
+  const conId = mim.selCon;
+  mim.attempts++;
+  const attEl = $('mim-attempts');
+  if (attEl) attEl.textContent = mim.attempts;
+
+  const fb = $('mim-feedback');
+
+  if (imgId === conId) {
+    // ✅ Pareja correcta
+    mim.matched.add(imgId);
+
+    const imgBtn = $('mib-' + imgId);
+    const conBtn = $('mcb-' + conId);
+    if (imgBtn) {
+      imgBtn.classList.remove('mi-selected');
+      imgBtn.classList.add('mi-matched');
+      imgBtn.disabled = true;
+      // Mostrar etiqueta de concepto bajo la imagen
+      const lbl = imgBtn.querySelector('.match-img-label');
+      if (lbl) { lbl.style.display = 'block'; lbl.textContent = '✅ ' + mim.pairs[imgId].concepto; }
+    }
+    if (conBtn) {
+      conBtn.classList.remove('mc-selected');
+      conBtn.classList.add('mc-matched');
+      conBtn.disabled = true;
+    }
+
+    mim.selImg = null;
+    mim.selCon = null;
+
+    // Puntuar una sola vez por pareja por sesión
+    if (!mim.pointsAwarded.has(imgId)) {
+      mim.pointsAwarded.add(imgId);
+      addPoints(MIM_PTS_MATCH);
+    }
+    if (fb) fb.textContent = `✅ ¡Correcto! +${MIM_PTS_MATCH} puntos`;
+
+    // ¿Terminó la partida?
+    if (mim.matched.size === mim.pairs.length) {
+      const bonus = MIM_PTS_BONUS;
+      addPoints(bonus);
+      show('¡Match completado!', `
+        <div class="question">🎉 ¡Excelente! Encontraste todas las parejas.</div>
+        <p>Intentos realizados: <b>${mim.attempts}</b></p>
+        <p>Puntos ganados: <b>${mim.pairs.length * MIM_PTS_MATCH + bonus}</b>
+           (${mim.pairs.length} × ${MIM_PTS_MATCH} + ${bonus} de bonificación)</p>
+        <button class="btn" onclick="initMatchRound()">Jugar de nuevo</button>`);
+    }
+  } else {
+    // ❌ Par incorrecto
+    const imgBtn = $('mib-' + imgId);
+    const conBtn = $('mcb-' + conId);
+    if (imgBtn) { imgBtn.classList.remove('mi-selected'); imgBtn.classList.add('mi-wrong'); }
+    if (conBtn) { conBtn.classList.remove('mc-selected'); conBtn.classList.add('mc-wrong'); }
+    if (fb) fb.textContent = '❌ No coinciden. Intenta otra combinación.';
+
+    // Quitar efecto de error tras 800 ms y restablecer selección
+    setTimeout(() => {
+      if ($('mib-' + imgId)) { $('mib-' + imgId).classList.remove('mi-wrong'); }
+      if ($('mcb-' + conId)) { $('mcb-' + conId).classList.remove('mc-wrong'); }
+      mim.selImg = null;
+      mim.selCon = null;
+    }, 800);
+  }
+}
+// ── Fin Match: Imagen y concepto ─────────────────────────────────
+// ── Verdadero o Falso ────────────────────────────────────────────
+const VF_COURSES = [
+  { id: 'primero',  label: 'Primero básico',  num: '1°', file: 'datos/VFprimero.json'  },
+  { id: 'segundo',  label: 'Segundo básico',  num: '2°', file: 'datos/VFsegundo.json'  },
+  { id: 'tercero',  label: 'Tercero básico',  num: '3°', file: 'datos/VFtercero.json'  },
+  { id: 'cuarto',   label: 'Cuarto básico',   num: '4°', file: 'datos/VFcuarto.json'   },
+  { id: 'quinto',   label: 'Quinto básico',   num: '5°', file: 'datos/VFquinto.json'   },
+  { id: 'sexto',    label: 'Sexto básico',    num: '6°', file: 'datos/VFsexto.json'    },
+  { id: 'septimo',  label: 'Séptimo básico',  num: '7°', file: 'datos/VFseptimo.json'  },
+  { id: 'octavo',   label: 'Octavo básico',   num: '8°', file: 'datos/VFoctavo.json'   }
+];
+const VF_PER_ROUND  = 5;
+const VF_PTS_CORRECT = 10;
+
+// Estado de la partida activa
+let vf = {
+  course:       null,   // objeto de VF_COURSES seleccionado
+  questions:    [],     // preguntas de esta partida (máx. VF_PER_ROUND)
+  index:        0,      // pregunta actual
+  correct:      0,      // aciertos
+  answered:     false,  // bloqueo tras responder
+  pointsGiven:  new Set() // ids premiados (evita duplicar al reiniciar rápido)
+};
+
+// ── Entrada al juego: pantalla de selección de curso ─────────────
+function startVF() {
+  current = 'vf';
+  const courseButtons = VF_COURSES.map(c =>
+    `<button class="vf-course-btn" onclick="vfSelectCourse('${c.id}')">
+       <span class="vf-course-num">${c.num}</span>${escHtml(c.label)}
+     </button>`
+  ).join('');
+
+  show('Verdadero o falso', `
+    <p class="small" style="margin:0 0 10px">Selecciona tu curso para comenzar:</p>
+    <div class="vf-course-grid">${courseButtons}</div>`);
+}
+
+// ── Seleccionar curso y cargar JSON ──────────────────────────────
+function vfSelectCourse(courseId) {
+  const course = VF_COURSES.find(c => c.id === courseId);
+  if (!course) return;
+  vf.course = course;
+
+  show('Verdadero o falso', `<div class="small" style="text-align:center;padding:20px">
+    Cargando preguntas de <b>${escHtml(course.label)}</b>…</div>`);
+
+  fetch(course.file, { cache: 'no-store' })
+    .then(res => {
+      if (!res.ok) throw new Error(`No se pudo cargar el archivo (HTTP ${res.status}). Verifica que el servidor esté activo.`);
+      return res.json();
+    })
+    .then(data => vfValidateAndStart(data))
+    .catch(err  => vfShowError(err.message));
+}
+
+// ── Validar JSON y arrancar partida ──────────────────────────────
+function vfValidateAndStart(data) {
+  // Validar estructura del archivo
+  if (!data || !Array.isArray(data.preguntas)) {
+    return vfShowError('El archivo no tiene el campo "preguntas" o su formato es incorrecto.');
+  }
+  if (data.preguntas.length === 0) {
+    return vfShowError(`El archivo de ${escHtml(vf.course.label)} no contiene preguntas.`);
+  }
+
+  // Validar y filtrar preguntas individuales
+  const seenIds = new Set();
+  const valid   = data.preguntas.filter((q, idx) => {
+    if (!q || typeof q.afirmacion !== 'string' || !q.afirmacion.trim()) return false;
+    if (typeof q.respuesta !== 'boolean') return false;
+    if (typeof q.explicacion !== 'string' || !q.explicacion.trim()) return false;
+    if (q.id !== undefined) {
+      if (seenIds.has(q.id)) return false; // id duplicado
+      seenIds.add(q.id);
+    }
+    return true;
+  });
+
+  if (valid.length === 0) {
+    return vfShowError(`No hay preguntas válidas en el archivo de ${escHtml(vf.course.label)}. Verifica que cada pregunta tenga afirmación, respuesta booleana y explicación.`);
+  }
+
+  // Barajar y tomar VF_PER_ROUND preguntas
+  const shuffled = [...valid].sort(() => Math.random() - .5);
+  vf.questions   = shuffled.slice(0, Math.min(VF_PER_ROUND, shuffled.length));
+  vf.index       = 0;
+  vf.correct     = 0;
+  vf.answered    = false;
+  vf.pointsGiven = new Set();
+
+  vfShowQuestion();
+}
+
+// ── Mostrar error con opciones de recuperación ───────────────────
+function vfShowError(msg) {
+  show('Verdadero o falso', `
+    <div class="feedback" style="color:#df6879;margin-bottom:12px">
+      ⚠️ ${escHtml(msg)}
+    </div>
+    <p class="small">No se cargaron preguntas de otro curso como sustitución.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+      <button class="btn secondary" onclick="vfSelectCourse('${vf.course ? vf.course.id : ''}')">Reintentar</button>
+      <button class="btn secondary" onclick="startVF()">Volver a cursos</button>
+    </div>`);
+}
+
+// ── Mostrar la pregunta actual ────────────────────────────────────
+function vfShowQuestion() {
+  vf.answered    = false;
+  const q        = vf.questions[vf.index];
+  const total    = vf.questions.length;
+  const isLast   = vf.index === total - 1;
+  const cursoPrefijo = vf.course ? escHtml(vf.course.label) : '';
+  const tema     = q.tema ? `<span class="small" style="margin:0">📚 ${escHtml(q.tema)}</span>` : '';
+
+  show('Verdadero o falso', `
+    <div class="vf-meta">
+      <span class="small" style="margin:0">Pregunta <b>${vf.index + 1}</b> de <b>${total}</b> · ✅ <b>${vf.correct}</b> correctas</span>
+      ${tema}
+    </div>
+    <div class="small" style="margin:0 0 6px;color:light-dark(#5142c8,#c4bcff)">📖 ${cursoPrefijo}</div>
+    <div class="vf-afirmacion" id="vf-afirmacion">${escHtml(q.afirmacion)}</div>
+    <div class="vf-btns">
+      <button class="vf-btn vf-btn-v" id="vf-btn-v" onclick="vfAnswer(true)">✅ VERDADERO</button>
+      <button class="vf-btn vf-btn-f" id="vf-btn-f" onclick="vfAnswer(false)">❌ FALSO</button>
+    </div>
+    <div class="feedback" id="vf-feedback" style="min-height:22px"></div>
+    <div class="vf-explain" id="vf-explain"></div>
+    <div class="quiz-footer" style="margin-top:14px">
+      <span class="small">+${VF_PTS_CORRECT} pts por acierto</span>
+      <button class="btn" id="vf-next" style="display:none" onclick="vfAdvance()">
+        ${isLast ? 'Ver resultado' : 'Siguiente →'}
+      </button>
+    </div>`);
+}
+
+// ── Evaluar respuesta ─────────────────────────────────────────────
+function vfAnswer(chosen) {
+  if (vf.answered) return;
+  vf.answered    = true;
+  const q        = vf.questions[vf.index];
+  const correct  = q.respuesta;
+  const btnV     = $('vf-btn-v');
+  const btnF     = $('vf-btn-f');
+  const fb       = $('vf-feedback');
+  const explain  = $('vf-explain');
+
+  // Deshabilitar ambos botones
+  if (btnV) btnV.disabled = true;
+  if (btnF) btnF.disabled = true;
+
+  const chosenBtn  = chosen ? btnV  : btnF;
+  const correctBtn = correct ? btnV : btnF;
+
+  if (chosen === correct) {
+    // Respuesta correcta
+    if (chosenBtn) chosenBtn.classList.add('vf-chosen-correct');
+    if (fb) fb.textContent = '✅ ¡Correcto! Muy bien.';
+    // Sumar puntos solo una vez por pregunta
+    const qKey = q.id ?? q.afirmacion;
+    if (!vf.pointsGiven.has(qKey)) {
+      vf.pointsGiven.add(qKey);
+      addPoints(VF_PTS_CORRECT);
+      vf.correct++;
+    }
+  } else {
+    // Respuesta incorrecta
+    if (chosenBtn)  chosenBtn.classList.add('vf-chosen-wrong');
+    if (correctBtn) correctBtn.classList.add('vf-show-correct');
+    const correctLabel = correct ? 'VERDADERO' : 'FALSO';
+    if (fb) fb.textContent = `❌ ¡Buen intento! La respuesta correcta es: ${correctLabel}.`;
+  }
+
+  // Mostrar explicación
+  if (q.explicacion && explain) {
+    explain.textContent = '💡 ' + q.explicacion;
+    explain.style.display = 'block';
+  }
+
+  const nextBtn = $('vf-next');
+  if (nextBtn) nextBtn.style.display = 'inline-block';
+}
+
+// ── Avanzar o mostrar resultado final ────────────────────────────
+function vfAdvance() {
+  vf.index++;
+  if (vf.index >= vf.questions.length) {
+    vfShowResult();
+  } else {
+    vfShowQuestion();
+  }
+}
+
+// ── Pantalla de resultado final ───────────────────────────────────
+function vfShowResult() {
+  const total   = vf.questions.length;
+  const correct = vf.correct;
+  const wrong   = total - correct;
+  const pct     = Math.round((correct / total) * 100);
+  const pts     = correct * VF_PTS_CORRECT;
+  const emoji   = pct >= 80 ? '🌟' : pct >= 50 ? '👍' : '💪';
+  const mensaje = pct >= 80 ? '¡Excelente trabajo!' : pct >= 50 ? '¡Buen intento, sigue practicando!' : '¡Sigue aprendiendo, puedes mejorar!';
+  const curso   = vf.course ? escHtml(vf.course.label) : '';
+
+  show('¡Verdadero o falso!', `
+    <div class="question" style="margin-bottom:18px">${emoji} ${mensaje}</div>
+    <div style="background:light-dark(#f4f2ff,#2b2b42);border-radius:13px;padding:16px;margin-bottom:18px">
+      <div class="vf-result-row"><span>📖 Curso</span><b>${curso}</b></div>
+      <div class="vf-result-row"><span>📝 Preguntas respondidas</span><b>${total}</b></div>
+      <div class="vf-result-row"><span>✅ Respuestas correctas</span><b>${correct}</b></div>
+      <div class="vf-result-row"><span>❌ Respuestas incorrectas</span><b>${wrong}</b></div>
+      <div class="vf-result-row"><span>📊 Porcentaje de aciertos</span><b>${pct}%</b></div>
+      <div class="vf-result-row"><span>⭐ Puntos obtenidos</span><b>${pts}</b></div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn" onclick="vfSelectCourse('${vf.course ? vf.course.id : ''}')">Jugar de nuevo (${curso})</button>
+      <button class="btn secondary" onclick="startVF()">Cambiar curso</button>
+    </div>`);
+}
+// ── Fin Verdadero o Falso ─────────────────────────────────────────
 function startSurprise(){let n=rand(0,2);if(n===0)startMath();else if(n===1)startTrivia();else startSynonym()}
 // --- Visibilidad de juegos según configuración del administrador ---
 (function applyGameVisibility() {
@@ -88,4 +1716,29 @@ function startSurprise(){let n=rand(0,2);if(n===0)startMath();else if(n===1)star
     if (settings[id] === false) card.style.display = 'none';
   });
 })();
+
+// ── Selector de curso: mostrar / ocultar juegos ──────────────────
+// Solo controla visibilidad y textos. No toca ninguna lógica de juego.
+function selectCourse(value, label) {
+  const area        = document.getElementById('games-area');
+  const placeholder = document.getElementById('games-placeholder');
+  const secHead     = document.getElementById('games-section-head');
+  const title       = document.getElementById('games-title');
+  const subtitle    = document.getElementById('games-subtitle');
+
+  if (!value) {
+    // Sin selección: ocultar juegos, mostrar placeholder
+    area.classList.remove('visible');
+    placeholder.style.display = 'block';
+    secHead.style.display      = 'none';
+    return;
+  }
+
+  // Curso seleccionado: mostrar juegos y actualizar cabecera
+  placeholder.style.display = 'none';
+  secHead.style.display      = 'flex';
+  area.classList.add('visible');
+  title.textContent    = '🎮 Juegos para ' + label;
+  subtitle.textContent = 'Practica y aprende con los juegos de ' + label + '.';
+}
 </script></body></html>

@@ -1,0 +1,14 @@
+# Normalización de fin de línea del repositorio.
+# Todos los archivos de texto del proyecto usan CRLF.
+
+*.html  text eol=crlf
+*.json  text eol=crlf
+*.txt   text eol=crlf
+*.svg   text eol=crlf
+
+# Archivos binarios (no tocar)
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.gif   binary

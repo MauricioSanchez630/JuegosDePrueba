@@ -1,0 +1,30 @@
+{
+  "curso": "Segundo básico",
+  "titulo": "Verdadero o falso",
+  "descripcion": "Pon a prueba lo que sabes sobre operaciones, seres vivos y tu entorno.",
+  "instrucciones": "Lee cada afirmación y decide si es verdadera o falsa.",
+  "preguntas": [
+    { "id": 1,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "5 + 5 = 10.",                                                        "respuesta": true,  "explicacion": "La suma de 5 más 5 es igual a 10." },
+    { "id": 2,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "10 - 4 = 7.",                                                        "respuesta": false, "explicacion": "10 menos 4 es igual a 6, no a 7." },
+    { "id": 3,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "El número 20 tiene dos decenas.",                                    "respuesta": true,  "explicacion": "20 = 2 decenas + 0 unidades." },
+    { "id": 4,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "Un rectángulo tiene todos sus lados iguales.",                       "respuesta": false, "explicacion": "El rectángulo tiene dos pares de lados iguales, pero no los cuatro lados iguales. El cuadrado sí los tiene todos iguales." },
+    { "id": 5,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "3 + 7 = 11.",                                                        "respuesta": false, "explicacion": "3 más 7 es igual a 10, no a 11." },
+    { "id": 6,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "El número 15 está entre el 14 y el 16.",                             "respuesta": true,  "explicacion": "Al contar: 14, 15, 16. El 15 está justo en el medio." },
+    { "id": 7,  "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Los animales que amamantan a sus crías se llaman mamíferos.",        "respuesta": true,  "explicacion": "Los mamíferos alimentan a sus crías con leche materna." },
+    { "id": 8,  "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Las plantas producen su propio alimento con ayuda de la luz solar.", "respuesta": true,  "explicacion": "Las plantas realizan la fotosíntesis para producir su alimento usando la luz solar, agua y CO₂." },
+    { "id": 9,  "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Las mariposas son mamíferos.",                                       "respuesta": false, "explicacion": "Las mariposas son insectos. Los mamíferos son animales como los perros y gatos." },
+    { "id": 10, "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "El agua puede estar en estado sólido, líquido y gaseoso.",           "respuesta": true,  "explicacion": "Hielo (sólido), agua (líquido) y vapor (gaseoso) son los tres estados del agua." },
+    { "id": 11, "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Los reptiles son animales de sangre caliente.",                      "respuesta": false, "explicacion": "Los reptiles son de sangre fría. Su temperatura corporal depende del ambiente." },
+    { "id": 12, "tema": "Lenguaje",          "dificultad": "facil",  "afirmacion": "En un texto, el punto separa oraciones completas.",                  "respuesta": true,  "explicacion": "El punto marca el fin de una oración y da paso a la siguiente idea." },
+    { "id": 13, "tema": "Lenguaje",          "dificultad": "facil",  "afirmacion": "Las palabras siempre se escriben con mayúscula al inicio.",          "respuesta": false, "explicacion": "Solo se usa mayúscula al inicio de una oración, en nombres propios y después de punto." },
+    { "id": 14, "tema": "Entorno",           "dificultad": "facil",  "afirmacion": "Chile es un país de América del Sur.",                              "respuesta": true,  "explicacion": "Chile está ubicado en el extremo suroeste de América del Sur." },
+    { "id": 15, "tema": "Entorno",           "dificultad": "facil",  "afirmacion": "Santiago es la capital de Chile.",                                  "respuesta": true,  "explicacion": "Santiago es la capital y la ciudad más grande de Chile." },
+    { "id": 16, "tema": "Matemáticas",       "dificultad": "normal", "afirmacion": "El número 100 tiene una centena.",                                   "respuesta": true,  "explicacion": "100 = 1 centena + 0 decenas + 0 unidades." },
+    { "id": 17, "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Los pulmones nos sirven para respirar.",                             "respuesta": true,  "explicacion": "Los pulmones son los órganos del sistema respiratorio que nos permiten inhalar oxígeno." },
+    { "id": 18, "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "El corazón es parte del sistema digestivo.",                        "respuesta": false, "explicacion": "El corazón pertenece al sistema circulatorio, no al digestivo." },
+    { "id": 19, "tema": "Entorno",           "dificultad": "facil",  "afirmacion": "Los ríos y lagos tienen agua dulce.",                               "respuesta": true,  "explicacion": "La mayoría de los ríos y lagos contienen agua dulce, a diferencia del mar que es salado." },
+    { "id": 20, "tema": "Matemáticas",       "dificultad": "normal", "afirmacion": "Un cuadrado tiene cuatro ángulos rectos.",                          "respuesta": true,  "explicacion": "Los cuatro ángulos de un cuadrado son rectos (90°)." },
+    { "id": 21, "tema": "Lenguaje",          "dificultad": "facil",  "afirmacion": "El sustantivo es una palabra que nombra personas, animales o cosas.","respuesta": true,  "explicacion": "Los sustantivos son palabras que dan nombre a todo lo que existe." },
+    { "id": 22, "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Las abejas son insectos.",                                           "respuesta": true,  "explicacion": "Las abejas son insectos con seis patas, dos antenas y dos pares de alas." }
+  ]
+}

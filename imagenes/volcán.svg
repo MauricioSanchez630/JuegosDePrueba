@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+  <rect width="300" height="200" fill="#fff0e0" rx="16"/>
+  <!-- Fondo cielo -->
+  <rect width="300" height="130" fill="#ffd9b0" rx="0"/>
+  <!-- Humo -->
+  <circle cx="148" cy="58" r="18" fill="#cccccc" opacity=".6"/>
+  <circle cx="158" cy="42" r="14" fill="#bbbbbb" opacity=".5"/>
+  <circle cx="145" cy="30" r="10" fill="#aaaaaa" opacity=".4"/>
+  <!-- Volcán -->
+  <polygon points="60,175 150,65 240,175" fill="#8b5e3c"/>
+  <!-- Lava interior -->
+  <polygon points="130,120 150,65 170,120" fill="#e84a0c" opacity=".9"/>
+  <!-- Lava que fluye -->
+  <path d="M150 90 Q160 110 175 130 Q185 148 170 165" fill="none" stroke="#ff6600" stroke-width="8" stroke-linecap="round"/>
+  <path d="M150 90 Q138 112 128 135 Q118 152 132 168" fill="none" stroke="#e84a0c" stroke-width="6" stroke-linecap="round"/>
+  <!-- Base tierra -->
+  <rect x="0" y="170" width="300" height="30" fill="#6b4423" rx="0"/>
+  <text x="150" y="193" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fff" font-weight="bold">Volcán</text>
+</svg>

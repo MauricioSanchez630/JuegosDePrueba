@@ -1,0 +1,30 @@
+{
+  "curso": "Cuarto básico",
+  "titulo": "Verdadero o falso",
+  "descripcion": "Pon a prueba lo que sabes sobre fracciones, ecosistemas y geografía de Chile.",
+  "instrucciones": "Lee cada afirmación y decide si es verdadera o falsa.",
+  "preguntas": [
+    { "id": 1,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "La fracción 1/2 representa la mitad de algo.",                      "respuesta": true,  "explicacion": "1/2 significa que dividimos en 2 partes iguales y tomamos 1." },
+    { "id": 2,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "3/4 es mayor que 1/2.",                                             "respuesta": true,  "explicacion": "3/4 = 0,75 y 1/2 = 0,5. Por lo tanto, 3/4 es mayor." },
+    { "id": 3,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "Una fracción tiene numerador y denominador.",                        "respuesta": true,  "explicacion": "El numerador es el número de arriba y el denominador es el de abajo." },
+    { "id": 4,  "tema": "Matemáticas",       "dificultad": "normal", "afirmacion": "2/4 es igual a 1/2.",                                               "respuesta": true,  "explicacion": "Si simplificas 2/4 dividiendo por 2, obtienes 1/2. Son fracciones equivalentes." },
+    { "id": 5,  "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "El número 1.000 tiene cuatro cifras.",                              "respuesta": true,  "explicacion": "1.000 se escribe con los dígitos 1, 0, 0, 0 (cuatro cifras)." },
+    { "id": 6,  "tema": "Matemáticas",       "dificultad": "normal", "afirmacion": "25 × 4 = 90.",                                                      "respuesta": false, "explicacion": "25 × 4 = 100, no 90." },
+    { "id": 7,  "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Un ecosistema incluye seres vivos y elementos no vivos.",            "respuesta": true,  "explicacion": "Un ecosistema es el conjunto de organismos y su ambiente físico (agua, suelo, aire)." },
+    { "id": 8,  "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Las plantas son productores en la cadena alimentaria.",              "respuesta": true,  "explicacion": "Las plantas producen su propio alimento mediante fotosíntesis, iniciando la cadena." },
+    { "id": 9,  "tema": "Ciencias naturales","dificultad": "normal", "afirmacion": "Los animales carnívoros se alimentan solo de plantas.",              "respuesta": false, "explicacion": "Los carnívoros se alimentan de otros animales. Los herbívoros son los que comen plantas." },
+    { "id": 10, "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "El sol es la principal fuente de energía para los ecosistemas.",    "respuesta": true,  "explicacion": "La energía solar impulsa la fotosíntesis, que sostiene toda la cadena alimentaria." },
+    { "id": 11, "tema": "Ciencias naturales","dificultad": "normal", "afirmacion": "La contaminación del agua no afecta a los ecosistemas acuáticos.",  "respuesta": false, "explicacion": "La contaminación destruye los hábitats de peces y otros organismos acuáticos." },
+    { "id": 12, "tema": "Geografía",         "dificultad": "facil",  "afirmacion": "Chile está dividido en regiones.",                                  "respuesta": true,  "explicacion": "Chile se organiza administrativamente en regiones, provincias y comunas." },
+    { "id": 13, "tema": "Geografía",         "dificultad": "facil",  "afirmacion": "El desierto de Atacama está ubicado en el sur de Chile.",           "respuesta": false, "explicacion": "El desierto de Atacama se encuentra en el norte de Chile." },
+    { "id": 14, "tema": "Geografía",         "dificultad": "facil",  "afirmacion": "La Patagonia se encuentra en el sur de Chile.",                     "respuesta": true,  "explicacion": "La Patagonia chilena corresponde a las regiones del extremo sur del país." },
+    { "id": 15, "tema": "Historia",          "dificultad": "facil",  "afirmacion": "La independencia de Chile fue el 18 de septiembre de 1810.",        "respuesta": false, "explicacion": "El 18 de septiembre de 1810 fue la Primera Junta Nacional de Gobierno. La independencia formal se declaró el 12 de febrero de 1818." },
+    { "id": 16, "tema": "Historia",          "dificultad": "facil",  "afirmacion": "Bernardo O'Higgins fue un prócer de la independencia de Chile.",     "respuesta": true,  "explicacion": "Bernardo O'Higgins fue el primer director supremo de Chile y un héroe de la independencia." },
+    { "id": 17, "tema": "Matemáticas",       "dificultad": "facil",  "afirmacion": "500 + 500 = 1.000.",                                                "respuesta": true,  "explicacion": "La suma de 500 y 500 es igual a 1.000." },
+    { "id": 18, "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "Los volcanes pueden formar nuevas islas cuando erupcionan bajo el mar.", "respuesta": true,  "explicacion": "Cuando un volcán submarino acumula lava, puede sobresalir del agua y formar una isla." },
+    { "id": 19, "tema": "Geografía",         "dificultad": "normal", "afirmacion": "Chile limita al norte con Bolivia y al sur con Argentina.",         "respuesta": false, "explicacion": "Chile limita al norte con Perú y Bolivia, y al sur con la Antártica. Limita al este con Argentina." },
+    { "id": 20, "tema": "Matemáticas",       "dificultad": "normal", "afirmacion": "El perímetro de un cuadrado de lado 5 cm es 20 cm.",                "respuesta": true,  "explicacion": "Perímetro = 4 × lado = 4 × 5 = 20 cm." },
+    { "id": 21, "tema": "Ciencias naturales","dificultad": "facil",  "afirmacion": "El oxígeno que respiramos es producido por las plantas.",            "respuesta": true,  "explicacion": "Durante la fotosíntesis, las plantas liberan oxígeno como subproducto." },
+    { "id": 22, "tema": "Historia",          "dificultad": "facil",  "afirmacion": "Los pueblos originarios de Chile vivían aquí antes de la llegada de los españoles.", "respuesta": true, "explicacion": "Pueblos como mapuches, aymaras y rapanui habitaban Chile antes de la colonización española." }
+  ]
+}

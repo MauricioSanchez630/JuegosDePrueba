@@ -53,3 +53,58 @@ function renderScore() {
    Se escucha también 'storage' para sincronizar entre pestañas. */
 document.addEventListener('DOMContentLoaded', renderScore);
 window.addEventListener('storage', e => { if (e.key === SCORE_KEY) renderScore(); });
+
+/* ─────────────────────────────────────────────────────────────
+   CURSO SELECCIONADO (compartido entre index y los juegos)
+   El curso elegido en index.html se guarda en localStorage y se
+   propaga a las páginas de juego vía el parámetro de URL ?curso=.
+   Los juegos que dependen del curso usan getCursoSeleccionado()
+   para cargar el JSON correspondiente a ese curso.
+───────────────────────────────────────────────────────────── */
+const CURSO_KEY = 'aulaplay_curso';
+
+/* Metadatos de los 8 cursos de educación básica.
+   id     → sufijo usado en los nombres de archivo JSON (VF, ALT, MC)
+   num    → número del curso (1..8), valor del selector de index
+   label  → nombre legible para mostrar en la interfaz */
+const CURSOS = [
+  { id: 'primero', num: '1', label: 'Primero básico' },
+  { id: 'segundo', num: '2', label: 'Segundo básico' },
+  { id: 'tercero', num: '3', label: 'Tercero básico' },
+  { id: 'cuarto',  num: '4', label: 'Cuarto básico'  },
+  { id: 'quinto',  num: '5', label: 'Quinto básico'  },
+  { id: 'sexto',   num: '6', label: 'Sexto básico'   },
+  { id: 'septimo', num: '7', label: 'Séptimo básico' },
+  { id: 'octavo',  num: '8', label: 'Octavo básico'  }
+];
+
+/* Devuelve el curso buscándolo por su num ('1'..'8') o por su id. */
+function buscarCurso(valor) {
+  if (valor === undefined || valor === null) return null;
+  const v = String(valor).trim();
+  if (!v) return null;
+  return CURSOS.find(c => c.num === v || c.id === v) || null;
+}
+
+/* Guarda el curso seleccionado (acepta num o id) en localStorage. */
+function setCursoSeleccionado(valor) {
+  const curso = buscarCurso(valor);
+  if (curso) localStorage.setItem(CURSO_KEY, curso.id);
+}
+
+/* Obtiene el curso activo. Prioridad:
+   1) parámetro ?curso= de la URL (al abrir un juego desde index)
+   2) valor guardado en localStorage
+   Devuelve el objeto del curso o null si no hay ninguno válido. */
+function getCursoSeleccionado() {
+  let desdeUrl = null;
+  try {
+    const params = new URLSearchParams(window.location.search);
+    desdeUrl = params.get('curso');
+  } catch { /* URL no disponible */ }
+
+  const curso = buscarCurso(desdeUrl) || buscarCurso(localStorage.getItem(CURSO_KEY));
+  /* Si vino por URL y es válido, lo persistimos para futuras visitas. */
+  if (curso && desdeUrl) localStorage.setItem(CURSO_KEY, curso.id);
+  return curso;
+}

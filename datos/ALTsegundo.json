@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "pregunta": "¿Cuánto es 7 + 8?",
+    "alternativas": ["14", "15", "16", "17"],
+    "respuestaCorrecta": 1,
+    "explicacion": "7 más 8 es igual a 15."
+  },
+  {
+    "id": 2,
+    "pregunta": "¿Cuántas decenas tiene el número 40?",
+    "alternativas": ["Tres", "Cuatro", "Cinco", "Cuarenta"],
+    "respuestaCorrecta": 1,
+    "explicacion": "40 tiene 4 decenas (4 grupos de 10)."
+  },
+  {
+    "id": 3,
+    "pregunta": "¿Qué figura tiene cuatro lados iguales?",
+    "alternativas": ["El triángulo", "El cuadrado", "El círculo", "El óvalo"],
+    "respuestaCorrecta": 1,
+    "explicacion": "El cuadrado tiene cuatro lados iguales."
+  },
+  {
+    "id": 4,
+    "pregunta": "¿Cómo se llaman los animales que amamantan a sus crías?",
+    "alternativas": ["Aves", "Peces", "Mamíferos", "Insectos"],
+    "respuestaCorrecta": 2,
+    "explicacion": "Los mamíferos alimentan a sus crías con leche materna."
+  },
+  {
+    "id": 5,
+    "pregunta": "¿Cuánto es 20 - 5?",
+    "alternativas": ["13", "14", "15", "16"],
+    "respuestaCorrecta": 2,
+    "explicacion": "A 20 le quitas 5 y quedan 15."
+  },
+  {
+    "id": 6,
+    "pregunta": "¿Qué signo marca el final de una oración?",
+    "alternativas": ["La coma", "El punto", "El guion", "Los dos puntos"],
+    "respuestaCorrecta": 1,
+    "explicacion": "El punto separa y termina las oraciones."
+  },
+  {
+    "id": 7,
+    "pregunta": "¿Cuántos estados del agua conoces?",
+    "alternativas": ["Uno", "Dos", "Tres", "Cuatro"],
+    "respuestaCorrecta": 2,
+    "explicacion": "El agua puede estar sólida, líquida y gaseosa."
+  },
+  {
+    "id": 8,
+    "pregunta": "¿Cuál es la capital de Chile?",
+    "alternativas": ["Valparaíso", "Concepción", "Santiago", "La Serena"],
+    "respuestaCorrecta": 2,
+    "explicacion": "Santiago es la capital de Chile."
+  },
+  {
+    "id": 9,
+    "pregunta": "¿Cuánto es 6 + 6?",
+    "alternativas": ["10", "11", "12", "13"],
+    "respuestaCorrecta": 2,
+    "explicacion": "El doble de 6 es 12."
+  },
+  {
+    "id": 10,
+    "pregunta": "¿Qué órgano usamos para respirar?",
+    "alternativas": ["El corazón", "Los pulmones", "El estómago", "El hígado"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Los pulmones nos permiten respirar."
+  }
+]

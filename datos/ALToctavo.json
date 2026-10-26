@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "pregunta": "En álgebra, ¿cuánto es 2x + 3x?",
+    "alternativas": ["5", "5x", "6x", "x5"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Se suman los coeficientes de términos semejantes: 2x + 3x = 5x."
+  },
+  {
+    "id": 2,
+    "pregunta": "Si 2x = 10, ¿cuánto vale x?",
+    "alternativas": ["2", "4", "5", "20"],
+    "respuestaCorrecta": 2,
+    "explicacion": "Despejando: x = 10 ÷ 2 = 5."
+  },
+  {
+    "id": 3,
+    "pregunta": "¿Cuántas soluciones reales puede tener una ecuación de segundo grado?",
+    "alternativas": ["Siempre una", "Hasta dos", "Siempre tres", "Ninguna"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Las ecuaciones cuadráticas pueden tener 0, 1 o 2 soluciones reales."
+  },
+  {
+    "id": 4,
+    "pregunta": "Según la Segunda Ley de Newton, ¿cómo se calcula la fuerza?",
+    "alternativas": ["F = m + a", "F = m × a", "F = m / a", "F = a - m"],
+    "respuestaCorrecta": 1,
+    "explicacion": "La fuerza es masa por aceleración: F = m × a."
+  },
+  {
+    "id": 5,
+    "pregunta": "¿Qué organiza la tabla periódica?",
+    "alternativas": ["Los planetas", "Los elementos químicos", "Los animales", "Las fórmulas"],
+    "respuestaCorrecta": 1,
+    "explicacion": "La tabla periódica ordena los elementos químicos."
+  },
+  {
+    "id": 6,
+    "pregunta": "¿Qué indica un pH menor a 7?",
+    "alternativas": ["Es neutro", "Es ácido", "Es básico", "Es salino"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Un pH menor a 7 indica que la sustancia es ácida."
+  },
+  {
+    "id": 7,
+    "pregunta": "¿Qué produce la meiosis?",
+    "alternativas": ["Células idénticas", "Células con la mitad de cromosomas", "Más cromosomas", "Tejidos"],
+    "respuestaCorrecta": 1,
+    "explicacion": "La meiosis produce gametos con la mitad de los cromosomas."
+  },
+  {
+    "id": 8,
+    "pregunta": "¿Qué estructura tiene el ADN?",
+    "alternativas": ["Una cadena simple", "Doble hélice", "Un triángulo", "Un círculo"],
+    "respuestaCorrecta": 1,
+    "explicacion": "El ADN tiene una estructura de doble hélice."
+  },
+  {
+    "id": 9,
+    "pregunta": "¿En qué año fue adoptada la Declaración Universal de los Derechos Humanos?",
+    "alternativas": ["1918", "1945", "1948", "1969"],
+    "respuestaCorrecta": 2,
+    "explicacion": "La ONU la adoptó el 10 de diciembre de 1948."
+  },
+  {
+    "id": 10,
+    "pregunta": "¿Cuál es la pendiente de una recta horizontal?",
+    "alternativas": ["0", "1", "-1", "Infinita"],
+    "respuestaCorrecta": 0,
+    "explicacion": "Una recta horizontal tiene pendiente 0."
+  }
+]

@@ -1,19 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════
    JUEGO: Verdadero o Falso
-   Preguntas por curso desde ../datos/VF<curso>.json. +10 por acierto.
-   Depende de: js/comun.js ($, addPoints, escHtml)
+   Preguntas desde ../datos/VF<curso>.json según el curso elegido en
+   index.html (parámetro ?curso= o localStorage). +10 por acierto.
+   Depende de: js/comun.js ($, addPoints, escHtml, getCursoSeleccionado)
 ═══════════════════════════════════════════════════════════════ */
 
-const VF_COURSES = [
-  { id: 'primero',  label: 'Primero básico',  num: '1°', file: '../datos/VFprimero.json'  },
-  { id: 'segundo',  label: 'Segundo básico',  num: '2°', file: '../datos/VFsegundo.json'  },
-  { id: 'tercero',  label: 'Tercero básico',  num: '3°', file: '../datos/VFtercero.json'  },
-  { id: 'cuarto',   label: 'Cuarto básico',   num: '4°', file: '../datos/VFcuarto.json'   },
-  { id: 'quinto',   label: 'Quinto básico',   num: '5°', file: '../datos/VFquinto.json'   },
-  { id: 'sexto',    label: 'Sexto básico',    num: '6°', file: '../datos/VFsexto.json'    },
-  { id: 'septimo',  label: 'Séptimo básico',  num: '7°', file: '../datos/VFseptimo.json'  },
-  { id: 'octavo',   label: 'Octavo básico',   num: '8°', file: '../datos/VFoctavo.json'   }
-];
 const VF_PER_ROUND   = 5;
 const VF_PTS_CORRECT = 10;
 
@@ -29,26 +20,29 @@ let vf = {
 function render(html) { $('gameContent').innerHTML = html; }
 
 function startVF() {
-  const courseButtons = VF_COURSES.map(c =>
-    `<button class="vf-course-btn" onclick="vfSelectCourse('${c.id}')">
-       <span class="vf-course-num">${c.num}</span>${escHtml(c.label)}
-     </button>`
-  ).join('');
-
-  render(`
-    <p class="small" style="margin:0 0 10px">Selecciona tu curso para comenzar:</p>
-    <div class="vf-course-grid">${courseButtons}</div>`);
+  // Tomar el curso elegido en la página principal (sin selector propio).
+  vf.course = getCursoSeleccionado();
+  if (!vf.course) {
+    vfShowNoCourse();
+    return;
+  }
+  vfLoadCourse();
 }
 
-function vfSelectCourse(courseId) {
-  const course = VF_COURSES.find(c => c.id === courseId);
-  if (!course) return;
-  vf.course = course;
+function vfShowNoCourse() {
+  render(`
+    <div class="feedback" style="margin-bottom:10px">📚 Primero elige tu curso en la página principal.</div>
+    <p class="small">Las preguntas de Verdadero o Falso dependen del curso seleccionado.</p>
+    <a class="btn" href="../index.html#juegos">Ir a elegir mi curso</a>`);
+}
+
+function vfLoadCourse() {
+  const archivo = `../datos/VF${vf.course.id}.json`;
 
   render(`<div class="small" style="text-align:center;padding:20px">
-    Cargando preguntas de <b>${escHtml(course.label)}</b>…</div>`);
+    Cargando preguntas de <b>${escHtml(vf.course.label)}</b>…</div>`);
 
-  fetch(course.file, { cache: 'no-store' })
+  fetch(archivo, { cache: 'no-store' })
     .then(res => {
       if (!res.ok) throw new Error(`No se pudo cargar el archivo (HTTP ${res.status}). Verifica que el servidor esté activo.`);
       return res.json();
@@ -96,8 +90,8 @@ function vfShowError(msg) {
     <div class="feedback" style="color:#df6879;margin-bottom:12px">⚠️ ${escHtml(msg)}</div>
     <p class="small">No se cargaron preguntas de otro curso como sustitución.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
-      <button class="btn secondary" onclick="vfSelectCourse('${vf.course ? vf.course.id : ''}')">Reintentar</button>
-      <button class="btn secondary" onclick="startVF()">Volver a cursos</button>
+      <button class="btn secondary" onclick="vfLoadCourse()">Reintentar</button>
+      <a class="btn secondary" href="../index.html#juegos">Cambiar curso</a>
     </div>`);
 }
 
@@ -201,8 +195,8 @@ function vfShowResult() {
       <div class="vf-result-row"><span>⭐ Puntos obtenidos</span><b>${pts}</b></div>
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="btn" onclick="vfSelectCourse('${vf.course ? vf.course.id : ''}')">Jugar de nuevo (${curso})</button>
-      <button class="btn secondary" onclick="startVF()">Cambiar curso</button>
+      <button class="btn" onclick="vfLoadCourse()">Jugar de nuevo (${curso})</button>
+      <a class="btn secondary" href="../index.html#juegos">Cambiar curso</a>
     </div>`);
 }
 

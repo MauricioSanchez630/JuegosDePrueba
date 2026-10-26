@@ -1,0 +1,10 @@
+[
+  { "concepto": "Simplificación de 2x + 3x", "respuesta": "5x" },
+  { "concepto": "Valor de x si 2x = 10", "respuesta": "5" },
+  { "concepto": "Fórmula de la fuerza (Newton)", "respuesta": "F = m × a" },
+  { "concepto": "Lo que organiza los elementos químicos", "respuesta": "Tabla periódica" },
+  { "concepto": "pH menor a 7", "respuesta": "Ácido" },
+  { "concepto": "Estructura del ADN", "respuesta": "Doble hélice" },
+  { "concepto": "Año de la Declaración de Derechos Humanos", "respuesta": "1948" },
+  { "concepto": "Pendiente de una recta horizontal", "respuesta": "0" }
+]

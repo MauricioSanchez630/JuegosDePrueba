@@ -722,10 +722,6 @@ footer strong {
 /* ═══════════════════════════════════════════════════════════════
    VERDADERO O FALSO
 ═══════════════════════════════════════════════════════════════ */
-.vf-course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:14px}
-.vf-course-btn{border:2px solid light-dark(#e6e4f2,#44445d);border-radius:13px;background:light-dark(#faf9ff,#2b2b42);color:inherit;cursor:pointer;padding:14px 10px;font:inherit;font-size:.88rem;font-weight:700;text-align:center;transition:border-color .15s,background .15s}
-.vf-course-btn:hover{border-color:#7567e8;background:light-dark(#eceaff,#34345a)}
-.vf-course-num{font-size:1.5rem;display:block;margin-bottom:4px}
 .vf-afirmacion{font-size:1.1rem;font-weight:800;margin:18px 0 20px;line-height:1.45;padding:16px;background:light-dark(#f4f2ff,#2b2b42);border-radius:13px;border-left:4px solid #5B4BDB}
 .vf-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px}
 .vf-btn{padding:16px;border:2px solid transparent;border-radius:13px;cursor:pointer;font:inherit;font-size:1rem;font-weight:800;transition:all .15s}
@@ -774,7 +770,6 @@ footer strong {
   .match-img-btn img,.match-img-error{height:90px}
 }
 @media(max-width:400px) {
-  .vf-course-grid{grid-template-columns:1fr 1fr}
   .vf-btns{grid-template-columns:1fr}
   .cards { grid-template-columns:1fr; }
 }

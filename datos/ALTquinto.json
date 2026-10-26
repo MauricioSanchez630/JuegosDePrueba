@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "pregunta": "¿A qué fracción equivale el decimal 0,5?",
+    "alternativas": ["1/4", "1/2", "1/3", "2/3"],
+    "respuestaCorrecta": 1,
+    "explicacion": "0,5 equivale a 1/2, la mitad de uno."
+  },
+  {
+    "id": 2,
+    "pregunta": "¿Cuánto es el 25% de 100?",
+    "alternativas": ["15", "20", "25", "50"],
+    "respuestaCorrecta": 2,
+    "explicacion": "El 25% de 100 es 25."
+  },
+  {
+    "id": 3,
+    "pregunta": "¿Cuántos planetas tiene el sistema solar?",
+    "alternativas": ["7", "8", "9", "10"],
+    "respuestaCorrecta": 1,
+    "explicacion": "El sistema solar tiene 8 planetas desde 2006."
+  },
+  {
+    "id": 4,
+    "pregunta": "¿Cuál es el planeta más grande del sistema solar?",
+    "alternativas": ["La Tierra", "Saturno", "Júpiter", "Neptuno"],
+    "respuestaCorrecta": 2,
+    "explicacion": "Júpiter es el planeta más grande del sistema solar."
+  },
+  {
+    "id": 5,
+    "pregunta": "¿Qué partículas forman toda la materia?",
+    "alternativas": ["Células", "Átomos", "Moléculas de agua", "Minerales"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Toda la materia está formada por átomos."
+  },
+  {
+    "id": 6,
+    "pregunta": "¿Cuál es el satélite natural de la Tierra?",
+    "alternativas": ["Marte", "El Sol", "La Luna", "Venus"],
+    "respuestaCorrecta": 2,
+    "explicacion": "La Luna es el único satélite natural de la Tierra."
+  },
+  {
+    "id": 7,
+    "pregunta": "¿Dónde se desarrollaron los mayas y los aztecas?",
+    "alternativas": ["Europa", "Asia", "América", "África"],
+    "respuestaCorrecta": 2,
+    "explicacion": "Mayas y aztecas fueron civilizaciones de América."
+  },
+  {
+    "id": 8,
+    "pregunta": "¿En qué año llegó Cristóbal Colón a América?",
+    "alternativas": ["1392", "1492", "1592", "1692"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Colón llegó a América en 1492."
+  },
+  {
+    "id": 9,
+    "pregunta": "¿Cuánto mide un ángulo recto?",
+    "alternativas": ["45°", "90°", "180°", "360°"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Un ángulo recto mide exactamente 90°."
+  },
+  {
+    "id": 10,
+    "pregunta": "¿Qué planeta es el más cercano al Sol?",
+    "alternativas": ["Venus", "Tierra", "Mercurio", "Marte"],
+    "respuestaCorrecta": 2,
+    "explicacion": "Mercurio es el planeta más cercano al Sol."
+  }
+]

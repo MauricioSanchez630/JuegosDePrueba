@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "pregunta": "¿Cuánto es 6 × 7?",
+    "alternativas": ["36", "42", "48", "49"],
+    "respuestaCorrecta": 1,
+    "explicacion": "La tabla del 6: 6 × 7 = 42."
+  },
+  {
+    "id": 2,
+    "pregunta": "¿Cuánto es 24 ÷ 6?",
+    "alternativas": ["3", "4", "5", "6"],
+    "respuestaCorrecta": 1,
+    "explicacion": "24 dividido en grupos de 6 da 4 grupos."
+  },
+  {
+    "id": 3,
+    "pregunta": "¿A cuántos metros equivale un kilómetro?",
+    "alternativas": ["100", "500", "1.000", "10.000"],
+    "respuestaCorrecta": 2,
+    "explicacion": "Un kilómetro equivale a 1.000 metros."
+  },
+  {
+    "id": 4,
+    "pregunta": "¿Qué parte del cuerpo protege el cráneo?",
+    "alternativas": ["El corazón", "El cerebro", "El estómago", "Los pulmones"],
+    "respuestaCorrecta": 1,
+    "explicacion": "El cráneo es un hueso que protege el cerebro."
+  },
+  {
+    "id": 5,
+    "pregunta": "¿Cuántas patas tiene un insecto?",
+    "alternativas": ["Cuatro", "Seis", "Ocho", "Diez"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Los insectos tienen seis patas."
+  },
+  {
+    "id": 6,
+    "pregunta": "¿Qué pueblo originario habita el centro-sur de Chile?",
+    "alternativas": ["Los incas", "Los mayas", "Los mapuches", "Los aztecas"],
+    "respuestaCorrecta": 2,
+    "explicacion": "Los mapuches son un pueblo originario del centro-sur de Chile."
+  },
+  {
+    "id": 7,
+    "pregunta": "¿A qué temperatura hierve el agua a nivel del mar?",
+    "alternativas": ["50 °C", "90 °C", "100 °C", "120 °C"],
+    "respuestaCorrecta": 2,
+    "explicacion": "El agua hierve a 100 °C a nivel del mar."
+  },
+  {
+    "id": 8,
+    "pregunta": "¿Cuánto es el triple de 5?",
+    "alternativas": ["10", "15", "20", "25"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Triplicar es multiplicar por 3: 5 × 3 = 15."
+  },
+  {
+    "id": 9,
+    "pregunta": "¿Qué animal es un arácnido y no un insecto?",
+    "alternativas": ["La araña", "La abeja", "La mariposa", "La hormiga"],
+    "respuestaCorrecta": 0,
+    "explicacion": "Las arañas son arácnidos con ocho patas."
+  },
+  {
+    "id": 10,
+    "pregunta": "¿Con qué océano tiene costa Chile?",
+    "alternativas": ["Atlántico", "Índico", "Pacífico", "Ártico"],
+    "respuestaCorrecta": 2,
+    "explicacion": "Chile tiene una extensa costa sobre el océano Pacífico."
+  }
+]

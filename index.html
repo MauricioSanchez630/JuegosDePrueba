@@ -116,7 +116,7 @@
     <a class="game-card" data-game-id="vf" href="juegos/verdadero-falso.html">
       <div class="game-icon yellow">&#9989;</div>
       <h3>Verdadero o Falso</h3>
-      <p>Lee una afirmaci&oacute;n y decide si es verdadera o falsa. &iexcl;Elige tu curso!</p>
+      <p>Lee una afirmaci&oacute;n y decide si es verdadera o falsa, seg&uacute;n tu curso.</p>
       <span class="card-cta">Jugar ahora</span>
     </a>
   </div>
@@ -138,6 +138,16 @@
 
 <script src="js/comun.js"></script>
 <script>
+// Actualiza los enlaces de las tarjetas para propagar el curso elegido
+// a las páginas de juego mediante el parámetro de URL ?curso=.
+function updateGameLinks(value) {
+  document.querySelectorAll('.game-card[data-game-id]').forEach(card => {
+    const base = card.getAttribute('data-href') || card.getAttribute('href');
+    if (!card.getAttribute('data-href')) card.setAttribute('data-href', base);
+    card.setAttribute('href', value ? base + '?curso=' + encodeURIComponent(value) : base);
+  });
+}
+
 // Selector de curso: muestra/oculta las tarjetas de juego
 function selectCourse(value, label) {
   const area        = document.getElementById('games-area');
@@ -146,10 +156,14 @@ function selectCourse(value, label) {
   const title       = document.getElementById('games-title');
   const subtitle    = document.getElementById('games-subtitle');
 
+  // Persistir la selección para que los juegos la usen al cargar.
+  if (value) setCursoSeleccionado(value);
+
   if (!value) {
     area.classList.remove('visible');
     placeholder.style.display = 'block';
     secHead.style.display     = 'none';
+    updateGameLinks('');
     return;
   }
   placeholder.style.display = 'none';
@@ -157,7 +171,21 @@ function selectCourse(value, label) {
   area.classList.add('visible');
   title.textContent    = '\u{1F3AE} Juegos para ' + label;
   subtitle.textContent = 'Practica y aprende con los juegos de ' + label + '.';
+  updateGameLinks(value);
 }
+
+// Al cargar, restaurar el curso previamente seleccionado (si existe).
+(function restoreCourse() {
+  const curso = getCursoSeleccionado();
+  if (!curso) return;
+  const select = document.getElementById('courseSelect');
+  if (!select) return;
+  select.value = curso.num;
+  const label  = select.options[select.selectedIndex]
+               ? select.options[select.selectedIndex].text
+               : curso.label;
+  selectCourse(curso.num, label);
+})();
 
 // Visibilidad de juegos segun configuracion del administrador
 (function applyGameVisibility() {

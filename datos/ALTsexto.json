@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "pregunta": "¿A qué fracción equivale el 50%?",
+    "alternativas": ["1/4", "1/2", "1/3", "3/4"],
+    "respuestaCorrecta": 1,
+    "explicacion": "El 50% equivale a 1/2."
+  },
+  {
+    "id": 2,
+    "pregunta": "¿Cuánto es el 10% de 200?",
+    "alternativas": ["10", "20", "25", "40"],
+    "respuestaCorrecta": 1,
+    "explicacion": "El 10% de 200 es 20."
+  },
+  {
+    "id": 3,
+    "pregunta": "¿Cuál de estos materiales conduce bien la electricidad?",
+    "alternativas": ["La madera", "El plástico", "El metal", "El vidrio"],
+    "respuestaCorrecta": 2,
+    "explicacion": "Los metales son buenos conductores eléctricos."
+  },
+  {
+    "id": 4,
+    "pregunta": "¿Qué necesita un circuito eléctrico para funcionar?",
+    "alternativas": ["Agua", "Una fuente de energía", "Luz solar", "Viento"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Un circuito necesita una fuente de energía como una batería."
+  },
+  {
+    "id": 5,
+    "pregunta": "¿Qué sistema coordina las funciones del cuerpo?",
+    "alternativas": ["El digestivo", "El nervioso", "El respiratorio", "El óseo"],
+    "respuestaCorrecta": 1,
+    "explicacion": "El sistema nervioso regula y coordina el cuerpo."
+  },
+  {
+    "id": 6,
+    "pregunta": "¿En qué año terminó la Segunda Guerra Mundial?",
+    "alternativas": ["1918", "1939", "1945", "1950"],
+    "respuestaCorrecta": 2,
+    "explicacion": "La Segunda Guerra Mundial terminó en 1945."
+  },
+  {
+    "id": 7,
+    "pregunta": "¿Qué continente tiene más países?",
+    "alternativas": ["Europa", "Asia", "África", "América"],
+    "respuestaCorrecta": 2,
+    "explicacion": "África tiene 54 países, más que cualquier otro continente."
+  },
+  {
+    "id": 8,
+    "pregunta": "¿Cuánto mide un ángulo obtuso?",
+    "alternativas": ["Menos de 90°", "Exactamente 90°", "Entre 90° y 180°", "Más de 180°"],
+    "respuestaCorrecta": 2,
+    "explicacion": "Un ángulo obtuso mide más de 90° y menos de 180°."
+  },
+  {
+    "id": 9,
+    "pregunta": "¿Qué produce la fotosíntesis?",
+    "alternativas": ["Solo agua", "Oxígeno y glucosa", "Solo dióxido de carbono", "Minerales"],
+    "respuestaCorrecta": 1,
+    "explicacion": "La fotosíntesis produce oxígeno y glucosa."
+  },
+  {
+    "id": 10,
+    "pregunta": "¿Cuál es la cordillera más larga del mundo?",
+    "alternativas": ["Los Alpes", "Los Andes", "El Himalaya", "Las Rocosas"],
+    "respuestaCorrecta": 1,
+    "explicacion": "La cordillera de los Andes es la más larga del mundo."
+  }
+]

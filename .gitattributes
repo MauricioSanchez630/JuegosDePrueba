@@ -1,12 +1,18 @@
 # Normalización de fin de línea del repositorio.
-# Todos los archivos de texto del proyecto usan CRLF.
+# Todos los archivos de texto del proyecto usan UTF-8 sin BOM y CRLF.
 
+# Regla por defecto: cualquier texto detectado por Git usa CRLF.
+# Cubre también archivos sin extensión (p. ej. .editorconfig, .gitattributes).
+*       text=auto eol=crlf
+
+# Reglas explícitas por tipo (refuerzan la regla por defecto).
 *.html  text eol=crlf
 *.css   text eol=crlf
 *.js    text eol=crlf
 *.json  text eol=crlf
 *.txt   text eol=crlf
 *.svg   text eol=crlf
+*.md    text eol=crlf
 
 # Archivos binarios (no tocar)
 *.png   binary

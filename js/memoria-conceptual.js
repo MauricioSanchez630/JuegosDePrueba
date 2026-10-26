@@ -1,13 +1,15 @@
 /* ═══════════════════════════════════════════════════════════════
    JUEGO: Memoria Conceptual
-   Asocia concepto con respuesta desde ../conceptos.json.
+   Asocia concepto con respuesta desde ../datos/MC<curso>.json según
+   el curso elegido en index.html (parámetro ?curso= o localStorage).
    +10 por pareja, +20 bonus de eficiencia al completar.
-   Depende de: js/comun.js ($, addPoints, escHtml)
+   Depende de: js/comun.js ($, addPoints, escHtml, getCursoSeleccionado)
 ═══════════════════════════════════════════════════════════════ */
 
 const MC_MAX_PAIRS = 6;
 
 let mc = {
+  curso:         null,
   pairs:         [],
   tiles:         [],
   flipped:       [],
@@ -20,6 +22,12 @@ let mc = {
 function render(html) { $('gameContent').innerHTML = html; }
 
 function startMemory() {
+  // Determinar el curso elegido en la página principal.
+  mc.curso = getCursoSeleccionado();
+  if (!mc.curso) {
+    mcShowNoCourse();
+    return;
+  }
   if (!mc.pairs || mc.pairs.length === 0) {
     loadConceptos().then(() => initMemoryRound(MC_MAX_PAIRS));
   } else {
@@ -27,20 +35,31 @@ function startMemory() {
   }
 }
 
+function mcShowNoCourse() {
+  render(`
+    <div class="feedback" style="margin-bottom:10px">📚 Primero elige tu curso en la página principal.</div>
+    <p class="small">Las parejas de Memoria Conceptual dependen del curso seleccionado.</p>
+    <a class="btn" href="../index.html#juegos">Ir a elegir mi curso</a>`);
+}
+
 async function loadConceptos() {
+  const archivo = `../datos/MC${mc.curso.id}.json`;
   try {
-    const res = await fetch('../conceptos.json');
+    const res = await fetch(archivo, { cache: 'no-store' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     if (!Array.isArray(data) || data.length === 0) throw new Error('Datos vacíos o formato incorrecto.');
     const valid = data.filter(d => d && typeof d.concepto === 'string' && d.concepto.trim() &&
                                        typeof d.respuesta === 'string' && d.respuesta.trim());
-    if (valid.length === 0) throw new Error('Ninguna entrada válida en conceptos.json.');
+    if (valid.length === 0) throw new Error(`Ninguna entrada válida para ${mc.curso.label}.`);
     mc.pairs = valid.map((d, i) => ({ concepto: d.concepto.trim(), respuesta: d.respuesta.trim(), id: i }));
   } catch (err) {
-    render(`<div class="feedback" style="color:#df6879">⚠️ No se pudo cargar conceptos.json: ${escHtml(err.message)}</div>
+    render(`<div class="feedback" style="color:#df6879">⚠️ No se pudo cargar MC${mc.curso.id}.json: ${escHtml(err.message)}</div>
       <p class="small">Asegúrate de ejecutar la página desde un servidor web (no directamente con file://).</p>
-      <button class="btn secondary" onclick="startMemory()">Reintentar</button>`);
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <button class="btn secondary" onclick="startMemory()">Reintentar</button>
+        <a class="btn secondary" href="../index.html#juegos">Cambiar curso</a>
+      </div>`);
     mc.pairs = [];
   }
 }
@@ -71,7 +90,10 @@ function renderMemory() {
   const found  = mc.matched.size;
   const remain = total - found;
 
+  const curso = mc.curso ? escHtml(mc.curso.label) : '';
+
   render(`
+    <div class="small" style="margin:0 0 8px">📖 ${curso}</div>
     <div class="concept-meta">
       <span class="small">Parejas encontradas: <b>${found}/${total}</b> · Pendientes: <b>${remain}</b></span>
       <span class="small">Movimientos: <b id="mc-moves">${mc.moves}</b></span>

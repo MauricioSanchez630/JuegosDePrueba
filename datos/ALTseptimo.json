@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "pregunta": "¿Cuánto es (-3) × (-4)?",
+    "alternativas": ["-12", "-7", "7", "12"],
+    "respuestaCorrecta": 3,
+    "explicacion": "Negativo por negativo da positivo: (-3) × (-4) = 12."
+  },
+  {
+    "id": 2,
+    "pregunta": "¿Cuál es el valor absoluto de -7?",
+    "alternativas": ["-7", "0", "7", "14"],
+    "respuestaCorrecta": 2,
+    "explicacion": "El valor absoluto es la distancia al cero: |-7| = 7."
+  },
+  {
+    "id": 3,
+    "pregunta": "¿Cuánto es la raíz cuadrada de 64?",
+    "alternativas": ["6", "7", "8", "9"],
+    "respuestaCorrecta": 2,
+    "explicacion": "√64 = 8, porque 8 × 8 = 64."
+  },
+  {
+    "id": 4,
+    "pregunta": "¿Cuál es la unidad básica de todos los seres vivos?",
+    "alternativas": ["El átomo", "La célula", "El órgano", "El tejido"],
+    "respuestaCorrecta": 1,
+    "explicacion": "La célula es la unidad básica de la vida."
+  },
+  {
+    "id": 5,
+    "pregunta": "¿Qué parte de la célula contiene el ADN?",
+    "alternativas": ["La membrana", "El núcleo", "El citoplasma", "La mitocondria"],
+    "respuestaCorrecta": 1,
+    "explicacion": "El ADN se encuentra dentro del núcleo celular."
+  },
+  {
+    "id": 6,
+    "pregunta": "¿Cómo son las bacterias según su número de células?",
+    "alternativas": ["Multicelulares", "Unicelulares", "Sin células", "Vegetales"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Las bacterias son organismos unicelulares."
+  },
+  {
+    "id": 7,
+    "pregunta": "¿Dónde comenzó la Revolución Industrial?",
+    "alternativas": ["Francia", "Gran Bretaña", "Estados Unidos", "Alemania"],
+    "respuestaCorrecta": 1,
+    "explicacion": "La Revolución Industrial comenzó en Gran Bretaña."
+  },
+  {
+    "id": 8,
+    "pregunta": "¿Quién propuso la teoría de la evolución por selección natural?",
+    "alternativas": ["Newton", "Einstein", "Darwin", "Mendel"],
+    "respuestaCorrecta": 2,
+    "explicacion": "Charles Darwin propuso la selección natural."
+  },
+  {
+    "id": 9,
+    "pregunta": "¿Cómo se llama el perímetro de un círculo?",
+    "alternativas": ["Diámetro", "Radio", "Circunferencia", "Área"],
+    "respuestaCorrecta": 2,
+    "explicacion": "El perímetro de un círculo se llama circunferencia."
+  },
+  {
+    "id": 10,
+    "pregunta": "¿Cuál es el valor aproximado de π (pi)?",
+    "alternativas": ["2,14", "3,14", "4,14", "6,28"],
+    "respuestaCorrecta": 1,
+    "explicacion": "El número π es aproximadamente 3,14."
+  }
+]

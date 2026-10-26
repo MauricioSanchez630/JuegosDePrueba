@@ -1,12 +1,15 @@
 /* ═══════════════════════════════════════════════════════════════
    JUEGO: Alternativas
-   Preguntas con 4 opciones desde ../alternativas.json. +10 por acierto.
-   Depende de: js/comun.js ($, addPoints, escHtml)
+   Preguntas con 4 opciones desde ../datos/ALT<curso>.json según el
+   curso elegido en index.html (parámetro ?curso= o localStorage).
+   +10 por acierto.
+   Depende de: js/comun.js ($, addPoints, escHtml, getCursoSeleccionado)
 ═══════════════════════════════════════════════════════════════ */
 
 const ALT_PER_ROUND = 5;
 
 let alt = {
+  curso:         null,
   bank:          [],
   round:         [],
   index:         0,
@@ -18,6 +21,12 @@ let alt = {
 function render(html) { $('gameContent').innerHTML = html; }
 
 function startTrivia() {
+  // Determinar el curso elegido en la página principal.
+  alt.curso = getCursoSeleccionado();
+  if (!alt.curso) {
+    altShowNoCourse();
+    return;
+  }
   if (alt.bank.length === 0) {
     loadAlternativas().then(() => initTriviaRound());
   } else {
@@ -25,9 +34,17 @@ function startTrivia() {
   }
 }
 
+function altShowNoCourse() {
+  render(`
+    <div class="feedback" style="margin-bottom:10px">📚 Primero elige tu curso en la página principal.</div>
+    <p class="small">Las preguntas de Alternativas dependen del curso seleccionado.</p>
+    <a class="btn" href="../index.html#juegos">Ir a elegir mi curso</a>`);
+}
+
 async function loadAlternativas() {
+  const archivo = `../datos/ALT${alt.curso.id}.json`;
   try {
-    const res = await fetch('../alternativas.json');
+    const res = await fetch(archivo, { cache: 'no-store' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     if (!Array.isArray(data) || data.length === 0) throw new Error('El archivo está vacío o su formato es incorrecto.');
@@ -41,13 +58,16 @@ async function loadAlternativas() {
       return true;
     });
 
-    if (valid.length === 0) throw new Error('No hay preguntas válidas en alternativas.json.');
+    if (valid.length === 0) throw new Error(`No hay preguntas válidas para ${alt.curso.label}.`);
     alt.bank = valid;
   } catch (err) {
     render(`
-      <div class="feedback" style="color:#df6879;margin-bottom:10px">⚠️ No se pudo cargar alternativas.json: ${escHtml(err.message)}</div>
+      <div class="feedback" style="color:#df6879;margin-bottom:10px">⚠️ No se pudo cargar ALT${alt.curso.id}.json: ${escHtml(err.message)}</div>
       <p class="small">Asegúrate de ejecutar la página desde un servidor web (no con file://).</p>
-      <button class="btn secondary" onclick="startTrivia()">Reintentar</button>`);
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <button class="btn secondary" onclick="startTrivia()">Reintentar</button>
+        <a class="btn secondary" href="../index.html#juegos">Cambiar curso</a>
+      </div>`);
     alt.bank = [];
   }
 }
@@ -85,8 +105,10 @@ function nextTrivia() {
   const total  = alt.round.length;
   const isLast = alt.index === total - 1;
 
+  const curso = alt.curso ? escHtml(alt.curso.label) : '';
+
   render(`
-    <div class="small" style="margin-bottom:4px">Pregunta ${alt.index + 1} de ${total} · ${alt.correctCount} correctas</div>
+    <div class="small" style="margin-bottom:4px">📖 ${curso} · Pregunta ${alt.index + 1} de ${total} · ${alt.correctCount} correctas</div>
     <div class="question">${escHtml(q.pregunta)}</div>
     <div class="answers">
       ${q.alternativas.map((opt, i) =>

@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "pregunta": "¿Qué número viene después del 7?",
+    "alternativas": ["6", "8", "9", "10"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Al contar, después del 7 viene el 8."
+  },
+  {
+    "id": 2,
+    "pregunta": "¿Cuántos lados tiene un triángulo?",
+    "alternativas": ["Dos", "Tres", "Cuatro", "Cinco"],
+    "respuestaCorrecta": 1,
+    "explicacion": "El triángulo es una figura de tres lados."
+  },
+  {
+    "id": 3,
+    "pregunta": "¿Cuál de estas letras es una vocal?",
+    "alternativas": ["B", "M", "A", "T"],
+    "respuestaCorrecta": 2,
+    "explicacion": "Las vocales son a, e, i, o, u."
+  },
+  {
+    "id": 4,
+    "pregunta": "¿Cuánto es 2 + 3?",
+    "alternativas": ["4", "5", "6", "7"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Si juntas 2 y 3 obtienes 5."
+  },
+  {
+    "id": 5,
+    "pregunta": "¿Qué animal dice «guau»?",
+    "alternativas": ["El gato", "La vaca", "El perro", "El pato"],
+    "respuestaCorrecta": 2,
+    "explicacion": "El perro ladra y hace «guau»."
+  },
+  {
+    "id": 6,
+    "pregunta": "¿De qué color es el cielo en un día despejado?",
+    "alternativas": ["Verde", "Azul", "Rojo", "Café"],
+    "respuestaCorrecta": 1,
+    "explicacion": "En un día despejado el cielo se ve azul."
+  },
+  {
+    "id": 7,
+    "pregunta": "¿Cuántos días tiene una semana?",
+    "alternativas": ["Cinco", "Seis", "Siete", "Ocho"],
+    "respuestaCorrecta": 2,
+    "explicacion": "La semana tiene siete días."
+  },
+  {
+    "id": 8,
+    "pregunta": "¿Qué figura es completamente redonda?",
+    "alternativas": ["El cuadrado", "El círculo", "El triángulo", "El rectángulo"],
+    "respuestaCorrecta": 1,
+    "explicacion": "El círculo es redondo y no tiene esquinas."
+  },
+  {
+    "id": 9,
+    "pregunta": "¿Cuánto es 10 - 1?",
+    "alternativas": ["8", "9", "10", "11"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Si a 10 le quitas 1 queda 9."
+  },
+  {
+    "id": 10,
+    "pregunta": "¿Dónde viven los peces?",
+    "alternativas": ["En el agua", "En los árboles", "En el aire", "Bajo la tierra"],
+    "respuestaCorrecta": 0,
+    "explicacion": "Los peces viven en el agua."
+  }
+]

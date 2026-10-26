@@ -1,0 +1,10 @@
+[
+  { "concepto": "Decimal igual a 1/2", "respuesta": "0,5" },
+  { "concepto": "25% de 100", "respuesta": "Veinticinco" },
+  { "concepto": "Planeta más grande del sistema solar", "respuesta": "Júpiter" },
+  { "concepto": "Satélite natural de la Tierra", "respuesta": "Luna" },
+  { "concepto": "Partícula básica de la materia", "respuesta": "Átomo" },
+  { "concepto": "Planeta más cercano al Sol", "respuesta": "Mercurio" },
+  { "concepto": "Año de llegada de Colón a América", "respuesta": "1492" },
+  { "concepto": "Número de planetas del sistema solar", "respuesta": "Ocho" }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "pregunta": "¿Qué fracción representa la mitad de algo?",
+    "alternativas": ["1/4", "1/2", "1/3", "3/4"],
+    "respuestaCorrecta": 1,
+    "explicacion": "1/2 significa dividir en dos partes iguales y tomar una."
+  },
+  {
+    "id": 2,
+    "pregunta": "¿Cuál de estas fracciones es mayor?",
+    "alternativas": ["1/2", "3/4", "1/4", "1/3"],
+    "respuestaCorrecta": 1,
+    "explicacion": "3/4 (0,75) es mayor que las demás opciones."
+  },
+  {
+    "id": 3,
+    "pregunta": "¿Cuánto es 25 × 4?",
+    "alternativas": ["75", "90", "100", "110"],
+    "respuestaCorrecta": 2,
+    "explicacion": "25 × 4 = 100."
+  },
+  {
+    "id": 4,
+    "pregunta": "¿Qué incluye un ecosistema?",
+    "alternativas": ["Solo plantas", "Solo animales", "Seres vivos y su ambiente", "Solo agua"],
+    "respuestaCorrecta": 2,
+    "explicacion": "Un ecosistema reúne a los seres vivos y su entorno físico."
+  },
+  {
+    "id": 5,
+    "pregunta": "¿Cómo se alimentan los animales herbívoros?",
+    "alternativas": ["De otros animales", "De plantas", "De minerales", "De plástico"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Los herbívoros se alimentan de plantas."
+  },
+  {
+    "id": 6,
+    "pregunta": "¿En qué zona de Chile está el desierto de Atacama?",
+    "alternativas": ["Norte", "Centro", "Sur", "Antártica"],
+    "respuestaCorrecta": 0,
+    "explicacion": "El desierto de Atacama está en el norte de Chile."
+  },
+  {
+    "id": 7,
+    "pregunta": "¿Cómo se organiza administrativamente Chile?",
+    "alternativas": ["En provincias solamente", "En regiones", "En continentes", "En islas"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Chile se organiza en regiones, provincias y comunas."
+  },
+  {
+    "id": 8,
+    "pregunta": "¿Cuál es el perímetro de un cuadrado de lado 5 cm?",
+    "alternativas": ["10 cm", "15 cm", "20 cm", "25 cm"],
+    "respuestaCorrecta": 2,
+    "explicacion": "Perímetro = 4 × lado = 4 × 5 = 20 cm."
+  },
+  {
+    "id": 9,
+    "pregunta": "¿Qué gas liberan las plantas durante la fotosíntesis?",
+    "alternativas": ["Dióxido de carbono", "Oxígeno", "Nitrógeno", "Helio"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Las plantas liberan oxígeno durante la fotosíntesis."
+  },
+  {
+    "id": 10,
+    "pregunta": "¿Quién fue el primer director supremo de Chile?",
+    "alternativas": ["Pedro de Valdivia", "Bernardo O'Higgins", "Arturo Prat", "Diego Portales"],
+    "respuestaCorrecta": 1,
+    "explicacion": "Bernardo O'Higgins fue el primer director supremo de Chile."
+  }
+]

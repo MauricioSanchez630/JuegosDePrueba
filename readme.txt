@@ -23,8 +23,8 @@ VS Code, o ejecutar: python -m http.server 8080
 JuegosDePrueba/
 â”œâ”€â”€ index.html          PÃ¡gina principal con todos los juegos
 â”œâ”€â”€ admin.html          Panel de administraciÃ³n de juegos
-â”œâ”€â”€ conceptos.json      Datos del juego Memoria Conceptual
-â”œâ”€â”€ alternativas.json   Datos del juego Alternativas
+â”œâ”€â”€ datos/              Datos JSON por curso (VF, ALT y MC, de primero a octavo)
+â”œâ”€â”€ conceptos-imagenes.json  Datos del juego Match
 â””â”€â”€ readme.txt          Este archivo
 
 
@@ -45,18 +45,20 @@ JuegosDePrueba/
 3. Memoria Conceptual
    - Asocia cada concepto con su respuesta correspondiente.
    - Las tarjetas se muestran ocultas; se revelan al pulsar.
-   - 6 pares por partida, seleccionados aleatoriamente de conceptos.json.
+   - 6 pares por partida, seleccionados aleatoriamente del curso elegido.
    - +10 puntos por pareja encontrada.
    - +20 puntos de bono si completas la partida con pocos movimientos.
-   - Los datos se cargan desde: conceptos.json
+   - Los datos se cargan desde: datos/MC<curso>.json (segÃºn el curso
+     elegido en index.html).
 
 4. Alternativas
    - Elige la respuesta correcta entre cuatro opciones.
-   - 5 preguntas por partida, seleccionadas aleatoriamente de alternativas.json.
+   - 5 preguntas por partida, seleccionadas aleatoriamente del curso elegido.
    - Las alternativas se barajan en cada partida.
    - Se muestra una explicaciÃ³n opcional tras cada respuesta.
    - +10 puntos por respuesta correcta.
-   - Los datos se cargan desde: alternativas.json
+   - Los datos se cargan desde: datos/ALT<curso>.json (segÃºn el curso
+     elegido en index.html).
 
 5. SinÃ³nimos exprÃ©s
    - Elige la palabra con significado mÃ¡s parecido a la dada.
@@ -111,8 +113,9 @@ Ejemplo de conceptos-imagenes.json con una entrada nueva:
   CÃ“MO AGREGAR CONTENIDO A LOS JUEGOS JSON
 ------------------------------------------------------------
 
---- conceptos.json (Memoria Conceptual) ---
+--- datos/MC<curso>.json (Memoria Conceptual) ---
 
+Hay un archivo por curso: MCprimero.json ... MCoctavo.json.
 Cada entrada tiene este formato:
 
   {
@@ -134,8 +137,9 @@ Reglas:
     automÃ¡ticamente sin romper el juego.
 
 
---- alternativas.json (Alternativas) ---
+--- datos/ALT<curso>.json (Alternativas) ---
 
+Hay un archivo por curso: ALTprimero.json ... ALToctavo.json.
 Cada entrada tiene este formato:
 
   {
@@ -217,28 +221,33 @@ Repositorio: https://github.com/MauricioSanchez630/JuegosDePrueba
   con datos externos en alternativas.json.
 - Panel de administraciÃ³n agregado (admin.html).
 - Link "Administrar" aÃ±adido a la barra de navegaciÃ³n.
+- Verdadero o Falso, Alternativas y Memoria Conceptual ahora usan
+  datos por curso (datos/VF, ALT y MC de primero a octavo) y toman
+  el curso elegido en index.html; ya no tienen selector propio.
+- Eliminados los JSON Ãºnicos conceptos.json y alternativas.json,
+  reemplazados por los archivos por curso en datos/.
 
 ============================================================
 
 
 ============================================================
-  ARQUITECTURA: PÁGINAS INDEPENDIENTES POR JUEGO
+  ARQUITECTURA: Pï¿½GINAS INDEPENDIENTES POR JUEGO
 ============================================================
 
-Desde esta versión, cada juego funciona en su propia página HTML
+Desde esta versiï¿½n, cada juego funciona en su propia pï¿½gina HTML
 independiente, lo que permite editarlos y mantenerlos por separado.
 
 Estructura:
 
-  index.html                Página principal (bienvenida, selector de
+  index.html                Pï¿½gina principal (bienvenida, selector de
                             curso y tarjetas que enlazan a cada juego).
-  css/styles.css            Hoja de estilos común a todas las páginas.
+  css/styles.css            Hoja de estilos comï¿½n a todas las pï¿½ginas.
   js/comun.js               Utilidades compartidas: $, rand, escHtml y
-                            el sistema de puntuación persistente.
-  js/<juego>.js             Lógica de cada juego (un archivo por juego).
-  juegos/<juego>.html       Página independiente de cada juego.
+                            el sistema de puntuaciï¿½n persistente.
+  js/<juego>.js             Lï¿½gica de cada juego (un archivo por juego).
+  juegos/<juego>.html       Pï¿½gina independiente de cada juego.
 
-  Páginas de juego:
+  Pï¿½ginas de juego:
     juegos/reto-matematico.html     + js/reto-matematico.js
     juegos/palabra-misteriosa.html  + js/palabra-misteriosa.js
     juegos/memoria-conceptual.html  + js/memoria-conceptual.js
@@ -248,18 +257,18 @@ Estructura:
     juegos/match.html               + js/match.js
     juegos/verdadero-falso.html     + js/verdadero-falso.js
 
-Navegación:
-  - En index.html, cada tarjeta "Jugar ahora" abre la página del juego.
-  - Cada página de juego incluye un botón "Volver al inicio".
+Navegaciï¿½n:
+  - En index.html, cada tarjeta "Jugar ahora" abre la pï¿½gina del juego.
+  - Cada pï¿½gina de juego incluye un botï¿½n "Volver al inicio".
 
-Puntuación:
+Puntuaciï¿½n:
   - Es persistente: se guarda en localStorage (clave 'aulaplay_score')
-    y se comparte entre la página principal y todos los juegos.
+    y se comparte entre la pï¿½gina principal y todos los juegos.
   - Se muestra en el contador con id="score".
-  - Ninguna respuesta otorga puntos más de una vez por partida.
+  - Ninguna respuesta otorga puntos mï¿½s de una vez por partida.
 
 Rutas de datos desde juegos/:
   - Los fetch de JSON usan rutas relativas con "../" (p. ej.
-    ../conceptos.json, ../datos/VFprimero.json).
-  - Las imágenes de Match se cargan desde ../imagenes/.
+    ../datos/VFprimero.json, ../datos/ALTprimero.json, ../datos/MCprimero.json).
+  - Las imï¿½genes de Match se cargan desde ../imagenes/.
   - Requiere servidor HTTP/HTTPS (no funciona abriendo con file://).

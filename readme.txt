@@ -152,7 +152,7 @@ Ejemplo:
     "pregunta": "¬øCu√°ntos continentes tiene el planeta Tierra?",
     "alternativas": ["5", "6", "7", "8"],
     "respuestaCorrecta": 2,
-    "explicacion": "Los 7 continentes son: √Åfrica, Am√©rica, Ant√°rtida, Asia, Europa, Ocean√≠a y Am√©rica."
+    "explicacion": "Los 7 continentes son: √ùfrica, Am√©rica, Ant√°rtida, Asia, Europa, Ocean√≠a y Am√©rica."
   }
 
 Reglas:
@@ -219,3 +219,47 @@ Repositorio: https://github.com/MauricioSanchez630/JuegosDePrueba
 - Link "Administrar" a√±adido a la barra de navegaci√≥n.
 
 ============================================================
+
+
+============================================================
+  ARQUITECTURA: P¡GINAS INDEPENDIENTES POR JUEGO
+============================================================
+
+Desde esta versiÛn, cada juego funciona en su propia p·gina HTML
+independiente, lo que permite editarlos y mantenerlos por separado.
+
+Estructura:
+
+  index.html                P·gina principal (bienvenida, selector de
+                            curso y tarjetas que enlazan a cada juego).
+  css/styles.css            Hoja de estilos com˙n a todas las p·ginas.
+  js/comun.js               Utilidades compartidas: $, rand, escHtml y
+                            el sistema de puntuaciÛn persistente.
+  js/<juego>.js             LÛgica de cada juego (un archivo por juego).
+  juegos/<juego>.html       P·gina independiente de cada juego.
+
+  P·ginas de juego:
+    juegos/reto-matematico.html     + js/reto-matematico.js
+    juegos/palabra-misteriosa.html  + js/palabra-misteriosa.js
+    juegos/memoria-conceptual.html  + js/memoria-conceptual.js
+    juegos/alternativas.html        + js/alternativas.js
+    juegos/sinonimos.html           + js/sinonimos.js
+    juegos/desafio-sorpresa.html    + js/desafio-sorpresa.js
+    juegos/match.html               + js/match.js
+    juegos/verdadero-falso.html     + js/verdadero-falso.js
+
+NavegaciÛn:
+  - En index.html, cada tarjeta "Jugar ahora" abre la p·gina del juego.
+  - Cada p·gina de juego incluye un botÛn "Volver al inicio".
+
+PuntuaciÛn:
+  - Es persistente: se guarda en localStorage (clave 'aulaplay_score')
+    y se comparte entre la p·gina principal y todos los juegos.
+  - Se muestra en el contador con id="score".
+  - Ninguna respuesta otorga puntos m·s de una vez por partida.
+
+Rutas de datos desde juegos/:
+  - Los fetch de JSON usan rutas relativas con "../" (p. ej.
+    ../conceptos.json, ../datos/VFprimero.json).
+  - Las im·genes de Match se cargan desde ../imagenes/.
+  - Requiere servidor HTTP/HTTPS (no funciona abriendo con file://).

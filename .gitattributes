@@ -2,6 +2,8 @@
 # Todos los archivos de texto del proyecto usan CRLF.
 
 *.html  text eol=crlf
+*.css   text eol=crlf
+*.js    text eol=crlf
 *.json  text eol=crlf
 *.txt   text eol=crlf
 *.svg   text eol=crlf

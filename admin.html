@@ -4,31 +4,168 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Administrar juegos · Aula Play</title>
 <style>
+/* ═══════════════════════════════════════════════════════════════
+   VARIABLES Y RESET (homologado con index.html)
+═══════════════════════════════════════════════════════════════ */
 :root {
-  --site-primary:#5B4BDB; --site-on-primary:#FFFFFF;
-  --site-secondary:#DFF7EF; --site-on-secondary:#163C35;
-  --site-background:#F6F5FF; --site-on-background:#20213A;
+  --site-primary:#5B4BDB;
+  --site-primary-dark:#4538b8;
+  --site-primary-light:#7c6ff0;
+  --site-on-primary:#FFFFFF;
+  --site-secondary:#DFF7EF;
+  --site-on-secondary:#163C35;
+  --site-background:#F3F1FF;
+  --site-on-background:#20213A;
+
   --site-font-body:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --radius-card:22px;
+  --radius-btn:14px;
+  --shadow-card:0 4px 20px rgba(91,75,219,.10), 0 1px 4px rgba(0,0,0,.06);
+  --shadow-card-hover:0 12px 36px rgba(91,75,219,.18), 0 2px 8px rgba(0,0,0,.08);
+  --transition-fast:.15s ease;
+  --transition-med:.25s ease;
+
   color-scheme:light dark;
 }
-*{box-sizing:border-box}
-body{margin:0;font-family:var(--site-font-body);background:var(--site-background);color:var(--site-on-background)}
-#app{background-color:var(--site-background);color:var(--site-on-background);min-height:100vh}
-header{background:var(--site-primary);color:var(--site-on-primary);padding:22px max(22px,calc((100vw - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px}
-.logo{font-weight:900;font-size:1.3rem;letter-spacing:-.04em}.logo span{color:#BDF5E3}
-.nav{display:flex;gap:20px;font-size:.93rem}.nav a{color:inherit;text-decoration:none;opacity:.9}.nav a:hover{text-decoration:underline}
-main{max-width:800px;margin:auto;padding:40px 22px 60px}
-.page-title{font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.045em;margin:0 0 6px}
-.page-sub{color:light-dark(#686980,#c6c6d9);margin:0 0 36px;font-size:.97rem}
+
+*, *::before, *::after { box-sizing:border-box; }
+body {
+  margin:0;
+  font-family:var(--site-font-body);
+  background:var(--site-background);
+  color:var(--site-on-background);
+  -webkit-font-smoothing:antialiased;
+}
+#app {
+  background:var(--site-background);
+  color:var(--site-on-background);
+  min-height:100vh;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER & NAVEGACIÓN (homologado con index.html)
+═══════════════════════════════════════════════════════════════ */
+header {
+  background: linear-gradient(135deg, #5B4BDB 0%, #7c6ff0 60%, #9c8fff 100%);
+  color:var(--site-on-primary);
+  padding:0 max(22px, calc((100vw - 1160px) / 2));
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  height:68px;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:0 2px 16px rgba(91,75,219,.28);
+}
+.logo {
+  font-weight:900;
+  font-size:1.35rem;
+  letter-spacing:-.04em;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  text-decoration:none;
+  color:inherit;
+}
+.logo .logo-icon {
+  width:34px;
+  height:34px;
+  background:rgba(255,255,255,.18);
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  font-size:1.1rem;
+  flex-shrink:0;
+}
+.logo span { color:#BDF5E3; }
+
+.nav {
+  display:flex;
+  align-items:center;
+  gap:4px;
+  font-size:.9rem;
+}
+.nav a {
+  color:rgba(255,255,255,.85);
+  text-decoration:none;
+  padding:7px 14px;
+  border-radius:20px;
+  font-weight:600;
+  transition:background var(--transition-fast), color var(--transition-fast);
+  white-space:nowrap;
+}
+.nav a:hover {
+  background:rgba(255,255,255,.18);
+  color:#fff;
+  text-decoration:none;
+}
+.nav a:first-child {
+  background:rgba(255,255,255,.15);
+  color:#fff;
+  font-size:.82rem;
+  padding:6px 12px;
+  border:1px solid rgba(255,255,255,.25);
+}
+.nav a:first-child:hover { background:rgba(255,255,255,.28); }
+
+/* ═══════════════════════════════════════════════════════════════
+   MAIN & CABECERA DE PÁGINA
+═══════════════════════════════════════════════════════════════ */
+main{max-width:860px;margin:0 auto;padding:48px 22px 70px}
+.page-title{font-size:clamp(1.6rem,4vw,2.4rem);letter-spacing:-.045em;margin:0 0 6px;font-weight:900}
+.page-sub{color:light-dark(#686980,#c6c6d9);margin:0 0 32px;font-size:.97rem}
+
+/* ═══════════════════════════════════════════════════════════════
+   LISTA DE JUEGOS (tarjetas homologadas con .game-card)
+═══════════════════════════════════════════════════════════════ */
 .games-list{display:flex;flex-direction:column;gap:14px}
-.game-row{background:light-dark(#FFFFFF,#24243A);border:1px solid light-dark(#E7E5F3,#3b3b53);border-radius:16px;padding:18px 22px;display:flex;align-items:center;gap:18px;box-shadow:0 4px 14px #3028790a;transition:opacity .2s}
-.game-row.disabled-row{opacity:.55}
-.game-icon{height:52px;width:52px;border-radius:14px;display:grid;place-items:center;font-size:1.7rem;flex-shrink:0}
+.game-row{
+  background:light-dark(#FFFFFF,#1e1e34);
+  border:1.5px solid light-dark(#ede9ff,#2e2e4a);
+  border-radius:var(--radius-card);
+  padding:18px 22px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  box-shadow:var(--shadow-card);
+  transition:transform var(--transition-med),box-shadow var(--transition-med),border-color var(--transition-med),opacity .2s;
+  position:relative;
+  overflow:hidden;
+}
+.game-row::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;bottom:0;
+  width:4px;
+  background:var(--card-accent,#5B4BDB);
+  opacity:.75;
+}
+.game-row:hover{
+  transform:translateY(-3px);
+  box-shadow:var(--shadow-card-hover);
+  border-color:light-dark(#c8bfff,#4a4070);
+}
+.game-row.disabled-row{opacity:.5}
+/* Acentos por juego (mismo criterio que index.html) */
+#row-math    { --card-accent:#FF6B6B; }
+#row-word    { --card-accent:#FF9F43; }
+#row-memory  { --card-accent:#26de81; }
+#row-trivia  { --card-accent:#45AAF2; }
+#row-synonym { --card-accent:#FD79A8; }
+#row-surprise{ --card-accent:#A29BFE; }
+#row-match   { --card-accent:#0AB5D5; }
+#row-vf      { --card-accent:#FDCB6E; }
+
+.game-icon{height:52px;width:52px;border-radius:16px;display:grid;place-items:center;font-size:1.7rem;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.08)}
 .purple{background:#E9E5FF}.yellow{background:#FFF0C8}.green{background:#D9F7E9}.blue{background:#DCEEFF}.pink{background:#FFE1EC}
-.game-info{flex:1}
-.game-info h3{margin:0 0 3px;font-size:1.05rem}
-.game-info p{margin:0;font-size:.88rem;color:light-dark(#686980,#c6c6d9)}
-/* Toggle switch */
+.game-info{flex:1;min-width:0}
+.game-info h3{margin:0 0 3px;font-size:1.05rem;font-weight:800}
+.game-info p{margin:0;font-size:.88rem;color:light-dark(#686980,#c6c6d9);line-height:1.5}
+
+/* ── Toggle switch ── */
 .toggle-wrap{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0}
 .toggle-label{font-size:.75rem;font-weight:700;color:light-dark(#686980,#c6c6d9);text-transform:uppercase;letter-spacing:.06em}
 .toggle{position:relative;display:inline-block;width:50px;height:28px}
@@ -37,26 +174,86 @@ main{max-width:800px;margin:auto;padding:40px 22px 60px}
 .slider:before{content:'';position:absolute;height:20px;width:20px;left:4px;top:4px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 4px #0002}
 input:checked + .slider{background:#5B4BDB}
 input:checked + .slider:before{transform:translateX(22px)}
+
+/* ── Badges ── */
 .badge{display:inline-block;font-size:.72rem;font-weight:800;padding:3px 9px;border-radius:20px;margin-left:8px;vertical-align:middle}
 .badge.on{background:#D9F7E9;color:#1a7a4a}
 .badge.off{background:#FFE1EC;color:#a5334d}
-.save-bar{position:sticky;bottom:0;background:light-dark(#F6F5FF,#1a1a2e);border-top:1px solid light-dark(#E7E5F3,#3b3b53);padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 -22px -60px}
+
+/* ═══════════════════════════════════════════════════════════════
+   BARRA DE GUARDADO
+═══════════════════════════════════════════════════════════════ */
+.save-bar{position:sticky;bottom:0;background:light-dark(#F3F1FF,#131325);border-top:1px solid light-dark(#E7E5F3,#2a2a40);padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 -22px -70px}
 .save-bar p{margin:0;font-size:.9rem;color:light-dark(#686980,#c6c6d9)}
-.btn{border:0;border-radius:12px;padding:12px 22px;background:var(--site-primary);color:white;font-weight:800;font-size:.92rem;cursor:pointer;font-family:inherit}
-.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
-.btn.secondary{background:light-dark(#EFEDFF,#39364f);color:light-dark(#5142c8,#ddd8ff)}
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#20213A;color:#fff;padding:12px 24px;border-radius:12px;font-size:.9rem;font-weight:700;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:99}
+
+/* ═══════════════════════════════════════════════════════════════
+   BOTONES (homologado con index.html)
+═══════════════════════════════════════════════════════════════ */
+.btn{
+  border:0;
+  border-radius:var(--radius-btn);
+  padding:12px 22px;
+  background:var(--site-primary);
+  color:#fff;
+  font-weight:800;
+  font-size:.9rem;
+  cursor:pointer;
+  font-family:inherit;
+  transition:transform var(--transition-fast),box-shadow var(--transition-fast),filter var(--transition-fast);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+.btn:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 4px 14px rgba(91,75,219,.35)}
+.btn:active{transform:translateY(0);box-shadow:none}
+.btn.secondary{background:light-dark(#EFEDFF,#39364f);color:light-dark(#5142c8,#ddd8ff);box-shadow:none}
+.btn.secondary:hover{background:light-dark(#e4e0ff,#44415e);box-shadow:0 2px 8px rgba(91,75,219,.15)}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════════════════════ */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#20213A;color:#fff;padding:12px 24px;border-radius:14px;font-size:.9rem;font-weight:700;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:300;box-shadow:0 8px 28px rgba(0,0,0,.25)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-footer{text-align:center;padding:25px;color:light-dark(#74758a,#b6b6ca);font-size:.85rem}
-@media(max-width:600px){.game-row{flex-wrap:wrap}.toggle-wrap{flex-direction:row;gap:10px}.save-bar{flex-direction:column;align-items:stretch;text-align:center}}
-@media(prefers-color-scheme:dark){body{background:#16162a}}
+
+/* ═══════════════════════════════════════════════════════════════
+   FOOTER (homologado con index.html)
+═══════════════════════════════════════════════════════════════ */
+footer{text-align:center;padding:32px 22px;color:light-dark(#888,#b6b6ca);font-size:.83rem;border-top:1px solid light-dark(#e8e5f5,#2a2a40);margin-top:16px}
+footer strong{color:var(--site-primary);font-weight:800}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════════ */
+@media(max-width:600px){
+  main{padding:32px 16px 60px}
+  header{height:58px}
+  .game-row{flex-wrap:wrap}
+  .toggle-wrap{flex-direction:row;gap:10px}
+  .save-bar{flex-direction:column;align-items:stretch;text-align:center;margin:0 -16px -60px}
+  .nav{gap:2px}
+  .nav a:nth-child(3){display:none}
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MODO OSCURO (homologado con index.html)
+═══════════════════════════════════════════════════════════════ */
+@media(prefers-color-scheme:dark){
+  :root{--site-background:#131325;--site-on-background:#e8e8f5}
+  body{background:#131325}
+  .game-row{background:#1e1e34;border-color:#2a2a44}
+  .nav a:first-child{border-color:rgba(255,255,255,.2)}
+}
 </style>
 </head>
 <body><div id="app">
 <header>
-  <div class="logo">✦ Aula<span>Play</span></div>
+  <a class="logo" href="index.html">
+    <span class="logo-icon">✦</span>
+    Aula<span>Play</span>
+  </a>
   <nav class="nav">
-    <a href="admin.html">Administrar</a>
+    <a href="admin.html">⚙️ Administrar</a>
     <a href="index.html#juegos">Juegos</a>
     <a href="index.html#progreso">Mi progreso</a>
     <a href="index.html#acerca">Acerca de</a>
@@ -76,7 +273,7 @@ footer{text-align:center;padding:25px;color:light-dark(#74758a,#b6b6ca);font-siz
     </div>
   </div>
 </main>
-<footer>Aula Play ✦ · Panel de administración</footer>
+<footer><strong>Aula Play</strong> ✦ · Panel de administración</footer>
 </div>
 
 <div class="toast" id="toast"></div>

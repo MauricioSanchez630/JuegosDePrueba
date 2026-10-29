@@ -285,6 +285,17 @@ main {
   grid-template-columns:repeat(4, minmax(0,1fr));
   gap:18px;
 }
+/* Variante para la portada de roles (Alumnos / Profesor):
+   dos tarjetas grandes y centradas en lugar de la rejilla de juegos. */
+.cards-roles {
+  grid-template-columns:repeat(2, minmax(0,1fr));
+  max-width:720px;
+  margin:0 auto;
+}
+.cards-roles .game-card { min-height:240px; }
+@media(max-width:560px) {
+  .cards-roles { grid-template-columns:1fr; }
+}
 .game-card {
   background:light-dark(#FFFFFF, #1e1e34);
   border:1.5px solid light-dark(#ede9ff, #2e2e4a);

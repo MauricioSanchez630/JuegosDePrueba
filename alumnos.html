@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aula Play - aprende jugando</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body><div id="app">
+<header>
+  <a class="logo" href="index.html">
+    <span class="logo-icon">&#10022;</span>
+    Aula<span>Play</span>
+  </a>
+  <nav class="nav">
+    <a href="#juegos">Juegos</a>
+    <a href="#progreso" class="nav-hide-sm">Mi progreso</a>
+    <a href="#acerca" class="nav-hide-sm">Acerca de</a>
+    <a href="index.html" class="nav-cta">&#128100; Cambiar de perfil</a>
+  </nav>
+</header>
+<main>
+<section class="hero">
+  <div>
+    <div class="eyebrow">&#10024; Aprender puede ser una aventura</div>
+    <h1>&iexcl;Tu pr&oacute;xima <em>misi&oacute;n</em><br>empieza aqu&iacute;!</h1>
+    <p>Practica, descubre y divi&eacute;rtete. Elige un juego, suma puntos y aprende algo nuevo en cada partida.</p>
+    <a href="#juegos"><button class="btn">Explorar juegos &nbsp;&darr;</button></a>
+  </div>
+  <div class="hero-art" aria-label="Ilustraci&oacute;n de una estrella y un libro">
+    <div class="bubble"></div>
+    <div class="bubble two"></div>
+    <div class="emoji">&#128218; &#11088;</div>
+  </div>
+</section>
+
+<section id="juegos">
+  <!-- Selector de curso -->
+  <div class="course-selector-wrap">
+    <p class="course-selector-label">&#128218; <span>Elige tu curso</span></p>
+    <p class="course-selector-hint">Selecciona tu curso para descubrir los juegos disponibles.</p>
+    <select class="course-select" id="courseSelect"
+            aria-label="Selecciona tu curso"
+            onchange="selectCourse(this.value, this.options[this.selectedIndex].text)">
+      <option value="">Selecciona un curso&hellip;</option>
+      <option value="1">1.&ordm; b&aacute;sico</option>
+      <option value="2">2.&ordm; b&aacute;sico</option>
+      <option value="3">3.&ordm; b&aacute;sico</option>
+      <option value="4">4.&ordm; b&aacute;sico</option>
+      <option value="5">5.&ordm; b&aacute;sico</option>
+      <option value="6">6.&ordm; b&aacute;sico</option>
+      <option value="7">7.&ordm; b&aacute;sico</option>
+      <option value="8">8.&ordm; b&aacute;sico</option>
+    </select>
+  </div>
+
+  <!-- Cabecera dinamica (oculta hasta seleccionar) -->
+  <div class="section-head" id="games-section-head" style="display:none">
+    <div>
+      <h2 id="games-title">&#127918; Elige tu juego</h2>
+      <p id="games-subtitle">Peque&ntilde;os retos para grandes ideas.</p>
+    </div>
+  </div>
+
+  <!-- Placeholder visible antes de seleccionar -->
+  <div id="games-placeholder" aria-live="polite">
+    <span class="ph-icon">&#127918;</span>
+    Los juegos aparecer&aacute;n aqu&iacute; despu&eacute;s de seleccionar tu curso.
+  </div>
+
+  <!-- Grid de juegos: cada tarjeta enlaza a su pagina independiente -->
+  <div class="cards" id="games-area">
+    <a class="game-card" data-game-id="math" href="juegos/reto-matematico.html">
+      <div class="game-icon purple">&#10135;</div>
+      <h3>Reto matem&aacute;tico</h3>
+      <p>Resuelve operaciones y pon a prueba tu rapidez mental.</p>
+      <span class="card-cta">Jugar ahora</span>
+    </a>
+    <a class="game-card" data-game-id="word" href="juegos/palabra-misteriosa.html">
+      <div class="game-icon yellow">&#128292;</div>
+      <h3>Palabra misteriosa</h3>
+      <p>Descubre la palabra usando una pista. &iexcl;Cada letra cuenta!</p>
+      <span class="card-cta">Jugar ahora</span>
+    </a>
+    <a class="game-card" data-game-id="memory" href="juegos/memoria-conceptual.html">
+      <div class="game-icon green">&#129504;</div>
+      <h3>Memoria Conceptual</h3>
+      <p>Asocia cada concepto con su respuesta y entrena tu memoria.</p>
+      <span class="card-cta">Jugar ahora</span>
+    </a>
+    <a class="game-card" data-game-id="trivia" href="juegos/alternativas.html">
+      <div class="game-icon blue">&#127758;</div>
+      <h3>Alternativas</h3>
+      <p>Elige la respuesta correcta entre cuatro opciones. &iexcl;Pon a prueba tu conocimiento!</p>
+      <span class="card-cta">Jugar ahora</span>
+    </a>
+    <a class="game-card" data-game-id="synonym" href="juegos/sinonimos.html">
+      <div class="game-icon pink">&#128214;</div>
+      <h3>Sin&oacute;nimos expr&eacute;s</h3>
+      <p>Ampl&iacute;a tu vocabulario eligiendo palabras con significado parecido.</p>
+      <span class="card-cta">Jugar ahora</span>
+    </a>
+    <a class="game-card" data-game-id="surprise" href="juegos/desafio-sorpresa.html">
+      <div class="game-icon purple">&#127919;</div>
+      <h3>Desaf&iacute;o sorpresa</h3>
+      <p>Una pregunta al azar para comprobar lo que sabes.</p>
+      <span class="card-cta">&iexcl;Sorpr&eacute;ndeme!</span>
+    </a>
+    <a class="game-card" data-game-id="match" href="juegos/match.html">
+      <div class="game-icon blue">&#128444;&#65039;</div>
+      <h3>Match: Imagen y concepto</h3>
+      <p>Relaciona cada imagen con su concepto. &iexcl;Pon a prueba tu memoria visual!</p>
+      <span class="card-cta">Jugar ahora</span>
+    </a>
+    <a class="game-card" data-game-id="vf" href="juegos/verdadero-falso.html">
+      <div class="game-icon yellow">&#9989;</div>
+      <h3>Verdadero o Falso</h3>
+      <p>Lee una afirmaci&oacute;n y decide si es verdadera o falsa, seg&uacute;n tu curso.</p>
+      <span class="card-cta">Jugar ahora</span>
+    </a>
+  </div>
+</section>
+
+<section class="progress" id="progreso">
+  <div class="progress-icon">&#127942;</div>
+  <div class="progress-copy">
+    <h3>Tu aventura de aprendizaje</h3>
+    <p>Juega para ganar puntos. &iexcl;Cada respuesta correcta te acerca a tu pr&oacute;xima meta!</p>
+  </div>
+  <div class="points"><span id="score">0</span></div>
+</section>
+</main>
+<footer id="acerca">
+  Hecho con &#10084;&#65039; para aprender jugando &middot; <strong>Aula Play</strong> &#10022;
+</footer>
+</div>
+
+<script src="js/comun.js"></script>
+<script>
+// Actualiza los enlaces de las tarjetas para propagar el curso elegido
+// a las páginas de juego mediante el parámetro de URL ?curso=.
+function updateGameLinks(value) {
+  document.querySelectorAll('.game-card[data-game-id]').forEach(card => {
+    const base = card.getAttribute('data-href') || card.getAttribute('href');
+    if (!card.getAttribute('data-href')) card.setAttribute('data-href', base);
+    card.setAttribute('href', value ? base + '?curso=' + encodeURIComponent(value) : base);
+  });
+}
+
+// Selector de curso: muestra/oculta las tarjetas de juego
+function selectCourse(value, label) {
+  const area        = document.getElementById('games-area');
+  const placeholder = document.getElementById('games-placeholder');
+  const secHead     = document.getElementById('games-section-head');
+  const title       = document.getElementById('games-title');
+  const subtitle    = document.getElementById('games-subtitle');
+
+  // Persistir la selección para que los juegos la usen al cargar.
+  if (value) setCursoSeleccionado(value);
+
+  if (!value) {
+    area.classList.remove('visible');
+    placeholder.style.display = 'block';
+    secHead.style.display     = 'none';
+    updateGameLinks('');
+    return;
+  }
+  placeholder.style.display = 'none';
+  secHead.style.display     = 'flex';
+  area.classList.add('visible');
+  title.textContent    = '\u{1F3AE} Juegos para ' + label;
+  subtitle.textContent = 'Practica y aprende con los juegos de ' + label + '.';
+  updateGameLinks(value);
+}
+
+// Al cargar, restaurar el curso previamente seleccionado (si existe).
+(function restoreCourse() {
+  const curso = getCursoSeleccionado();
+  if (!curso) return;
+  const select = document.getElementById('courseSelect');
+  if (!select) return;
+  select.value = curso.num;
+  const label  = select.options[select.selectedIndex]
+               ? select.options[select.selectedIndex].text
+               : curso.label;
+  selectCourse(curso.num, label);
+})();
+
+// Visibilidad de juegos segun configuracion del administrador
+(function applyGameVisibility() {
+  const STORAGE_KEY = 'karyplay_games';
+  let settings = {};
+  try { settings = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch {}
+  document.querySelectorAll('.game-card[data-game-id]').forEach(card => {
+    const id = card.getAttribute('data-game-id');
+    if (settings[id] === false) card.style.display = 'none';
+  });
+})();
+</script>
+</body>
+</html>

@@ -92,6 +92,12 @@ function setCursoSeleccionado(valor) {
   if (curso) localStorage.setItem(CURSO_KEY, curso.id);
 }
 
+/* Borra el curso guardado. Se usa al entrar al perfil de alumno
+   desde la portada de perfiles, para que la selección empiece limpia. */
+function limpiarCursoSeleccionado() {
+  localStorage.removeItem(CURSO_KEY);
+}
+
 /* Obtiene el curso activo. Prioridad:
    1) parámetro ?curso= de la URL (al abrir un juego desde index)
    2) valor guardado en localStorage

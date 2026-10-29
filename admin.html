@@ -211,6 +211,16 @@ input:checked + .slider:before{transform:translateX(22px)}
 .btn.secondary:hover{background:light-dark(#e4e0ff,#44415e);box-shadow:0 2px 8px rgba(91,75,219,.15)}
 
 /* ═══════════════════════════════════════════════════════════════
+   SELECTOR DE CURSO Y PLACEHOLDER
+═══════════════════════════════════════════════════════════════ */
+.course-pick{background:light-dark(#fff,#1e1e34);border:1px solid light-dark(#ede9ff,#2e2e4a);border-radius:var(--radius-card);padding:18px 20px;margin-bottom:18px;box-shadow:var(--shadow-card)}
+.course-pick label{display:flex;align-items:center;font-weight:800;margin:0 0 10px;font-size:.95rem}
+.course-pick select{width:100%;max-width:360px;border:1px solid light-dark(#dcd8ed,#44415e);border-radius:var(--radius-btn);padding:11px 12px;font:inherit;background:light-dark(#fff,#2b2b42);color:inherit}
+.step{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--site-primary);color:#fff;font-size:.8rem;font-weight:800;margin-right:8px}
+.games-placeholder{background:light-dark(#faf9ff,#23233a);border:1px dashed light-dark(#cfc8f2,#44415e);border-radius:var(--radius-card);padding:34px 20px;text-align:center;color:light-dark(#6a6687,#b6b6ca);font-weight:600}
+.config-title{font-size:1.1rem;margin:0 0 14px}
+
+/* ═══════════════════════════════════════════════════════════════
    TOAST
 ═══════════════════════════════════════════════════════════════ */
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:#20213A;color:#fff;padding:12px 24px;border-radius:14px;font-size:.9rem;font-weight:700;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:300;box-shadow:0 8px 28px rgba(0,0,0,.25)}
@@ -255,22 +265,43 @@ footer strong{color:var(--site-primary);font-weight:800}
   <nav class="nav">
     <a href="admin.html">⚙️ Administrar</a>
     <a href="Editor_json.html">📝 Editor</a>
-    <a href="alumnos.html#juegos">Juegos</a>
     <a href="profesor.html">👨‍🏫 Profesor</a>
     <a href="index.html" class="nav-cta">👤 Cambiar de perfil</a>
   </nav>
 </header>
 <main>
   <h1 class="page-title">⚙️ Administrar juegos</h1>
-  <p class="page-sub">Activa o desactiva los juegos que aparecen en el perfil de alumnos. Los cambios se aplican al guardar.</p>
+  <p class="page-sub">Primero elige un curso; luego activa o desactiva los juegos que verán los alumnos de ese curso. Cada curso tiene su propia configuración. Los cambios se aplican al guardar.</p>
 
-  <div class="games-list" id="gamesList"></div>
+  <div class="course-pick">
+    <label for="courseSelect"><span class="step">1</span>Curso a configurar</label>
+    <select id="courseSelect" onchange="onCourseChange(this.value)">
+      <option value="">Selecciona un curso&hellip;</option>
+      <option value="1">1.º básico</option>
+      <option value="2">2.º básico</option>
+      <option value="3">3.º básico</option>
+      <option value="4">4.º básico</option>
+      <option value="5">5.º básico</option>
+      <option value="6">6.º básico</option>
+      <option value="7">7.º básico</option>
+      <option value="8">8.º básico</option>
+    </select>
+  </div>
 
-  <div class="save-bar">
-    <p id="statusMsg">Sin cambios pendientes.</p>
-    <div style="display:flex;gap:10px">
-      <button class="btn secondary" onclick="resetAll()">Activar todos</button>
-      <button class="btn" onclick="saveSettings()">Guardar cambios</button>
+  <div id="games-placeholder" class="games-placeholder">
+    👆 Selecciona un curso para ver y configurar sus juegos.
+  </div>
+
+  <div id="configArea" style="display:none">
+    <h2 class="config-title" id="configTitle"></h2>
+    <div class="games-list" id="gamesList"></div>
+
+    <div class="save-bar">
+      <p id="statusMsg">Sin cambios pendientes.</p>
+      <div style="display:flex;gap:10px">
+        <button class="btn secondary" onclick="resetAll()">Activar todos</button>
+        <button class="btn" onclick="saveSettings()">Guardar cambios</button>
+      </div>
     </div>
   </div>
 </main>
@@ -293,20 +324,64 @@ const GAMES = [
 
 const STORAGE_KEY = 'karyplay_games';
 
-function loadSettings() {
+const CURSOS = {
+  '1':'1.º básico', '2':'2.º básico', '3':'3.º básico', '4':'4.º básico',
+  '5':'5.º básico', '6':'6.º básico', '7':'7.º básico', '8':'8.º básico'
+};
+
+/* Estructura guardada: { "1": { math:true, vf:false, ... }, "2": {...}, ... }
+   Config por curso. Default de cada juego: activo (true). */
+function loadAll() {
   try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : {};
+    const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    if (!raw || typeof raw !== 'object') return {};
+    // Solo conservar entradas por curso (valores que sean objetos).
+    // El formato antiguo (valores booleanos planos) se descarta de forma segura.
+    const out = {};
+    Object.keys(raw).forEach(k => {
+      if (CURSOS[k] && raw[k] && typeof raw[k] === 'object') out[k] = { ...raw[k] };
+    });
+    return out;
   } catch { return {}; }
 }
 
-function isEnabled(id, settings) {
-  return settings[id] !== false; // default: enabled
+function isEnabled(id, courseSettings) {
+  return courseSettings[id] !== false; // default: enabled
 }
 
-let current = loadSettings();
-let saved   = loadSettings();
-let dirty   = false;
+let allSettings = loadAll(); // config completa de todos los cursos (ya guardada)
+let curso       = '';        // curso seleccionado actualmente ('' = ninguno)
+let current     = {};        // estado editable del curso actual
+let saved       = {};        // estado guardado del curso actual
+let dirty       = false;
+
+function onCourseChange(value) {
+  // Avisar si hay cambios sin guardar antes de cambiar de curso.
+  if (dirty && !confirm('Hay cambios sin guardar en el curso actual. ¿Descartarlos y cambiar de curso?')) {
+    document.getElementById('courseSelect').value = curso;
+    return;
+  }
+  curso = value;
+  const placeholder = document.getElementById('games-placeholder');
+  const area        = document.getElementById('configArea');
+
+  if (!curso) {
+    placeholder.style.display = 'block';
+    area.style.display        = 'none';
+    dirty = false;
+    return;
+  }
+
+  // Cargar el estado guardado de este curso (o vacío = todo activo).
+  current = { ...(allSettings[curso] || {}) };
+  saved   = { ...current };
+  dirty   = false;
+
+  placeholder.style.display = 'none';
+  area.style.display        = 'block';
+  document.getElementById('configTitle').textContent = '🎮 Juegos para ' + (CURSOS[curso] || ('curso ' + curso));
+  render();
+}
 
 function render() {
   const list = document.getElementById('gamesList');
@@ -349,19 +424,21 @@ function toggle(id) {
 }
 
 function updateStatus() {
-  const pending = GAMES.filter(g => current[g.id] !== saved[g.id]).length;
+  const pending = GAMES.filter(g => (current[g.id] !== false) !== (saved[g.id] !== false)).length;
   document.getElementById('statusMsg').textContent =
     pending > 0
-      ? `${pending} cambio${pending > 1 ? 's' : ''} sin guardar.`
+      ? `${pending} cambio${pending > 1 ? 's' : ''} sin guardar en ${CURSOS[curso] || 'este curso'}.`
       : 'Sin cambios pendientes.';
 }
 
 function saveSettings() {
+  if (!curso) { showToast('⚠️ Primero selecciona un curso.'); return; }
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
+    allSettings[curso] = { ...current };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(allSettings));
     saved  = { ...current };
     dirty  = false;
-    showToast('✅ Cambios guardados correctamente.');
+    showToast('✅ Cambios guardados para ' + (CURSOS[curso] || ('curso ' + curso)) + '.');
     updateStatus();
   } catch {
     showToast('❌ Error al guardar. Verifica que las cookies estén habilitadas.');
@@ -369,6 +446,7 @@ function saveSettings() {
 }
 
 function resetAll() {
+  if (!curso) { showToast('⚠️ Primero selecciona un curso.'); return; }
   GAMES.forEach(g => { current[g.id] = true; });
   render();
   dirty = true;
@@ -386,7 +464,5 @@ function showToast(msg) {
 window.addEventListener('beforeunload', e => {
   if (dirty) { e.preventDefault(); e.returnValue = ''; }
 });
-
-render();
 </script>
 </body></html>

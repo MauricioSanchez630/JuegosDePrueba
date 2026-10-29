@@ -171,10 +171,24 @@ function selectCourse(value, label) {
   title.textContent    = '\u{1F3AE} Juegos para ' + label;
   subtitle.textContent = 'Practica y aprende con los juegos de ' + label + '.';
   updateGameLinks(value);
+  // Mostrar solo los juegos que el administrador dejó activos para ESTE curso.
+  applyGameVisibility(value);
 }
 
-// Al cargar, restaurar el curso previamente seleccionado (si existe).
+// Al cargar: si se entra desde la portada de perfiles (?nuevo=1),
+// empezar con la selección de curso limpia; si se vuelve desde un
+// juego, restaurar el curso previamente elegido.
 (function restoreCourse() {
+  let nuevo = false;
+  try { nuevo = new URLSearchParams(window.location.search).get('nuevo') === '1'; } catch {}
+
+  if (nuevo) {
+    limpiarCursoSeleccionado();
+    // Quitar el parámetro de la URL para no repetir la limpieza al refrescar.
+    try { history.replaceState(null, '', window.location.pathname + window.location.hash); } catch {}
+    return;
+  }
+
   const curso = getCursoSeleccionado();
   if (!curso) return;
   const select = document.getElementById('courseSelect');
@@ -186,16 +200,19 @@ function selectCourse(value, label) {
   selectCourse(curso.num, label);
 })();
 
-// Visibilidad de juegos segun configuracion del administrador
-(function applyGameVisibility() {
+// Visibilidad de juegos según la configuración del administrador POR CURSO.
+// La estructura guardada es { "1": { math:true, vf:false, ... }, ... }.
+// Un juego se oculta solo si el curso indicado lo tiene en false.
+function applyGameVisibility(courseNum) {
   const STORAGE_KEY = 'karyplay_games';
-  let settings = {};
-  try { settings = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch {}
+  let all = {};
+  try { all = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch {}
+  const settings = (all && typeof all[courseNum] === 'object') ? all[courseNum] : {};
   document.querySelectorAll('.game-card[data-game-id]').forEach(card => {
     const id = card.getAttribute('data-game-id');
-    if (settings[id] === false) card.style.display = 'none';
+    card.style.display = (settings[id] === false) ? 'none' : '';
   });
-})();
+}
 </script>
 </body>
 </html>

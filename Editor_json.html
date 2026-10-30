@@ -19,6 +19,8 @@
 <label for="jsonFile"><span class="step">2</span>Archivo a editar</label>
 <select id="jsonFile" disabled><option value="">Primero elige un juego&hellip;</option></select>
 <label class="upload disabled" id="openLabel"><span class="step">3</span>📂 Abrir archivo JSON<input id="file" type="file" accept=".json,application/json" disabled></label>
+<button class="btn secondary" id="loadAvailable" style="width:100%;margin-top:10px" disabled>⬇️ Cargar preguntas disponibles</button>
+<p class="small" style="margin-top:6px">«Cargar preguntas disponibles» trae el contenido actual del archivo publicado en el sitio. Requiere abrir esta página desde un servidor web (no con file://).</p>
 <div class="toolbar"><button class="btn" id="download" disabled>Descargar JSON</button><button class="btn secondary" id="copy">Copiar contenido</button></div>
 <div id="status" class="status">Elige un juego y un archivo para comenzar.</div>
 <p class="small">Solo se abren archivos cuyo nombre coincida con el seleccionado en el paso 2. El listado de archivos está definido en la página y debe actualizarse manualmente al crear nuevos JSON.</p>
@@ -34,14 +36,15 @@ const $=id=>document.getElementById(id);
    LISTADO EN DURO: archivos JSON permitidos por juego.
    Actualiza manualmente estas listas al crear nuevos JSON.
    'key' identifica al juego; 'label' es el texto visible;
-   'files' son los nombres de archivo exactos (sensibles a
-   mayúsculas/acentos) que se pueden abrir para ese juego.
+   'dir' es la carpeta donde vive el archivo en el sitio
+   (relativa a esta página); 'files' son los nombres de archivo
+   exactos (sensibles a mayúsculas/acentos) que se pueden abrir.
 ───────────────────────────────────────────────────────────── */
 const GAMES=[
-  {key:"vf",    label:"Verdadero o Falso", files:["VFprimero.json","VFsegundo.json","VFtercero.json","VFcuarto.json","VFquinto.json","VFsexto.json","VFseptimo.json","VFoctavo.json"]},
-  {key:"alt",   label:"Alternativas",      files:["ALTprimero.json","ALTsegundo.json","ALTtercero.json","ALTcuarto.json","ALTquinto.json","ALTsexto.json","ALTseptimo.json","ALToctavo.json"]},
-  {key:"mc",    label:"Memoria Conceptual",files:["MCprimero.json","MCsegundo.json","MCtercero.json","MCcuarto.json","MCquinto.json","MCsexto.json","MCseptimo.json","MCoctavo.json"]},
-  {key:"match", label:"Match: Imagen y concepto", files:["conceptos-imagenes.json"]}
+  {key:"vf",    label:"Verdadero o Falso", dir:"datos/", files:["VFprimero.json","VFsegundo.json","VFtercero.json","VFcuarto.json","VFquinto.json","VFsexto.json","VFseptimo.json","VFoctavo.json"]},
+  {key:"alt",   label:"Alternativas",      dir:"datos/", files:["ALTprimero.json","ALTsegundo.json","ALTtercero.json","ALTcuarto.json","ALTquinto.json","ALTsexto.json","ALTseptimo.json","ALToctavo.json"]},
+  {key:"mc",    label:"Memoria Conceptual",dir:"datos/", files:["MCprimero.json","MCsegundo.json","MCtercero.json","MCcuarto.json","MCquinto.json","MCsexto.json","MCseptimo.json","MCoctavo.json"]},
+  {key:"match", label:"Match: Imagen y concepto", dir:"", files:["conceptos-imagenes.json"]}
 ];
 
 function status(t,c=""){ $("status").textContent=t;$("status").className="status "+c}
@@ -61,11 +64,12 @@ function validate(){let r=parse();if(!r.ok){details("Error de sintaxis: "+r.erro
   GAMES.forEach(g=>{const o=document.createElement("option");o.value=g.key;o.textContent=g.label;sel.appendChild(o)});
 })();
 
-/* Habilitar/deshabilitar el paso 3 (abrir) según juego + archivo */
+/* Habilitar/deshabilitar el paso 3 (abrir / cargar) según juego + archivo */
 function refreshOpenState(){
   const ready=!!currentGame()&&!!selectedFile();
   $("file").disabled=!ready;
   $("openLabel").classList.toggle("disabled",!ready);
+  $("loadAvailable").disabled=!ready;
 }
 
 /* Al cambiar de juego, rellenar la lista de archivos de ese juego */
@@ -111,6 +115,34 @@ $("file").onchange=async e=>{
     status("Archivo cargado: "+f.name+" ("+g.label+").","good");
     validate();
   }catch(err){status("No se pudo leer el archivo: "+err.message,"bad")}
+};
+
+/* Cargar preguntas disponibles: trae (fetch) el contenido actual del
+   archivo publicado en el sitio para el juego/archivo seleccionado. */
+$("loadAvailable").onclick=async()=>{
+  const g=currentGame();
+  const file=selectedFile();
+  if(!g||!file){status("Primero elige el juego y el archivo.","bad");return}
+  if(location.protocol==="file:"){
+    status("No se puede cargar con file://. Abre esta página desde un servidor web (HTTP/HTTPS).","bad");
+    return;
+  }
+  const ruta=g.dir+file;
+  status("Cargando "+file+"…");
+  try{
+    const res=await fetch(ruta,{cache:"no-store"});
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const texto=await res.text();
+    // Formatear bonito si es JSON válido; si no, volcar el texto tal cual.
+    let salida=texto;
+    try{ salida=JSON.stringify(JSON.parse(texto),null,2); }catch{}
+    $("editor").value=salida;
+    $("download").disabled=false;
+    status("Preguntas cargadas desde "+ruta+" ("+g.label+").","good");
+    validate();
+  }catch(err){
+    status("No se pudieron cargar las preguntas de "+ruta+": "+err.message,"bad");
+  }
 };
 
 $("validate").onclick=validate;
